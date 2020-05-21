@@ -1,12 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import LoginForm from './LoginForm';
+import {Container} from 'react-bootstrap';
 
 function App() {
   return (
-    <div className="App">
-      feedbackify
-    </div>
+    <Container fluid={true} className="App">
+      <h1>feedbackify</h1>
+      <LoginForm />
+    </Container>
   );
 }
 
