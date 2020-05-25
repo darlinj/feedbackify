@@ -36,4 +36,16 @@ describe('The login component', () => {
     expect(credentials.email).toEqual('fred.flintstone@bedrock.com');
     expect(credentials.password).toEqual('B3dr0ck');
   });
+
+  it('calls the login function when the button is pressed', () => {
+    let called_login = false;
+    const login = e => {
+      called_login = true
+    };
+    const component = shallow(<LoginForm login={login} />);
+    component
+      .find('form')
+      .simulate('submit');
+    expect(called_login).toEqual(true);
+  });
 });
