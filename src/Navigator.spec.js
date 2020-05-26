@@ -12,12 +12,12 @@ describe('Navbar' , () => {
     expect(wrapper.find(Navbar).text()).toContain("Some title");
   })
 
-  it('shows the logout button if logged in', () => {
+  it('shows the logout link if logged in', () => {
     const wrapper = mount(<Navigator title="Some title" isAuthenticated={true} />);
     expect(wrapper.find("a.login-action").text()).toEqual("log out");
   })
 
-  it('shows the logout button if logged out', () => {
+  it('shows the logout link if logged out', () => {
     const wrapper = mount(<Navigator title="Some title" isAuthenticated={false} />);
     expect(wrapper.find("a.login-action").text()).toEqual("login");
   })
