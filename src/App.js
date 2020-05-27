@@ -6,11 +6,11 @@ import {Container} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-  const [credentials, setCredentials] = useState({email: "", password: ""})
+  const [currentUser, setCurrentUser] = useState()
   return (
     <Container fluid={true} className="App">
       <Navigator title="Feedbackify" />
-      <LoginForm credentials={credentials} setCredentials={setCredentials} />
+      <LoginForm setCurrentUser={setCurrentUser} />
     </Container>
   );
 }

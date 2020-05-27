@@ -67,13 +67,13 @@ describe('The login component', () => {
   });
 
   it('sets isAuthenticated to true if login is successful', () => {
-    let isAuthenticated = false
-    const setAuthenticationStatus = s => {
-      isAuthenticated =  s
+    let currentUser = null
+    const setCurrentUser = s => {
+      currentUser =  s
     };
-    const component = shallow(<LoginForm setAuthenticationStatus={setAuthenticationStatus} />);
+    const component = shallow(<LoginForm setCurrentUser={setCurrentUser} />);
     component.find('form').simulate('submit');
-    expect(isAuthenticated).toEqual(true);
+    expect(currentUser.loggedIn).toEqual(true);
   })
 
   it.skip('calls the login function when the button is pressed', () => {

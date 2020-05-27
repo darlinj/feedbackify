@@ -18,10 +18,7 @@ describe('Rendering the app component', () => {
   it('renders the login form', () => {
     const wrapper = mount(<App />);
     expect(wrapper.find(LoginForm)).toHaveLength(1);
-    expect(wrapper.find(LoginForm).props().credentials).toEqual({
-      email: '',
-      password: '',
-    });
+    expect(typeof(wrapper.find(LoginForm).props().setCurrentUser)).toEqual("function");
   });
 
   it('renders the Navbar', () => {

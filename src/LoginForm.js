@@ -5,16 +5,16 @@ import {login} from './authentication';
 const LoginForm = props => {
   const [credentials, setCredentials] = useState({email: '', password: ''});
 
-  const handleLogin = data => {
-    login(credentials.email, credentials.password);
-    if (typeof props.setAuthenticationStatus === 'function') {
-      props.setAuthenticationStatus(true);
+  const handleLogin = event => {
+    event.preventDefault()
+    const currentUser = login(credentials.email, credentials.password);
+    if (typeof props.setCurrentUser === 'function') {
+      props.setCurrentUser(currentUser);
     }
   };
 
   const handleCredentials = event => {
-    credentials[event.target.name] = event.target.value;
-    setCredentials(credentials);
+    setCredentials({...credentials, [event.target.name]: event.target.value });
   };
 
   return (

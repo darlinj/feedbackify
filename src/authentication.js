@@ -1,13 +1,12 @@
 import { Auth } from 'aws-amplify';
 
 const login = async (email, password) =>  {
-  try {
-    return await Auth.signIn(email,password);
-  }
-  catch(e)
-  {
-    console.log("BUGGER", e)
-  }
+  let user = {};
+  await Auth.signIn(email,password).then(
+    (_user) => { user = _user },
+    (error) => { user = {isLoggedIn: false}}
+  )
+  return user
 }
 
 export {login}

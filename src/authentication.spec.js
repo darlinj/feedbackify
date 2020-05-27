@@ -25,4 +25,11 @@ describe('The login component', () => {
       user: 'data',
     });
   });
+
+  it('returns a user with status of logged out if authentication fails', async () => {
+    Auth.signIn.mockRejectedValue({user: 'data'});
+    expect(await login('email.address@something.com', 'Pa55w0rd')).toEqual({
+      isLoggedIn: false,
+    });
+  });
 });
