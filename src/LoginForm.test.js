@@ -10,7 +10,9 @@ configure({adapter: new Adapter()});
 
 describe('The login component', () => {
   beforeEach(() => {
-    login.mockImplementation(() => { return {username: "fred", loggedIn: true }});
+    login.mockImplementation(() => {
+      return {username: 'fred', loggedIn: true};
+    });
   });
 
   afterEach(() => {
@@ -60,21 +62,21 @@ describe('The login component', () => {
     component
       .find('FormControl[name="password"]')
       .simulate('change', {target: {name: 'password', value: 'B3dr0ck'}});
-    component.find('form').simulate('submit');
+    component.find('form').simulate('submit', {preventDefault: () => {}});
     expect(login.mock.calls.length).toEqual(1);
-    expect(login.mock.calls[0][0]).toEqual("fred.flintstone@bedrock.com");
-    expect(login.mock.calls[0][1]).toEqual("B3dr0ck");
+    expect(login.mock.calls[0][0]).toEqual('fred.flintstone@bedrock.com');
+    expect(login.mock.calls[0][1]).toEqual('B3dr0ck');
   });
 
   it('sets isAuthenticated to true if login is successful', () => {
-    let currentUser = null
+    let currentUser = null;
     const setCurrentUser = s => {
-      currentUser =  s
+      currentUser = s;
     };
     const component = shallow(<LoginForm setCurrentUser={setCurrentUser} />);
-    component.find('form').simulate('submit');
+    component.find('form').simulate('submit', {preventDefault: () => {}});
     expect(currentUser.loggedIn).toEqual(true);
-  })
+  });
 
   it.skip('calls the login function when the button is pressed', () => {
     let called_login = false;
