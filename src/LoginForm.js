@@ -6,15 +6,16 @@ const LoginForm = props => {
   const [credentials, setCredentials] = useState({email: '', password: ''});
 
   const handleLogin = event => {
-    event.preventDefault()
-    const currentUser = login(credentials.email, credentials.password);
-    if (typeof props.setCurrentUser === 'function') {
-      props.setCurrentUser(currentUser);
-    }
+    event.preventDefault();
+    login(credentials.email, credentials.password).then(currentUser => {
+      if (typeof props.setCurrentUser === 'function') {
+        props.setCurrentUser(currentUser);
+      }
+    });
   };
 
   const handleCredentials = event => {
-    setCredentials({...credentials, [event.target.name]: event.target.value });
+    setCredentials({...credentials, [event.target.name]: event.target.value});
   };
 
   return (

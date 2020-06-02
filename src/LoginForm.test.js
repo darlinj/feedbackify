@@ -10,9 +10,7 @@ configure({adapter: new Adapter()});
 
 describe('The login component', () => {
   beforeEach(() => {
-    login.mockImplementation(() => {
-      return {username: 'fred', loggedIn: true};
-    });
+    login.mockResolvedValue( {username: 'fred', loggedIn: true});
   });
 
   afterEach(() => {
@@ -68,14 +66,13 @@ describe('The login component', () => {
     expect(login.mock.calls[0][1]).toEqual('B3dr0ck');
   });
 
-  it('sets isAuthenticated to true if login is successful', () => {
-    let currentUser = null;
+  it('sets isAuthenticated to true if login is successful', (done) => {
     const setCurrentUser = s => {
-      currentUser = s;
+      expect(s.loggedIn).toEqual(true);
+      done();
     };
     const component = shallow(<LoginForm setCurrentUser={setCurrentUser} />);
     component.find('form').simulate('submit', {preventDefault: () => {}});
-    expect(currentUser.loggedIn).toEqual(true);
   });
 
   it.skip('calls the login function when the button is pressed', () => {

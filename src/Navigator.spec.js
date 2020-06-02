@@ -7,18 +7,18 @@ import {Nav, Navbar} from 'react-bootstrap';
 configure({adapter: new Adapter()});
 describe('Navbar' , () => {
   it('shows the title', () => {
-    const wrapper = mount(<Navigator title="Some title"/>);
+    const wrapper = mount(<Navigator title="Some title" currentUser={{}} />);
     expect(wrapper.find(Navbar)).toHaveLength(1);
     expect(wrapper.find(Navbar).text()).toContain("Some title");
   })
 
   it('shows the logout link if logged in', () => {
-    const wrapper = mount(<Navigator title="Some title" isAuthenticated={true} />);
+    const wrapper = mount(<Navigator title="Some title" currentUser={{isLoggedIn: true}} />);
     expect(wrapper.find("a.login-action").text()).toEqual("log out");
   })
 
   it('shows the logout link if logged out', () => {
-    const wrapper = mount(<Navigator title="Some title" isAuthenticated={false} />);
+    const wrapper = mount(<Navigator title="Some title" currentUser={{isLoggedIn: false}} />);
     expect(wrapper.find("a.login-action").text()).toEqual("login");
   })
 })
