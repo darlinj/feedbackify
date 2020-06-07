@@ -13,12 +13,12 @@ describe('Navbar' , () => {
   })
 
   it('shows the logout link if logged in', () => {
-    const wrapper = mount(<Navigator title="Some title" currentUser={{isLoggedIn: true}} />);
+    const wrapper = mount(<Navigator title="Some title" currentUser={{some: "object"}} />);
     expect(wrapper.find("a.login-action").text()).toEqual("log out");
   })
 
   it('shows the logout link if logged out', () => {
-    const wrapper = mount(<Navigator title="Some title" currentUser={{isLoggedIn: false}} />);
+    const wrapper = mount(<Navigator title="Some title" currentUser={undefined} />);
     expect(wrapper.find("a.login-action").text()).toEqual("login");
   })
 })

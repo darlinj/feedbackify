@@ -9,9 +9,9 @@ describe('Check that the homepage renders', () => {
 
   it.only('Has the login from', () => {
     cy.get('input[cy-data="email"]').type("fred@bedrock.com")
-    cy.get('input[cy-data="password"]').type("b0uld3rs")
+    cy.get('input[cy-data="password"]').type("password")
     cy.get('button[cy-data="login-button"]').click
-    cy.get('div[cy-data="login-action')
-        .should('have.text', 'logout')
+    cy.get('a[cy-data="login-action"]')
+        .should('have.text', 'log out')
   })
 })
