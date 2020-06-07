@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
-import LoginForm from './LoginForm';
+import PageBody from './PageBody';
 import Navigator from './Navigator';
 import {Container} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,11 +9,11 @@ import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
 
 function App() {
-  const [currentUser, setCurrentUser] = useState({isLoggedIn: false})
+  const [currentUser, setCurrentUser] = useState()
   return (
     <Container fluid={true} className="App">
       <Navigator title="Feedbackify" currentUser={currentUser} />
-      <LoginForm setCurrentUser={setCurrentUser} />
+      <PageBody currentUser={currentUser} setCurrentUser={setCurrentUser} />
     </Container>
   );
 }

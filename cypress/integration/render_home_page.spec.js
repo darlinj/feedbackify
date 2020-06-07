@@ -10,8 +10,10 @@ describe('Check that the homepage renders', () => {
   it.only('Has the login from', () => {
     cy.get('input[cy-data="email"]').type("fred@bedrock.com")
     cy.get('input[cy-data="password"]').type("password")
-    cy.get('button[cy-data="login-button"]').click
+    cy.get('button[cy-data="login-button"]').click()
     cy.get('a[cy-data="login-action"]')
         .should('have.text', 'log out')
+    cy.get('div[cy-data="page-body"]')
+        .should('have.text', 'Welcome to Feedbackify')
   })
 })
