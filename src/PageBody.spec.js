@@ -4,6 +4,7 @@ import {shallow, configure} from 'enzyme';
 import PageBody from './PageBody';
 import LoginForm from './LoginForm';
 import WelcomePage from './WelcomePage';
+import LoadingPage from './LoadingPage';
 
 configure({adapter: new Adapter()});
 
@@ -20,6 +21,11 @@ describe('Renders the main body', () => {
     expect(wrapper.find(WelcomePage)).toHaveLength(1);
     expect(wrapper.find(WelcomePage).props().currentUser).toEqual({some: "user"});
   });
+
+  it('and shows a loading page when the isLoading is true', () => {
+    const wrapper = shallow(<PageBody isLoading={true} />);
+    expect(wrapper.find(LoadingPage).length).toEqual(1);
+  })
  
 
 });

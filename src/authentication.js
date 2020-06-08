@@ -9,4 +9,19 @@ const login = async (email, password) =>  {
   return user
 }
 
-export {login}
+const getCurrentUser = () => {
+  return Auth.currentSession();
+}
+
+const logout = () => {
+  return Auth.signOut();
+}
+
+//  const handleLogout = async event => {
+//    await Auth.signOut();
+//    setAuthenticated(false);
+//    props.history.push('/login');
+//  };
+
+
+export {login, logout, getCurrentUser}
