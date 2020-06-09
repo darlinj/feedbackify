@@ -2,7 +2,7 @@ import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import {mount, shallow, configure} from 'enzyme';
 import App from './App';
-import PageBody from './PageBody';
+import Routes from './Routes';
 import Navigator from './Navigator';
 import {getCurrentUser} from './authentication'
 import {act} from 'react-dom/test-utils'
@@ -29,9 +29,9 @@ describe('Rendering the app component', () => {
  
   it('with the page body', () => {
     const wrapper = shallow(<App />);
-    expect(wrapper.find(PageBody)).toHaveLength(1);
-    expect(typeof(wrapper.find(PageBody).props().setCurrentUser)).toEqual("function");
-    expect(wrapper.find(PageBody).props().currentUser).toBeUndefined()
+    expect(wrapper.find(Routes)).toHaveLength(1);
+    expect(typeof(wrapper.find(Routes).props().setCurrentUser)).toEqual("function");
+    expect(wrapper.find(Routes).props().currentUser).toBeUndefined()
   });
 
   it('checks that the session is still alive', async () => {
@@ -41,14 +41,14 @@ describe('Rendering the app component', () => {
     });
     wrapper.update();
     expect(getCurrentUser.mock.calls.length).toEqual(1)
-    expect(wrapper.find(PageBody).props().currentUser).toEqual({some: "user"})
-    expect(wrapper.find(PageBody).props().isLoading).toEqual(false)
+    expect(wrapper.find(Routes).props().currentUser).toEqual({some: "user"})
+    expect(wrapper.find(Routes).props().isLoading).toEqual(false)
   })
 
   it('sets the loading flag while the session is being checked', () => {
     const wrapper = shallow(<App />);
-    expect(wrapper.find(PageBody)).toHaveLength(1);
-    expect(wrapper.find(PageBody).props().isLoading).toEqual(true)
+    expect(wrapper.find(Routes)).toHaveLength(1);
+    expect(wrapper.find(Routes).props().isLoading).toEqual(true)
   })
 
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import {mount, configure} from 'enzyme';
+import {MemoryRouter} from 'react-router-dom';
 import Navigator from './Navigator';
 import {Nav, Navbar} from 'react-bootstrap';
 import {logout} from './authentication';
@@ -26,16 +27,29 @@ describe('Navbar', () => {
 
   it('shows the logout link if logged in', () => {
     const wrapper = mount(
-      <Navigator title="Some title" currentUser={{some: 'object'}} />,
+      <MemoryRouter initialEntries={['/rubbish']}>
+        <Navigator title="Some title" currentUser={{some: 'object'}} />,
+      </MemoryRouter>,
     );
     expect(wrapper.find('a.login-action').text()).toEqual('log out');
   });
 
   it('shows the logout link if logged out', () => {
     const wrapper = mount(
+      <MemoryRouter initialEntries={['/rubbish']}>
       <Navigator title="Some title" currentUser={undefined} />,
+      </MemoryRouter>,
     );
     expect(wrapper.find('a.login-action').text()).toEqual('login');
+  });
+
+  it('shows the signup link if logged out', () => {
+    const wrapper = mount(
+      <MemoryRouter initialEntries={['/rubbish']}>
+      <Navigator title="Some title" currentUser={undefined} />,
+      </MemoryRouter>,
+    );
+    expect(wrapper.find('a.signup-action').text()).toEqual('signup');
   });
 
   it('handles logout', () => {
