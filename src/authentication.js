@@ -17,11 +17,17 @@ const logout = () => {
   return Auth.signOut();
 }
 
-//  const handleLogout = async event => {
-//    await Auth.signOut();
-//    setAuthenticated(false);
-//    props.history.push('/login');
-//  };
+const signup = async(email, name, password) => {
+  const username = email;
+  let result = [false];
+  await Auth.signUp({username, password, attributes: { email, name }}).then(() => {
+    result[0] = true;
+  })
+  .catch((error) => {
+    result[0] = false;
+    result[1] = error.message;
+  })
+  return result;
+}
 
-
-export {login, logout, getCurrentUser}
+export {login, logout, getCurrentUser, signup}

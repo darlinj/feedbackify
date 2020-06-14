@@ -26,9 +26,9 @@ const Navigator = props => {
             <Link className="signup-action" cy-data="signup-action" style={{marginRight: "10px"}} to="/signup">
               signup
             </Link> {' | '}
-            <a className="login-action" cy-data="login-action" style={{marginLeft: "10px"}} href="">
+            <Link className="login-action" cy-data="login-action" style={{marginLeft: "10px"}} to="/">
               login
-            </a>
+            </Link>
             </>
           )}
         </Nav>

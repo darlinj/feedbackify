@@ -37,7 +37,7 @@ describe('Navbar', () => {
   it('shows the logout link if logged out', () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={['/rubbish']}>
-      <Navigator title="Some title" currentUser={undefined} />,
+        <Navigator title="Some title" currentUser={undefined} />,
       </MemoryRouter>,
     );
     expect(wrapper.find('a.login-action').text()).toEqual('login');
@@ -46,7 +46,7 @@ describe('Navbar', () => {
   it('shows the signup link if logged out', () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={['/rubbish']}>
-      <Navigator title="Some title" currentUser={undefined} />,
+        <Navigator title="Some title" currentUser={undefined} />,
       </MemoryRouter>,
     );
     expect(wrapper.find('a.signup-action').text()).toEqual('signup');
@@ -54,7 +54,9 @@ describe('Navbar', () => {
 
   it('handles logout', () => {
     const wrapper = mount(
-      <Navigator title="Some title" currentUser={{some: 'user'}} />,
+      <MemoryRouter initialEntries={['/rubbish']}>
+        <Navigator title="Some title" currentUser={{some: 'user'}} />,
+      </MemoryRouter>,
     );
     wrapper.find('a.login-action').simulate('click');
     expect(logout.mock.calls.length).toEqual(1);

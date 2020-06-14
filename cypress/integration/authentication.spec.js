@@ -42,4 +42,5 @@ describe('Check that the homepage renders', () => {
     cy.get('input[cy-data="email"]').should('be.visible')
 
   })
+
 })

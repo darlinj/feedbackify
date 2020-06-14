@@ -22,7 +22,6 @@ function App() {
         setCurrentUser(user);
       })
       .catch(error => {
-        console.log(error);
         setCurrentUser(undefined);
       });
     setIsLoading(false);
