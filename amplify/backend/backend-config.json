@@ -1,26 +1,26 @@
 {
-	"function": {
-		"feedbackifyAuthCustomMessage": {
-			"build": true,
-			"providerPlugin": "awscloudformation",
-			"service": "Lambda"
-		}
-	},
-	"auth": {
-		"feedbackifyAuth": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "feedbackifyAuthCustomMessage",
-					"triggerProvider": "Cognito",
-					"attributes": [
-						"Arn",
-						"Name"
-					]
-				}
-			]
-		}
-	}
+    "function": {
+        "feedbackifyAuthCustomMessage": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda"
+        }
+    },
+    "auth": {
+        "feedbackifyAuth": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "function",
+                    "resourceName": "feedbackifyAuthCustomMessage",
+                    "triggerProvider": "Cognito",
+                    "attributes": [
+                        "Arn",
+                        "Name"
+                    ]
+                }
+            ]
+        }
+    }
 }

@@ -115,7 +115,7 @@ Parameters:
                     
   userPoolGroupList:
     Type: CommaDelimitedList
-                  
+      
   verificationBucketName:
     Type: String
                                             
@@ -127,7 +127,7 @@ Parameters:
               
   dependsOn:
     Type: CommaDelimitedList
-    
+                
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
 

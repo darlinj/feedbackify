@@ -11,7 +11,7 @@ describe('sign up functionality', () => {
 
   it('fills in the sign up form', () => {
     cy.visit('/signup')
-    cy.get('input[cy-data="email"]').type("fred@bedrock.com")
+    cy.get('input[cy-data="email"]').type(`${uuidv4()}@example.com`)
     cy.get('input[cy-data="name"]').type("Fred Flintstone")
     cy.get('input[cy-data="password"]').type("password")
     cy.get('input[cy-data="confirm-password"]').type("password")
@@ -21,3 +21,10 @@ describe('sign up functionality', () => {
   })
 
 })
+
+const uuidv4 = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}

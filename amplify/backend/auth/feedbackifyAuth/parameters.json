@@ -1,6 +1,6 @@
 {
     "identityPoolName": "feedbackifyIDPool",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "feedba959ec8c4",
     "userPoolName": "feedbackifyUserPool",
     "autoVerifiedAttributes": [
