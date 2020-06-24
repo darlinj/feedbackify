@@ -12,8 +12,8 @@
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Welcome to feedbackify. Please verify your email address.",
-    "emailVerificationMessage": "Your authentication code is '{####}'. Please enter it into feeedbackify to confirm your email address",
+    "emailVerificationSubject": "Your verification code",
+    "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
@@ -34,7 +34,6 @@
     "useDefault": "manual",
     "authSelections": "identityPoolAndUserPool",
     "resourceName": "feedbackifyAuth",
-    "thirdPartyAuth": false,
     "usernameAttributes": [
         "email"
     ],
@@ -70,5 +69,6 @@
                 "Name"
             ]
         }
-    ]
+    ],
+    "thirdPartyAuth": false
 }

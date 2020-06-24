@@ -9,18 +9,19 @@
             "UnauthRoleName": "amplify-feedbackify-dev-81441-unauthRole",
             "StackName": "amplify-feedbackify-dev-81441",
             "StackId": "arn:aws:cloudformation:eu-west-1:562925407179:stack/amplify-feedbackify-dev-81441/54aa02c0-98d7-11ea-88a2-06310ddbba8e",
-            "AmplifyAppId": "d1vrla5zs5shb6"
+            "AmplifyAppId": "d1vrla5zs5shb6",
+            "emailVerificationMessage": "Your overridden verification code is {####}"
         },
         "categories": {
-            "function": {
-                "feedbackifyAuthCustomMessage": {
-                    "REDIRECTURL": "www.feedbackify.com",
-                    "EMAILSUBJECT": "Please confirm your account with Feedbackify",
-                    "EMAILMESSAGE": "Please click the link below to confirm your account details by clicking the link below"
-                }
-            },
             "auth": {
                 "feedbackifyAuth": {}
+            },
+            "function": {
+                "feedbackifyAuthCustomMessage": {
+                    "REDIRECTURL": "http://localhost:3000/",
+                    "EMAILSUBJECT": "Welcome to Feedbackify!  Please confirm your email address",
+                    "EMAILMESSAGE": "Please confirm your email address by clicking the link below"
+                }
             }
         }
     }

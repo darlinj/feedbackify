@@ -1,1 +1,4 @@
-{"modules":"verification-link"}
+{
+    "modules": "verification-link",
+    "resourceName": "feedbackifyAuthCustomMessage"
+}
