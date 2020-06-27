@@ -19,8 +19,8 @@ describe('request feedback', () => {
     cy.get('input[cy-data="feedback-question"]').type("Anything else to add?")
     cy.get('button[cy-data="add-question"]').click()
     cy.get('div[cy-data="question-list"]')
-        .should('contain.text', 'Please give me some  feedback??')
-    cy.get('div[cy-data="recipient-list"]')
+        .should('contain.text', 'Please give me some feedback?')
+    cy.get('div[cy-data="question-list"]')
         .should('contain.text', 'Anything else to add?')
   })
 

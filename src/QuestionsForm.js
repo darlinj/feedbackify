@@ -5,6 +5,7 @@ import {
   FormControl,
   FormLabel,
   ListGroup,
+  Jumbotron,
 } from 'react-bootstrap';
 
 const QuestioinsForm = () => {
@@ -13,22 +14,46 @@ const QuestioinsForm = () => {
 
   const handleAddingRecipient = event => {
     event.preventDefault();
-    setQuestionList([...questionList, newQuestion])
+    setQuestionList([...questionList, newQuestion]);
+    setNewQuestion("")
   };
 
   const handleNewQuestion = event => {
     setNewQuestion(event.target.value);
-  }
+  };
+
+  const showQuestionList = () => {
+    if (questionList.length === 0) {
+      return <div>No questions yet. Please add questions below</div>;
+    } else {
+      return (
+        <ListGroup
+          name="questions"
+          cy-data="question-list"
+          className="questions">
+          {questionList.map((question, index) => {
+            return <ListGroup.Item key={index}>{question}</ListGroup.Item>;
+          })}
+        </ListGroup>
+      );
+    }
+  };
+
+  const showQuestions = () => {
+    return (
+      <Jumbotron>
+        <h2>Question list</h2>
+        {showQuestionList()}
+      </Jumbotron>
+    );
+  };
 
   return (
     <div className="questions-form">
-      <h2>Question list</h2>
-      <ListGroup name="questions" cy-data="question-list" className="questions">
-        { questionList.map((question, index) => { return <ListGroup.Item key={index}>{question}</ListGroup.Item> })}
-      </ListGroup>
       <form onSubmit={handleAddingRecipient} className="questions-form">
+        {showQuestions()}
         <FormGroup controlId="feedback-question">
-          <FormLabel>Feedback question</FormLabel>
+          <FormLabel>Add question</FormLabel>
           <FormControl
             autoFocus
             name="feedback-question"

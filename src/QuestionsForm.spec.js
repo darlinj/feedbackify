@@ -9,7 +9,6 @@ describe('Adding questions to the list', () => {
   it('Presents the form', () => {
     const component = shallow(<QuestionsForm />);
     expect(component.find('FormControl[name="feedback-question"]').length).toBe(1);
-    expect(component.find('ListGroup[name="questions"]').length).toBe(1);
     expect(component.find('Button[name="add-question"]').length).toBe(1);
   });
 
