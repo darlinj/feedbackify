@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   FormGroup,
   Button,
@@ -9,14 +9,24 @@ import {
 } from 'react-bootstrap';
 import {API, graphqlOperation} from 'aws-amplify';
 import {createQuestion} from './graphql/mutations';
+import {listQuestions} from './graphql/queries';
 
 const QuestioinsForm = () => {
   const [questionList, setQuestionList] = useState([]);
   const [newQuestion, setNewQuestion] = useState('');
 
-  const handleAddingRecipient = async event => {
+  useEffect(() => {
+    API.graphql(graphqlOperation(listQuestions)).then((response)  => {
+      console.log(response)
+      setQuestionList(response.data.listQuestions.items);
+    }).catch((e) => {
+      console.log(e);
+    });
+  },[])
+
+  const handleAddingQuestion = async event => {
     event.preventDefault();
-    setQuestionList([...questionList, newQuestion]);
+    setQuestionList([...questionList, {question: newQuestion}]);
     const question = {
       requestid: 123,
       question: newQuestion
@@ -38,8 +48,8 @@ const QuestioinsForm = () => {
           name="questions"
           cy-data="question-list"
           className="questions">
-          {questionList.map((question, index) => {
-            return <ListGroup.Item key={index}>{question}</ListGroup.Item>;
+          {questionList.map((questionObject, index) => {
+            return <ListGroup.Item key={index}>{questionObject.question}</ListGroup.Item>;
           })}
         </ListGroup>
       );
@@ -57,7 +67,7 @@ const QuestioinsForm = () => {
 
   return (
     <div className="questions-form">
-      <form onSubmit={handleAddingRecipient} className="questions-form">
+      <form onSubmit={handleAddingQuestion} className="questions-form">
         {showQuestions()}
         <FormGroup controlId="feedback-question">
           <FormLabel>Add question</FormLabel>
