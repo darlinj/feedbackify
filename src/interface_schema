@@ -1,0 +1,19 @@
+ type FeedbackRequest @model {
+     id: ID!
+     userid: String!
+     questions: [Question] @connection(keyName: "requestlink", fields: ["id"])
+ }
+
+ type Question @model @key(name: "requestlink", fields: ["requestid"]) {
+     id: ID!
+     requestid: ID!
+     question: String
+     feedback: [Feedback] @connection(keyName: "feedbacklink", fields: ["id"])
+ }
+
+ type Feedback @model @key(name: "feedbacklink", fields: ["questionid"]) {
+     id: ID!
+     questionid: ID!
+     content: String
+ }
+

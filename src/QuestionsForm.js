@@ -7,15 +7,22 @@ import {
   ListGroup,
   Jumbotron,
 } from 'react-bootstrap';
+import {API, graphqlOperation} from 'aws-amplify';
+import {createQuestion} from './graphql/mutations';
 
 const QuestioinsForm = () => {
   const [questionList, setQuestionList] = useState([]);
   const [newQuestion, setNewQuestion] = useState('');
 
-  const handleAddingRecipient = event => {
+  const handleAddingRecipient = async event => {
     event.preventDefault();
     setQuestionList([...questionList, newQuestion]);
-    setNewQuestion("")
+    const question = {
+      requestid: 123,
+      question: newQuestion
+    };
+    await API.graphql(graphqlOperation(createQuestion, {input: question}));
+    setNewQuestion('');
   };
 
   const handleNewQuestion = event => {

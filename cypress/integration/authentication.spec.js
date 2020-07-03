@@ -24,14 +24,14 @@ describe('Check that the homepage renders', () => {
     cy.get('a[cy-data="login-action"]')
         .should('have.text', 'log out')
     cy.get('div[cy-data="page-body"]')
-        .should('have.text', 'Welcome to Feedbackify')
+        .should('contains.text', 'Welcome to Feedbackify')
   })
 
   it('stays logged in', () => {
     login();
     cy.visit('/')
     cy.get('div[cy-data="page-body"]')
-        .should('have.text', 'Welcome to Feedbackify')
+        .should('contains.text', 'Welcome to Feedbackify')
   })
 
   it('loggin out', () => {
