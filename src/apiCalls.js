@@ -1,19 +1,29 @@
-
 import {API, graphqlOperation} from 'aws-amplify';
 import {createQuestion} from './graphql/mutations';
 import {listQuestions} from './graphql/queries';
 
-const addQuestion = (newQuestion) => {
-    return API.graphql(graphqlOperation(createQuestion, {input: newQuestion})).then((result) => {
-      return result.data.createQuestion
-    }).catch((e) => { console.log(e); });
-}
+const addQuestion = newQuestion => {
+  return new Promise((resolve, reject) => {
+    API.graphql(graphqlOperation(createQuestion, {input: newQuestion}))
+      .then(result => {
+        resolve(result.data.createQuestion);
+      })
+      .catch(e => {
+        reject({error: e});
+      });
+  });
+};
 
 const getQuestions = () => {
-    return API.graphql(graphqlOperation(listQuestions)).then((result) => {
-      return result.data.listQuestions.items
-    }).catch((e) => { console.log(e); });
-}
-
+  return new Promise((resolve, reject) => {
+    API.graphql(graphqlOperation(listQuestions))
+      .then(result => {
+        resolve(result.data.listQuestions.items);
+      })
+      .catch(e => {
+        reject({error: e});
+      });
+  });
+};
 
 export {addQuestion, getQuestions};

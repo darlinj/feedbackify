@@ -1,9 +1,5 @@
 import React from 'react';
 import {
-  FormGroup,
-  Button,
-  FormControl,
-  FormLabel,
   ListGroup,
   Jumbotron,
 } from 'react-bootstrap';

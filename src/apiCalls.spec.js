@@ -26,6 +26,21 @@ describe('api calls', () => {
     expect(questionList).toEqual(questions)
   });
 
+  it('resolves to the question list', () => {
+    const questions = [{some: "question"}, {someOther: "question"}]
+    API.graphql.mockResolvedValue({data: {listQuestions: {items: questions }}});
+    graphqlOperation.mockReturnValue('the list questions query');
+    expect.assertions(1);
+    return getQuestions().then((returnedQuestions) => { expect(questions).toEqual(returnedQuestions) });
+  });
+
+  it('propogates the errors', async () => {
+    API.graphql.mockRejectedValue("some error");
+    graphqlOperation.mockReturnValue('the list questions query');
+    expect.assertions(1);
+    return getQuestions().catch((errorMessage) => { expect(errorMessage).toEqual({error: "some error"}) });
+  });
+
   it('creates a question', async () => {
     const newQuestion = { question: "some question" }
     const addedQuestion = { id: 1234, question: "some question" }
@@ -38,5 +53,21 @@ describe('api calls', () => {
     expect(API.graphql.mock.calls.length).toEqual(1);
     expect(API.graphql.mock.calls[0][0]).toEqual("the add question mutation");
     expect(returnedQuestion).toEqual(addedQuestion)
+  });
+
+  it('resolves to the new question', () => {
+    const newQuestion = { question: "some question" }
+    const addedQuestion = { id: 1234, question: "some question" }
+    API.graphql.mockResolvedValue({data: {createQuestion: addedQuestion  }});
+    graphqlOperation.mockReturnValue('the add question mutation');
+    expect.assertions(1);
+    return addQuestion().then((newQ) => { expect(newQ).toEqual(addedQuestion) });
+  });
+
+  it('propogates the errors', async () => {
+    API.graphql.mockRejectedValue("some error");
+    graphqlOperation.mockReturnValue('the add question mutation');
+    expect.assertions(1);
+    return addQuestion().catch((errorMessage) => { expect(errorMessage).toEqual({error: "some error"}) });
   });
 });

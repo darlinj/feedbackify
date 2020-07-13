@@ -4,10 +4,7 @@ import {
   Button,
   FormControl,
   FormLabel,
-  ListGroup,
-  Jumbotron,
 } from 'react-bootstrap';
-import {FaMinusSquare} from 'react-icons/fa';
 import QuestionsList from './QuestionsList';
 import {addQuestion, getQuestions} from './apiCalls';
 
