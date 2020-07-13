@@ -16,6 +16,7 @@ describe('request feedback', () => {
   it('adds questions to the list', () => {
     cy.get('input[cy-data="feedback-question"]').type("Please give me some feedback?")
     cy.get('button[cy-data="add-question"]').click()
+    cy.wait(500);
     cy.get('input[cy-data="feedback-question"]').type("Anything else to add?")
     cy.get('button[cy-data="add-question"]').click()
     cy.get('div[cy-data="question-list"]')

@@ -18,7 +18,6 @@ function App() {
   useEffect(() => {
     getCurrentUser()
       .then(user => {
-        console.log(user);
         setCurrentUser(user);
       })
       .catch(error => {

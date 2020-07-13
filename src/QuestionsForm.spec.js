@@ -1,27 +1,25 @@
 import React from 'react';
 import {mount, shallow, configure} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import {act} from 'react-dom/test-utils'
+import {act} from 'react-dom/test-utils';
 import QuestionsForm from './QuestionsForm';
 import {API, graphqlOperation} from 'aws-amplify';
-import {createQuestion} from './graphql/mutations';
-import {listQuestions} from './graphql/queries';
+import {addQuestion, getQuestions} from './apiCalls';
+import QuestionsList from './QuestionsList';
 
-jest.mock('aws-amplify');
-jest.mock('./graphql/mutations');
-jest.mock('./graphql/queries');
+jest.mock('./apiCalls');
 
 configure({adapter: new Adapter()});
 
 describe('Adding questions to the list', () => {
   beforeEach(() => {
-    API.graphql.mockResolvedValue({data: { listQuestions: { items: [ {},{}]}}});
-    graphqlOperation.mockReturnValue('graphql create question');
+    getQuestions.mockResolvedValue([{id: 1234, question: "This is a question"}, {id: 4321, question: "This is another question"}]);
+    addQuestion.mockResolvedValue({id: 9999, question: "This is a question"});
   });
 
   afterEach(() => {
-    API.graphql.mockClear();
-    graphqlOperation.mockClear();
+    getQuestions.mockClear();
+    addQuestion.mockClear();
   });
 
   it('Presents the form', () => {
@@ -32,29 +30,30 @@ describe('Adding questions to the list', () => {
     expect(component.find('Button[name="add-question"]').length).toBe(1);
   });
 
-  it.only('Gets the Questions from the database', async () =>  {
-    let component = null
-    await act(async() => {
+  it('Gets the Questions from the database', async () => {
+    let component = null;
+    await act(async () => {
       component = mount(<QuestionsForm />);
     });
-    expect(graphqlOperation.mock.calls.length).toEqual(1);
-    expect(graphqlOperation.mock.calls[0][0]).toEqual(listQuestions);
-    expect(API.graphql.mock.calls.length).toEqual(1);
+    expect(getQuestions.mock.calls.length).toEqual(1);
   });
 
-  it('Adds questions to the question list', () => {
-    const component = shallow(<QuestionsForm />);
-    component.find('FormControl[name="feedback-question"]').simulate('change', {
-      target: {name: 'feedback-question', value: 'some question'},
+  it('Adds questions to the question list', async () => {
+    let component = null;
+    await act(async () => {
+      component = mount(<QuestionsForm />);
+      component
+        .find('FormControl[name="feedback-question"]')
+        .simulate('change', {
+          target: {name: 'feedback-question', value: 'some question'},
+        });
     });
-    component.find('form').simulate('submit', {preventDefault: () => {}});
-    expect(component.find('ListGroup[name="questions"]').text()).toContain(
-      'some question',
-    );
-    expect(graphqlOperation.mock.calls.length).toEqual(1);
-    expect(graphqlOperation.mock.calls[0][0]).toEqual(createQuestion);
-    expect(graphqlOperation.mock.calls[0][1]).toEqual({input: { requestid: 123, question: "some question"}});
-    expect(API.graphql.mock.calls.length).toEqual(1);
-    expect(API.graphql.mock.calls[0][0]).toEqual('graphql create question');
+    component.update();
+    await act(async () => {
+      component.find('form').simulate('submit', {preventDefault: () => {}});
+    });
+    expect(addQuestion.mock.calls.length).toEqual(1);
+    expect(addQuestion.mock.calls[0][0]).toEqual({requestid:123, question: 'some question'});
   });
+
 });

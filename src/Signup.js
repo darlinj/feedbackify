@@ -15,7 +15,6 @@ const Signup = props => {
     }
     signup(signUpData.email, signUpData.name, signUpData.password)
       .then(([result, message]) => {
-        console.log(result, message);
         if (result) {
           updateRegistrationInProgress(true);
         } else {
