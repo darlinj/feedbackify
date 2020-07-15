@@ -5,7 +5,7 @@ const WelcomePage = props => {
   return (
     <>
       <h1>Welcome to Feedbackify</h1>
-      <QuestionsPage />
+      <QuestionsPage requestid={null}/>
 
     </>
   );

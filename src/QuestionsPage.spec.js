@@ -6,8 +6,10 @@ import QuestionsPage from './QuestionsPage';
 import {API, graphqlOperation} from 'aws-amplify';
 import {addQuestion, getQuestions} from './apiCalls';
 import QuestionsList from './QuestionsList';
+import {toast} from 'react-toastify';
 
 jest.mock('./apiCalls');
+jest.mock('react-toastify');
 
 configure({adapter: new Adapter()});
 
@@ -17,12 +19,13 @@ describe('Adding questions to the list', () => {
       {id: 1234, question: 'This is a question'},
       {id: 4321, question: 'This is another question'},
     ]);
-    addQuestion.mockResolvedValue({id: 9999, question: 'This is a question'});
+    toast.error.mockImplementation(() => true)
   });
 
   afterEach(() => {
     getQuestions.mockClear();
     addQuestion.mockClear();
+    toast.error.mockClear();
   });
 
   it('Presents the form', () => {
@@ -40,7 +43,8 @@ describe('Adding questions to the list', () => {
   });
 
   it('Adds questions to the question list', async () => {
-    const component = mount(<QuestionsPage requestid="999" />);
+    addQuestion.mockResolvedValue({id: 9999, question: 'This is a question'});
+    const component = shallow(<QuestionsPage requestid="999" />);
     await act(async () => {
       component.find('AddQuestionForm').prop('handleAddingQuestion')(
         'some question',
@@ -50,6 +54,31 @@ describe('Adding questions to the list', () => {
     expect(addQuestion.mock.calls[0][0]).toEqual({
       requestid: '999',
       question: 'some question',
+    });
+  });
+
+//  it('Raises an error if the add fails', async () => {
+//    expect.assertions(1);
+//    addQuestion.mockRejectedValue("some error");
+//    const component = shallow(<QuestionsPage requestid="999" />);
+//    return act(async () => {
+//      component.find('AddQuestionForm').prop('handleAddingQuestion')(
+//        'some question',
+//      );
+//      expect(toast.error.mock.calls.length).toEqual(1);
+//      expect(toast.error.mock.calls[0][0]).toEqual("Failed to save question. Check your internet connection");
+//    });
+//  });
+
+  it('Raises an error if the add fails', async () => {
+    addQuestion.mockRejectedValue("some error");
+    const component = shallow(<QuestionsPage requestid="999" />);
+      component.find('AddQuestionForm').prop('handleAddingQuestion')(
+        'some question',
+      );
+    return new Promise(resolve => setImmediate(resolve)).then(() => {
+      expect(toast.error.mock.calls.length).toEqual(1);
+      expect(toast.error.mock.calls[0][0]).toEqual("Failed to save question. Check your internet connection");
     });
   });
 });
