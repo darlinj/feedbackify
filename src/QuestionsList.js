@@ -5,7 +5,7 @@ import {
 } from 'react-bootstrap';
 import {FaMinusSquare} from 'react-icons/fa';
 
-const QuestioinsList = (params) => {
+const QuestionsList = (params) => {
   const handleDelete = (id,event) => {
     params.handleDelete(id);
   }
@@ -47,4 +47,4 @@ const QuestioinsList = (params) => {
   );
 };
 
-export default QuestioinsList;
+export default QuestionsList;

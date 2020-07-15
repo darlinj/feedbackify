@@ -1,11 +1,11 @@
 import React from 'react';
-import QuestionsForm from "./QuestionsForm"
+import QuestionsPage from "./QuestionsPage"
 
 const WelcomePage = props => {
   return (
     <>
       <h1>Welcome to Feedbackify</h1>
-      <QuestionsForm />
+      <QuestionsPage />
 
     </>
   );
