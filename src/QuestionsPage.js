@@ -6,7 +6,6 @@ import {toast} from 'react-toastify'
 
 const QuestionsPage = props => {
   const [questionList, setQuestionList] = useState([]);
-  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     getQuestions()
@@ -14,7 +13,7 @@ const QuestionsPage = props => {
         setQuestionList(response);
       })
       .catch(e => {
-        console.log(e);
+        toast.error(`Failed to get questions. Check your internet connection`);
       });
   }, []);
 
@@ -23,10 +22,8 @@ const QuestionsPage = props => {
       requestid: props.requestid,
       question: newQuestion,
     };
-    setIsSaving(true);
     addQuestion(question)
       .then(result => {
-        setIsSaving(false);
         setQuestionList([...questionList, result]);
       })
       .catch(e => {

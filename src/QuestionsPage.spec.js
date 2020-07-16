@@ -42,6 +42,18 @@ describe('Adding questions to the list', () => {
     expect(getQuestions.mock.calls.length).toEqual(1);
   });
 
+  it.only('raises an error if the connection to the API fails', async () => {
+    getQuestions.mockRejectedValue("some listing error");
+    let component = null;
+    await act(async () => {
+      component = mount(<QuestionsPage />);
+    });
+    return new Promise(resolve => setImmediate(resolve)).then(() => {
+      expect(toast.error.mock.calls.length).toEqual(1);
+      expect(toast.error.mock.calls[0][0]).toEqual("Failed to get questions. Check your internet connection");
+    });
+  });
+
   it('Adds questions to the question list', async () => {
     addQuestion.mockResolvedValue({id: 9999, question: 'This is a question'});
     const component = shallow(<QuestionsPage requestid="999" />);
@@ -56,19 +68,6 @@ describe('Adding questions to the list', () => {
       question: 'some question',
     });
   });
-
-//  it('Raises an error if the add fails', async () => {
-//    expect.assertions(1);
-//    addQuestion.mockRejectedValue("some error");
-//    const component = shallow(<QuestionsPage requestid="999" />);
-//    return act(async () => {
-//      component.find('AddQuestionForm').prop('handleAddingQuestion')(
-//        'some question',
-//      );
-//      expect(toast.error.mock.calls.length).toEqual(1);
-//      expect(toast.error.mock.calls[0][0]).toEqual("Failed to save question. Check your internet connection");
-//    });
-//  });
 
   it('Raises an error if the add fails', async () => {
     addQuestion.mockRejectedValue("some error");
