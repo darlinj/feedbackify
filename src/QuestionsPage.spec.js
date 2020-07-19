@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import {act} from 'react-dom/test-utils';
 import QuestionsPage from './QuestionsPage';
 import {API, graphqlOperation} from 'aws-amplify';
-import {addQuestion, getQuestions} from './apiCalls';
+import {addQuestion, getQuestions, removeQuestion} from './apiCalls';
 import QuestionsList from './QuestionsList';
 import {toast} from 'react-toastify';
 
@@ -19,12 +19,13 @@ describe('Adding questions to the list', () => {
       {id: 1234, question: 'This is a question'},
       {id: 4321, question: 'This is another question'},
     ]);
-    toast.error.mockImplementation(() => true)
+    toast.error.mockImplementation(() => true);
   });
 
   afterEach(() => {
     getQuestions.mockClear();
     addQuestion.mockClear();
+    removeQuestion.mockClear();
     toast.error.mockClear();
   });
 
@@ -39,18 +40,25 @@ describe('Adding questions to the list', () => {
     await act(async () => {
       component = mount(<QuestionsPage />);
     });
+    component.update();
     expect(getQuestions.mock.calls.length).toEqual(1);
+    expect(component.find('QuestionsList').prop('questionList')).toEqual([
+      {id: 1234, question: 'This is a question'},
+      {id: 4321, question: 'This is another question'},
+    ]);
   });
 
-  it.only('raises an error if the connection to the API fails', async () => {
-    getQuestions.mockRejectedValue("some listing error");
+  it('raises an error if the connection to the API fails', async () => {
+    getQuestions.mockRejectedValue('some listing error');
     let component = null;
     await act(async () => {
       component = mount(<QuestionsPage />);
     });
     return new Promise(resolve => setImmediate(resolve)).then(() => {
       expect(toast.error.mock.calls.length).toEqual(1);
-      expect(toast.error.mock.calls[0][0]).toEqual("Failed to get questions. Check your internet connection");
+      expect(toast.error.mock.calls[0][0]).toEqual(
+        'Failed to get questions. Check your internet connection',
+      );
     });
   });
 
@@ -70,14 +78,49 @@ describe('Adding questions to the list', () => {
   });
 
   it('Raises an error if the add fails', async () => {
-    addQuestion.mockRejectedValue("some error");
+    addQuestion.mockRejectedValue('some error');
     const component = shallow(<QuestionsPage requestid="999" />);
-      component.find('AddQuestionForm').prop('handleAddingQuestion')(
-        'some question',
-      );
+    component.find('AddQuestionForm').prop('handleAddingQuestion')(
+      'some question',
+    );
     return new Promise(resolve => setImmediate(resolve)).then(() => {
       expect(toast.error.mock.calls.length).toEqual(1);
-      expect(toast.error.mock.calls[0][0]).toEqual("Failed to save question. Check your internet connection");
+      expect(toast.error.mock.calls[0][0]).toEqual(
+        'Failed to save question. Check your internet connection',
+      );
     });
   });
+
+  it('deletes questions from the list', async () => {
+    removeQuestion.mockResolvedValue({id: 1234});
+    let component = null;
+    await act(async () => {
+      component = mount(<QuestionsPage requestid="999" />);
+    });
+    component.update();
+    await act(async () => {
+      component.find('QuestionsList').prop('handleDelete')(1234);
+    });
+    component.update();
+    expect(removeQuestion.mock.calls.length).toEqual(1);
+    expect(removeQuestion.mock.calls[0][0]).toEqual({
+      id: 1234,
+    });
+    expect(component.find('QuestionsList').prop('questionList')).toEqual([
+      {id: 4321, question: 'This is another question'},
+    ]);
+  });
+
+  it('Raises an error if the delete fails', async () => {
+    removeQuestion.mockRejectedValue('some error');
+    const component = shallow(<QuestionsPage requestid="999" />);
+    component.find('QuestionsList').prop('handleDelete')( 1234);
+    return new Promise(resolve => setImmediate(resolve)).then(() => {
+      expect(toast.error.mock.calls.length).toEqual(1);
+      expect(toast.error.mock.calls[0][0]).toEqual(
+        'Failed to delete question. Check your internet connection',
+      );
+    });
+  });
+
 });

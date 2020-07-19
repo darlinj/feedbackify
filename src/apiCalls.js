@@ -26,4 +26,7 @@ const getQuestions = () => {
   });
 };
 
-export {addQuestion, getQuestions};
+const removeQuestion = (id) => {
+}
+
+export {addQuestion, getQuestions, removeQuestion};
