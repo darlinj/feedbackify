@@ -1,5 +1,5 @@
 import React from 'react';
-import {getQuestions, addQuestion} from './apiCalls';
+import {getQuestions, addQuestion, removeQuestion} from './apiCalls';
 import {API, graphqlOperation} from 'aws-amplify';
 import {listQuestions} from './graphql/queries';
 import {createQuestion} from './graphql/mutations';
@@ -70,4 +70,25 @@ describe('api calls', () => {
     expect.assertions(1);
     return addQuestion().catch((errorMessage) => { expect(errorMessage).toEqual({error: "some error"}) });
   });
+
+  it('deletes a question', async () => {
+    const deleteQuestion = 1234
+    API.graphql.mockResolvedValue({data: {deleteQuestion: deleteQuestion  }});
+    graphqlOperation.mockReturnValue('the delete question mutation');
+    const deletedID = await removeQuestion(1234);
+    expect(graphqlOperation.mock.calls.length).toEqual(1);
+    expect(graphqlOperation.mock.calls[0][0]).toContain("DeleteQuestion");
+    expect(graphqlOperation.mock.calls[0][1]).toEqual({input: deleteQuestion});
+    expect(API.graphql.mock.calls.length).toEqual(1);
+    expect(API.graphql.mock.calls[0][0]).toEqual("the delete question mutation");
+    expect(deletedID).toEqual(1234)
+  });
+
+  it('delete propogates the errors', async () => {
+    API.graphql.mockRejectedValue("some delete error");
+    graphqlOperation.mockReturnValue('the delete question mutation');
+    expect.assertions(1);
+    return removeQuestion().catch((errorMessage) => { expect(errorMessage).toEqual({error: "some delete error"}) });
+  });
+
 });

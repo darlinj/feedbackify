@@ -1,14 +1,12 @@
 import React from 'react';
-import {
-  ListGroup,
-  Jumbotron,
-} from 'react-bootstrap';
+import {ListGroup, Jumbotron} from 'react-bootstrap';
 import {FaMinusSquare} from 'react-icons/fa';
 
-const QuestionsList = (params) => {
-  const handleDelete = (id,event) => {
+const QuestionsList = params => {
+  const handleDelete = (id, event) => {
+    event.preventDefault();
     params.handleDelete(id);
-  }
+  };
 
   const showQuestionList = () => {
     const questionList = params.questionList || [];
@@ -26,8 +24,9 @@ const QuestionsList = (params) => {
                 {questionObject.question}{' '}
                 <button
                   className="btn"
-                  onClick={(e) => handleDelete(questionObject.id, e)}
+                  onClick={e => handleDelete(questionObject.id, e)}
                   value={questionObject.id}
+                  cy-data="delete-question"
                   style={{float: 'right'}}>
                   <FaMinusSquare style={{color: 'red'}} />
                 </button>{' '}

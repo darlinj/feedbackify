@@ -1,5 +1,5 @@
 import {API, graphqlOperation} from 'aws-amplify';
-import {createQuestion} from './graphql/mutations';
+import {createQuestion, deleteQuestion} from './graphql/mutations';
 import {listQuestions} from './graphql/queries';
 
 const addQuestion = newQuestion => {
@@ -27,6 +27,15 @@ const getQuestions = () => {
 };
 
 const removeQuestion = (id) => {
+  return new Promise((resolve, reject) => {
+    API.graphql(graphqlOperation(deleteQuestion, {input: id}))
+      .then(result => {
+        resolve(result.data.deleteQuestion);
+      })
+      .catch(e => {
+        reject({error: e});
+      });
+  });
 }
 
 export {addQuestion, getQuestions, removeQuestion};

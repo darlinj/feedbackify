@@ -11,6 +11,7 @@ const AddQuestionForm = params => {
   const handleSubmit = (event) => {
     event.preventDefault();
     params.handleAddingQuestion(newQuestion);
+    setNewQuestion('');
   }
 
   return (
