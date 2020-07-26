@@ -19,7 +19,6 @@ describe('sign up functionality', () => {
     cy.get('div[cy-data="page-body"]')
         .should('contain.text', 'Please check your email and confirm your account')
   })
-
 })
 
 const uuidv4 = () => {

@@ -1,21 +1,21 @@
 import faker from 'faker';
 
-describe('request feedback', async () => {
+describe('feedback requests', async () => {
   beforeEach(() => {
     cy.login();
-    cy.deleteAllQuestions()
-    cy.visit('/questions');
+    cy.deleteAllFeedbackRequests()
+    cy.visit('/');
   });
 
-  it('adds questions to the list', () => {
-    const question1 = faker.lorem.words(10);
-    const question2 = faker.lorem.words(10);
-    cy.get('input[cy-data="feedback-question"]').type(question1);
-    cy.get('button[cy-data="add-question"]').click();
-    cy.get('input[cy-data="feedback-question"]').type(question2);
-    cy.get('button[cy-data="add-question"]').click();
-    cy.get('div[cy-data="question-list"]').should('contain.text', question1);
-    cy.get('div[cy-data="question-list"]').should('contain.text', question2);
+  it.only('adds feedback requests to the list', () => {
+    const feedbackRequest1 = faker.lorem.words(10);
+    const feedbackRequest2 = faker.lorem.words(10);
+    cy.get('input[cy-data="feedback-request"]').type(feedbackRequest1);
+    cy.get('button[cy-data="add-feedback-request"]').click();
+    cy.get('input[cy-data="feedback-request"]').type(feedbackRequest2);
+    cy.get('button[cy-data="add-feedback-request"]').click();
+    cy.get('div[cy-data="feedback-request-list"]').should('contain.text', feedbackRequest1);
+    cy.get('div[cy-data="feedback-request-list"]').should('contain.text', feedbackRequest2);
   });
 
   it('removes questions from the list', () => {

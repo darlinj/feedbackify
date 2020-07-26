@@ -1,4 +1,4 @@
-import {getQuestions, removeQuestion} from '../../src/apiCalls';
+import {getQuestions, removeQuestion, getFeedbackRequests, removeFeedbackRequest} from '../../src/apiCalls';
 //import Auth from '../../src/authentication'
 import Amplify, {Auth} from 'aws-amplify';
 import aws_exports from '../../src/aws-exports.js';
@@ -31,6 +31,14 @@ Cypress.Commands.add('deleteAllQuestions', () => {
     questions.forEach((question) => {
       console.log(question, question.id)
       removeQuestion({id: question.id})
+    });
+  })
+});
+
+Cypress.Commands.add('deleteAllFeedbackRequests', () => {
+  return getFeedbackRequests().then((feedbackRequests) => {
+    feedbackRequests.forEach((feedbackRequest) => {
+      removeFeedbackRequest({id: feedbackRequest.id})
     });
   })
 });
