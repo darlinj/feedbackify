@@ -1,5 +1,5 @@
 import React from 'react';
-import WelcomePage from './WelcomePage';
+import FeedbackRequestsPage from './FeedbackRequestsPage';
 import LoginForm from './LoginForm';
 import LoadingPage from './LoadingPage';
 
@@ -8,10 +8,7 @@ const PageBody = props => {
     return (
       <>
         {props.currentUser ? (
-          <WelcomePage
-            currentUser={props.currentUser}
-            setCurrentUser={props.setCurrentUser}
-          />
+          <FeedbackRequestsPage />
         ) : (
           <LoginForm setCurrentUser={props.setCurrentUser} />
         )}
