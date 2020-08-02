@@ -1,8 +1,8 @@
 import React from 'react';
-import PageBody from './PageBody';
 import QuestionsPage from './QuestionsPage';
 import Signup from './Signup';
 import LoginForm from './LoginForm';
+import WelcomePage from './WelcomePage';
 import {Switch, Route} from 'react-router-dom';
 
 const Routes = (params) => {
@@ -14,11 +14,11 @@ const Routes = (params) => {
       <Route path="/signup">
         <Signup {...params} />
       </Route>
-      <Route path="/request/:id">
+      <ProtectedRoute path="/request/:id">
         <QuestionsPage {...params} />
       </Route>
       <Route path="/">
-        <PageBody {...params} />
+        <WelcomePage {...params} />
       </Route>
     </Switch>
   );

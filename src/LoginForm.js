@@ -1,15 +1,18 @@
 import React, {useState} from 'react';
 import {FormGroup, Button, FormControl, FormLabel} from 'react-bootstrap';
 import {login} from './authentication';
+import {useHistory} from 'react-router-dom'
 
 const LoginForm = props => {
   const [credentials, setCredentials] = useState({email: '', password: ''});
+  const history = useHistory();
 
   const handleLogin = event => {
     event.preventDefault();
     login(credentials.email, credentials.password).then(currentUser => {
       if (typeof props.setCurrentUser === 'function') {
         props.setCurrentUser(currentUser);
+        history.replace('foobae')
       }
     });
   };

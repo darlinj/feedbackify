@@ -6,8 +6,6 @@ import {Link} from 'react-router-dom';
 const Navigator = props => {
   const handleLogout = async event => {
       await logout();
-      //setAuthenticated(false);
-  //    props.history.push('/login');
   };
 
   return (
@@ -18,7 +16,7 @@ const Navigator = props => {
         <Nav className="mr-auto"></Nav>
         <Nav>
           {props.currentUser ? (
-            <a className="login-action" cy-data="login-action" onClick={handleLogout} href="">
+            <a className="login-action" cy-data="login-action" onClick={handleLogout} href="/">
               log out
             </a>
           ) : (
@@ -26,7 +24,7 @@ const Navigator = props => {
             <Link className="signup-action" cy-data="signup-action" style={{marginRight: "10px"}} to="/signup">
               signup
             </Link> {' | '}
-            <Link className="login-action" cy-data="login-action" style={{marginLeft: "10px"}} to="/">
+            <Link className="login-action" cy-data="login-action" style={{marginLeft: "10px"}} to="/login">
               login
             </Link>
             </>

@@ -1,10 +1,23 @@
 import React from 'react';
-import QuestionsPage from "./QuestionsPage"
+import FeedbackRequestsPage from "./FeedbackRequestsPage"
 
 const WelcomePage = props => {
+  const loggedInPage = () => {
+    return <FeedbackRequestsPage {...props} />
+  }
+
+  const loggedOutPage = () => {
+    return (
+      <>
+      <h1>Welcome to Feedbackify</h1>
+      Please log in
+      </>
+    )
+  }
+
   return (
     <>
-      <QuestionsPage requestid={999}/>
+      { props.currentUser ? loggedInPage() : loggedOutPage() }
     </>
   );
 };
