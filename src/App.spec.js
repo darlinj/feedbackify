@@ -1,13 +1,10 @@
 import React from 'react';
-import Adapter from 'enzyme-adapter-react-16';
-import {mount, shallow, configure} from 'enzyme';
+import {mount, shallow} from 'enzyme';
 import App from './App';
 import Routes from './Routes';
 import Navigator from './Navigator';
 import {getCurrentUser} from './authentication'
 import {act} from 'react-dom/test-utils'
-
-configure({adapter: new Adapter()});
 
 jest.mock('./authentication');
 

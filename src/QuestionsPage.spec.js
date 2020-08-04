@@ -1,6 +1,5 @@
 import React from 'react';
-import {mount, shallow, configure} from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import {mount, shallow} from 'enzyme';
 import {act} from 'react-dom/test-utils';
 import QuestionsPage from './QuestionsPage';
 import {API, graphqlOperation} from 'aws-amplify';
@@ -10,8 +9,6 @@ import {toast} from 'react-toastify';
 
 jest.mock('./apiCalls');
 jest.mock('react-toastify');
-
-configure({adapter: new Adapter()});
 
 describe('Adding questions to the list', () => {
   beforeEach(() => {

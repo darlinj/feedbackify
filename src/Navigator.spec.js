@@ -1,14 +1,11 @@
 import React from 'react';
-import Adapter from 'enzyme-adapter-react-16';
-import {mount, configure} from 'enzyme';
+import {mount} from 'enzyme';
 import {MemoryRouter} from 'react-router-dom';
 import Navigator from './Navigator';
 import {Nav, Navbar} from 'react-bootstrap';
 import {logout} from './authentication';
 
 jest.mock('./authentication');
-
-configure({adapter: new Adapter()});
 
 describe('Navbar', () => {
   beforeEach(() => {

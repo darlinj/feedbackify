@@ -1,12 +1,9 @@
 import React from 'react';
-import Adapter from 'enzyme-adapter-react-16';
-import {mount, configure} from 'enzyme';
+import {mount} from 'enzyme';
 import {MemoryRouter} from 'react-router';
 import {Route} from 'react-router-dom';
 import LoginForm from './LoginForm';
 import ProtectedRoute from './ProtectedRoute';
-
-configure({adapter: new Adapter()});
 
 const ProtectedPage = () => {
   return <div>Protected Page</div>

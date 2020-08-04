@@ -1,12 +1,9 @@
 import React from 'react';
-import Adapter from 'enzyme-adapter-react-16';
-import {shallow, configure} from 'enzyme';
+import {shallow} from 'enzyme';
 import PageBody from './PageBody';
 import LoginForm from './LoginForm';
 import FeedbackRequestsPage from './FeedbackRequestsPage';
 import LoadingPage from './LoadingPage';
-
-configure({adapter: new Adapter()});
 
 describe('Renders the main body', () => {
   it('with the login form if the user is not logged in', () => {

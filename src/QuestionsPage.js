@@ -27,7 +27,6 @@ const QuestionsPage = props => {
         setQuestionList([...questionList, result]);
       })
       .catch(e => {
-        console.log(e);
         toast.error(`Failed to save question. Check your internet connection`);
       });
   };
@@ -38,7 +37,6 @@ const QuestionsPage = props => {
         setQuestionList(questionList.filter(q => q.id !== id));
       })
       .catch(e => {
-        console.log(e);
         toast.error(`Failed to delete question. Check your internet connection`);
       });
   };

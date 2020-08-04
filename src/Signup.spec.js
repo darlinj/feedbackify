@@ -1,13 +1,10 @@
 import React from 'react';
-import {shallow, configure} from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import {shallow} from 'enzyme';
 import Signup from './Signup';
 import {signup} from './authentication';
 import {act} from 'react-dom/test-utils';
 
 jest.mock('./authentication');
-
-configure({adapter: new Adapter()});
 
 describe('The signup component', () => {
   beforeEach(() => {
