@@ -4,7 +4,7 @@ import {mount, shallow, configure} from 'enzyme';
 import {MemoryRouter} from 'react-router';
 import Routes from './Routes';
 import LoginForm from './LoginForm';
-import WelcomePage from './WelcomePage';
+import HomePage from './HomePage';
 import QuestionsPage from './QuestionsPage';
 import FeedbackRequestsPage from './FeedbackRequestsPage';
 
@@ -26,7 +26,7 @@ describe('routing', () => {
         <Routes />
       </MemoryRouter>,
     );
-    expect(wrapper.find(WelcomePage)).toHaveLength(1);
+    expect(wrapper.find(HomePage)).toHaveLength(1);
   })
 
   it('shows the login form when not logged in and trying to access a protected page', () => {

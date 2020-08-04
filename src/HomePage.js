@@ -1,7 +1,7 @@
 import React from 'react';
 import FeedbackRequestsPage from "./FeedbackRequestsPage"
 
-const WelcomePage = props => {
+const HomePage = props => {
   const loggedInPage = () => {
     return <FeedbackRequestsPage {...props} />
   }
@@ -21,4 +21,4 @@ const WelcomePage = props => {
     </>
   );
 };
-export default WelcomePage;
+export default HomePage;
