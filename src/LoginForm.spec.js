@@ -12,7 +12,7 @@ const mockHistoryPush = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useHistory: () => ({
-    replace: mockHistoryPush,
+    push: mockHistoryPush,
   }),
 }));
 
@@ -68,7 +68,7 @@ describe('The login component', () => {
         .simulate('change', {target: {name: 'password', value: 'B3dr0ck'}});
       component.find('form').simulate('submit', {preventDefault: () => {}});
     });
-    expect(useHistory().replace.mock.calls.length).toEqual(1);
-    expect(useHistory().replace.mock.calls[0][0]).toEqual('somehting');
+    expect(useHistory().push.mock.calls.length).toEqual(1);
+    expect(useHistory().push.mock.calls[0][0]).toEqual('/');
   });
 });

@@ -12,7 +12,7 @@ const LoginForm = props => {
     login(credentials.email, credentials.password).then(currentUser => {
       if (typeof props.setCurrentUser === 'function') {
         props.setCurrentUser(currentUser);
-        history.replace('foobae')
+        history.push('/')
       }
     });
   };

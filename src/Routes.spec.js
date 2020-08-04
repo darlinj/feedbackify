@@ -41,7 +41,7 @@ describe('routing', () => {
   it('shows the page to edit the request when the path is /request/123', () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={['/request/123']}>
-        <Routes />
+        <Routes currentUser={{some: "user"}}/>
       </MemoryRouter>,
     );
     expect(wrapper.find(QuestionsPage)).toHaveLength(1);
