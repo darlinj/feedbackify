@@ -7,7 +7,7 @@ describe('feedback requests', async () => {
     cy.visit('/');
   });
 
-  it.skip('adds feedback requests to the list', () => {
+  it('adds feedback requests to the list', () => {
     const feedbackRequest1 = faker.lorem.words(10);
     const feedbackRequest2 = faker.lorem.words(10);
     cy.get('input[cy-data="feedback-request"]').type(feedbackRequest1);

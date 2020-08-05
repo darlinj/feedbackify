@@ -2,6 +2,9 @@ import {API, graphqlOperation} from 'aws-amplify';
 import {createQuestion, deleteQuestion, deleteFeedbackRequest} from './graphql/mutations';
 import {listQuestions, listFeedbackRequests} from './graphql/queries';
 
+const getRequests = () => {
+}
+
 const addQuestion = newQuestion => {
   return new Promise((resolve, reject) => {
     API.graphql(graphqlOperation(createQuestion, {input: newQuestion}))
@@ -61,4 +64,4 @@ const removeFeedbackRequest = (id) => {
       });
   });
 }
-export {addQuestion, getFeedbackRequests, getQuestions, removeQuestion, removeFeedbackRequest};
+export {getRequests, addQuestion, getFeedbackRequests, getQuestions, removeQuestion, removeFeedbackRequest};
