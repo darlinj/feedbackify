@@ -18,8 +18,9 @@ const QuestionsPage = props => {
   }, []);
 
   const handleAddingQuestion = async newQuestion => {
+    console.log(props);
     const question = {
-      requestid: props.requestid,
+      requestid: props.match.params.id,
       question: newQuestion,
     };
     addQuestion(question)

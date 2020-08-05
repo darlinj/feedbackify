@@ -4,7 +4,7 @@ describe('manage questions', async () => {
   beforeEach(() => {
     cy.login();
     cy.deleteAllQuestions()
-    cy.visit('/questions');
+    cy.visit('/request/123');
   });
 
   it('adds questions to the list', () => {
