@@ -61,7 +61,7 @@ describe('Adding questions to the list', () => {
 
   it('Adds questions to the question list', async () => {
     addQuestion.mockResolvedValue({id: 9999, question: 'This is a question'});
-    const component = shallow(<QuestionsPage requestid="999" />);
+    const component = shallow(<QuestionsPage match={{params: { id: "999" }}} />);
     await act(async () => {
       component.find('AddQuestionForm').prop('handleAddingQuestion')(
         'some question',
@@ -76,7 +76,7 @@ describe('Adding questions to the list', () => {
 
   it('Raises an error if the add fails', async () => {
     addQuestion.mockRejectedValue('some error');
-    const component = shallow(<QuestionsPage requestid="999" />);
+    const component = shallow(<QuestionsPage match={{params: { id: "999" }}}  />);
     component.find('AddQuestionForm').prop('handleAddingQuestion')(
       'some question',
     );
@@ -92,7 +92,7 @@ describe('Adding questions to the list', () => {
     removeQuestion.mockResolvedValue({id: 1234});
     let component = null;
     await act(async () => {
-      component = mount(<QuestionsPage requestid="999" />);
+      component = mount(<QuestionsPage match={{params: { id: "999" }}}  />);
     });
     component.update();
     await act(async () => {
@@ -110,7 +110,7 @@ describe('Adding questions to the list', () => {
 
   it('Raises an error if the delete fails', async () => {
     removeQuestion.mockRejectedValue('some error');
-    const component = shallow(<QuestionsPage requestid="999" />);
+    const component = shallow(<QuestionsPage match={{params: {id: "999" }}} />);
     component.find('QuestionsList').prop('handleDelete')( 1234);
     return new Promise(resolve => setImmediate(resolve)).then(() => {
       expect(toast.error.mock.calls.length).toEqual(1);
