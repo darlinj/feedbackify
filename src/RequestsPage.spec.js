@@ -4,7 +4,6 @@ import {act} from 'react-dom/test-utils';
 import RequestsPage from './RequestsPage';
 import {API, graphqlOperation} from 'aws-amplify';
 import {addRequest, getRequests, removeRequest} from './apiCalls';
-import RequestsList from './RequestsList';
 import {toast} from 'react-toastify';
 
 jest.mock('./apiCalls');

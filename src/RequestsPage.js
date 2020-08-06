@@ -1,10 +1,11 @@
 import React from 'react';
-import AddRequestsForm from './AddRequestsForm'
+import AddRequestForm from './AddRequestForm'
+import RequestsList from './RequestsList'
 
 const RequestsPage = params => {
   return (
     <>
-      <AddRequestsForm {...params} />
+      <AddRequestForm {...params} />
       <RequestsList {...params} />
     </>
   );

@@ -5,6 +5,12 @@ import {listQuestions, listFeedbackRequests} from './graphql/queries';
 const getRequests = () => {
 }
 
+const addRequest = () => {
+}
+
+const removeRequest = () => {
+}
+
 const addQuestion = newQuestion => {
   return new Promise((resolve, reject) => {
     API.graphql(graphqlOperation(createQuestion, {input: newQuestion}))
@@ -64,4 +70,4 @@ const removeFeedbackRequest = (id) => {
       });
   });
 }
-export {getRequests, addQuestion, getFeedbackRequests, getQuestions, removeQuestion, removeFeedbackRequest};
+export {getRequests, addRequest, removeRequest, addQuestion, getFeedbackRequests, getQuestions, removeQuestion, removeFeedbackRequest};
