@@ -1,6 +1,7 @@
  type FeedbackRequest @model {
      id: ID!
      userid: String!
+     name: String
      questions: [Question] @connection(keyName: "requestlink", fields: ["id"])
  }
 
@@ -16,4 +17,3 @@
      questionid: ID!
      content: String
  }
-

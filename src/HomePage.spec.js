@@ -15,6 +15,6 @@ describe('The homepage', () => {
 
   it('Shows the feadback requests if the user is logged in', () => {
     const wrapper = shallow(<HomePage currentUser={{some: 'user'}}/>);
-    expect(wrapper.find('FeedbackRequestsPage').length).toEqual(1)
+    expect(wrapper.find('RequestsPage').length).toEqual(1)
   });
 });

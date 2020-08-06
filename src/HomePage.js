@@ -1,10 +1,10 @@
 import React from 'react';
-import FeedbackRequestsPage from './FeedbackRequestsPage';
+import RequestsPage from './RequestsPage';
 import LoginForm from './LoginForm';
 
 const HomePage = props => {
   const loggedInPage = () => {
-    return <FeedbackRequestsPage {...props} />;
+    return <RequestsPage {...props} />;
   };
 
   const loggedOutPage = () => {

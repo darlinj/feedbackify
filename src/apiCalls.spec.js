@@ -2,6 +2,7 @@ import React from 'react';
 import {
   getQuestions,
   getFeedbackRequests,
+  addFeedbackRequest,
   addQuestion,
   removeQuestion,
   removeFeedbackRequest,
@@ -72,6 +73,42 @@ describe('api calls', () => {
       graphqlOperation.mockReturnValue('the list feedback requests query');
       expect.assertions(1);
       return getQuestions().catch(errorMessage => {
+        expect(errorMessage).toEqual({error: 'some error'});
+      });
+    });
+  });
+
+  describe('the createFeedbackRequest operation', () => {
+    it('creates a feedback', async () => {
+      const newFeedbackRequest = {feedback: 'some feedback'};
+      const addedFeedbackRequest = {id: 1234, feedback: 'some feedback'};
+      API.graphql.mockResolvedValue({data: {createFeedbackRequest: addedFeedbackRequest}});
+      graphqlOperation.mockReturnValue('the add feedback mutation');
+      const returnedFeedbackRequest = await addFeedbackRequest(newFeedbackRequest);
+      expect(graphqlOperation.mock.calls.length).toEqual(1);
+      expect(graphqlOperation.mock.calls[0][0]).toContain('CreateFeedbackRequest');
+      expect(graphqlOperation.mock.calls[0][1]).toEqual({input: newFeedbackRequest});
+      expect(API.graphql.mock.calls.length).toEqual(1);
+      expect(API.graphql.mock.calls[0][0]).toEqual('the add feedback mutation');
+      expect(returnedFeedbackRequest).toEqual(addedFeedbackRequest);
+    });
+
+    it('resolves to the new feedback', () => {
+      const newFeedbackRequest = {feedback: 'some feedback'};
+      const addedFeedbackRequest = {id: 1234, feedback: 'some feedback'};
+      API.graphql.mockResolvedValue({data: {createFeedbackRequest: addedFeedbackRequest}});
+      graphqlOperation.mockReturnValue('the add feedback mutation');
+      expect.assertions(1);
+      return addFeedbackRequest().then(newQ => {
+        expect(newQ).toEqual(addedFeedbackRequest);
+      });
+    });
+
+    it('propogates the errors', async () => {
+      API.graphql.mockRejectedValue('some error');
+      graphqlOperation.mockReturnValue('the add feedback mutation');
+      expect.assertions(1);
+      return addFeedbackRequest().catch(errorMessage => {
         expect(errorMessage).toEqual({error: 'some error'});
       });
     });

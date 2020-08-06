@@ -5,7 +5,7 @@ import Routes from './Routes';
 import LoginForm from './LoginForm';
 import HomePage from './HomePage';
 import QuestionsPage from './QuestionsPage';
-import FeedbackRequestsPage from './FeedbackRequestsPage';
+import RequestsPage from './RequestsPage';
 
 describe('routing', () => {
   it('shows the page to manage requests when the path is / and the user is logged in', () => {
@@ -14,7 +14,7 @@ describe('routing', () => {
         <Routes currentUser={{some: "user"}} />
       </MemoryRouter>,
     );
-    expect(wrapper.find(FeedbackRequestsPage)).toHaveLength(1);
+    expect(wrapper.find(RequestsPage)).toHaveLength(1);
   });
 
   it('shows the welcome page if the use is not logged in', () => {
