@@ -11,9 +11,9 @@ describe('feedback requests', async () => {
     const feedbackRequest1 = faker.lorem.words(10);
     const feedbackRequest2 = faker.lorem.words(10);
     cy.get('input[cy-data="feedback-request"]').type(feedbackRequest1);
-    cy.get('button[cy-data="add-feedback-request"]').click();
+    cy.get('button[cy-data="add-request"]').click();
     cy.get('input[cy-data="feedback-request"]').type(feedbackRequest2);
-    cy.get('button[cy-data="add-feedback-request"]').click();
+    cy.get('button[cy-data="add-request"]').click();
     cy.get('div[cy-data="request-list"]').should('contain.text', feedbackRequest1);
     cy.get('div[cy-data="request-list"]').should('contain.text', feedbackRequest2);
   });
@@ -22,9 +22,9 @@ describe('feedback requests', async () => {
     const deleteQuestion = faker.lorem.words(10);
     const keepQuestion = faker.lorem.words(10);
     cy.get('input[cy-data="feedback-request"]').type(deleteQuestion);
-    cy.get('button[cy-data="add-feedback-request"]').click();
+    cy.get('button[cy-data="add-request"]').click();
     cy.get('input[cy-data="feedback-request"]').type(keepQuestion);
-    cy.get('button[cy-data="add-feedback-request"]').click();
+    cy.get('button[cy-data="add-request"]').click();
     cy.wait(500);
     cy.get('div.list-group-item')
       .contains(deleteQuestion)
