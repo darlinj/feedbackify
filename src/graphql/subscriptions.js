@@ -6,6 +6,7 @@ export const onCreateFeedbackRequest = /* GraphQL */ `
     onCreateFeedbackRequest {
       id
       userid
+      name
       questions {
         items {
           id
@@ -22,6 +23,7 @@ export const onUpdateFeedbackRequest = /* GraphQL */ `
     onUpdateFeedbackRequest {
       id
       userid
+      name
       questions {
         items {
           id
@@ -38,6 +40,7 @@ export const onDeleteFeedbackRequest = /* GraphQL */ `
     onDeleteFeedbackRequest {
       id
       userid
+      name
       questions {
         items {
           id

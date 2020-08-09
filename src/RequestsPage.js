@@ -21,6 +21,7 @@ const RequestsPage = props => {
 
   const handleAddingRequest = (newRequest) => {
     const request = {
+      userid: 1234,
       name: newRequest,
     };
     addFeedbackRequest(request)

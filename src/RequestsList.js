@@ -21,7 +21,7 @@ const RequestsList = params => {
           {requestList.map((requestObject, index) => {
             return (
               <ListGroup.Item className="request-item" key={index}>
-                {requestObject.request}{' '}
+                {requestObject.name}{' '}
                 <button
                   className="btn"
                   onClick={e => handleDelete(requestObject.id, e)}

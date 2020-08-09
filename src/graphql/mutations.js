@@ -9,6 +9,7 @@ export const createFeedbackRequest = /* GraphQL */ `
     createFeedbackRequest(input: $input, condition: $condition) {
       id
       userid
+      name
       questions {
         items {
           id
@@ -28,6 +29,7 @@ export const updateFeedbackRequest = /* GraphQL */ `
     updateFeedbackRequest(input: $input, condition: $condition) {
       id
       userid
+      name
       questions {
         items {
           id
@@ -47,6 +49,7 @@ export const deleteFeedbackRequest = /* GraphQL */ `
     deleteFeedbackRequest(input: $input, condition: $condition) {
       id
       userid
+      name
       questions {
         items {
           id

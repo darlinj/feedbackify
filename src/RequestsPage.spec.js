@@ -69,6 +69,7 @@ describe('Adding requests to the list', () => {
     expect(addFeedbackRequest.mock.calls.length).toEqual(1);
     expect(addFeedbackRequest.mock.calls[0][0]).toEqual({
       name: 'some request',
+      userid:1234,
     });
   });
 

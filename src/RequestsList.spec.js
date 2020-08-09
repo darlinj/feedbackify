@@ -6,9 +6,9 @@ import RequestsList from './RequestsList';
 describe('Shows request list', () => {
   it('Shows the request list', async () => {
     const requests = [
-      {id: 1234, request: 'this is some request'},
-      {id: 1235, request: 'this is another request'},
-      {id: 1236, request: 'this is a third request'},
+      {id: 1234, name: 'this is some request'},
+      {id: 1235, name: 'this is another request'},
+      {id: 1236, name: 'this is a third request'},
     ];
     const component = mount(<RequestsList requestList={requests} />);
     expect(component.find('div.list-group-item').length).toEqual(3);
@@ -23,9 +23,9 @@ describe('Shows request list', () => {
       foo = requestId;
     };
     const requests = [
-      {id: 1234, request: 'this is some request'},
-      {id: 999, request: 'delete this request'},
-      {id: 1236, request: 'this is a third request'},
+      {id: 1234, name: 'this is some request'},
+      {id: 999, name: 'delete this request'},
+      {id: 1236, name: 'this is a third request'},
     ];
     const component = mount(
       <RequestsList

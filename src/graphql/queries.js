@@ -6,6 +6,7 @@ export const getFeedbackRequest = /* GraphQL */ `
     getFeedbackRequest(id: $id) {
       id
       userid
+      name
       questions {
         items {
           id
@@ -31,6 +32,7 @@ export const listFeedbackRequests = /* GraphQL */ `
       items {
         id
         userid
+        name
         questions {
           nextToken
         }
