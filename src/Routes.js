@@ -1,12 +1,12 @@
-import React from 'react';
-import QuestionsPage from './QuestionsPage';
-import Signup from './Signup';
-import LoginForm from './LoginForm';
-import HomePage from './HomePage';
-import ProtectedRoute from './ProtectedRoute';
-import {Switch, Route} from 'react-router-dom';
+import React from "react";
+import QuestionsPage from "./QuestionsPage";
+import Signup from "./Signup";
+import LoginForm from "./LoginForm";
+import HomePage from "./HomePage";
+import ProtectedRoute from "./ProtectedRoute";
+import { Switch, Route } from "react-router-dom";
 
-const Routes = (params) => {
+const Routes = params => {
   return (
     <Switch>
       <Route path="/login">
@@ -15,7 +15,11 @@ const Routes = (params) => {
       <Route path="/signup">
         <Signup {...params} />
       </Route>
-      <ProtectedRoute {...params} component={QuestionsPage} path="/request/:id" />
+      <ProtectedRoute
+        {...params}
+        component={QuestionsPage}
+        path="/request/:id"
+      />
       <Route path="/">
         <HomePage {...params} />
       </Route>

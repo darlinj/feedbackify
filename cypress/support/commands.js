@@ -1,7 +1,13 @@
-import {getQuestions, removeQuestion, getFeedbackRequests, removeFeedbackRequest} from '../../src/apiCalls';
+import {
+  getQuestions,
+  removeQuestion,
+  addFeedbackRequest,
+  getFeedbackRequests,
+  removeFeedbackRequest
+} from "../../src/apiCalls";
 //import Auth from '../../src/authentication'
-import Amplify, {Auth} from 'aws-amplify';
-import aws_exports from '../../src/aws-exports.js';
+import Amplify, { Auth } from "aws-amplify";
+import aws_exports from "../../src/aws-exports.js";
 Amplify.configure(aws_exports);
 // ***********************************************
 // This example commands.js shows you how to
@@ -15,32 +21,46 @@ Amplify.configure(aws_exports);
 //
 //
 // -- This is a parent command --
-Cypress.Commands.add('login', () => {
-  return Auth.signIn('fred@bedrock.com', 'password')
+Cypress.Commands.add("login", () => {
+  return Auth.signIn("fred@bedrock.com", "password")
     .then(user => {
-      console.log('===> user', user);
+      console.log("===> user", user);
       let session = Auth.currentSession();
-      console.log('===> session', session);
+      console.log("===> session", session);
       cy.wait(500);
     })
-    .catch(err => console.log('===> err', err));
+    .catch(err => console.log("===> err", err));
 });
 
-Cypress.Commands.add('deleteAllQuestions', () => {
-  return getQuestions().then((questions) => {
-    questions.forEach((question) => {
-      console.log(question, question.id)
-      removeQuestion({id: question.id})
+Cypress.Commands.add("deleteAllQuestions", () => {
+  return getQuestions().then(questions => {
+    questions.forEach(question => {
+      console.log(question, question.id);
+      removeQuestion({ id: question.id });
     });
-  })
+  });
 });
 
-Cypress.Commands.add('deleteAllFeedbackRequests', () => {
-  return getFeedbackRequests().then((feedbackRequests) => {
-    feedbackRequests.forEach((feedbackRequest) => {
-      removeFeedbackRequest({id: feedbackRequest.id})
+Cypress.Commands.add("deleteAllFeedbackRequests", () => {
+  return getFeedbackRequests().then(feedbackRequests => {
+    feedbackRequests.forEach(feedbackRequest => {
+      removeFeedbackRequest({ id: feedbackRequest.id });
     });
-  })
+  });
+});
+
+Cypress.Commands.add("addFeedbackSurvey", newRequest => {
+  const request = {
+    userid: 1234,
+    name: newRequest
+  };
+  return addFeedbackRequest(request)
+    .then(result => {
+      setRequestList([...requestList, result]);
+    })
+    .catch(e => {
+      console.log(e);
+    });
 });
 //
 //

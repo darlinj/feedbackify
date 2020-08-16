@@ -1,39 +1,74 @@
-import React, {useState} from 'react';
-import {FormGroup, Button, FormControl, FormLabel} from 'react-bootstrap';
+import React, { useState } from "react";
+import {
+  FormGroup,
+  Button,
+  FormControl,
+  FormLabel,
+  Modal
+} from "react-bootstrap";
 
 const AddRequestForm = params => {
-  const [newRequest, setNewRequest] = useState('');
+  const [newRequest, setNewRequest] = useState("");
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const handleNewRequest = event => {
     setNewRequest(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
     params.handleAddingRequest(newRequest);
-    setNewRequest('');
-  }
+    setNewRequest("");
+    setShow(false);
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="requests-form">
-      <FormGroup controlId="feedback-request">
-        <FormLabel>Add request</FormLabel>
-        <FormControl
-          autoFocus
-          name="feedback-request"
-          cy-data="feedback-request"
-          value={newRequest}
-          onChange={handleNewRequest}
-        />
-      </FormGroup>
+    <>
       <Button
-        name="add-request"
-        type="submit"
-        cy-data="add-request"
-        variant="primary">
-        Add request
+        variant="primary"
+        name="add-new-request"
+        cy-data="add-new-request"
+        onClick={handleShow}
+      >
+        Add new feedback survey
       </Button>
-    </form>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <form onSubmit={handleSubmit} className="requests-form">
+          <Modal.Body>
+            <FormGroup controlId="feedback-request">
+              <FormLabel>New request title</FormLabel>
+              <FormControl
+                autoFocus
+                name="feedback-request"
+                cy-data="feedback-request"
+                value={newRequest}
+                onChange={handleNewRequest}
+              />
+            </FormGroup>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button
+              name="add-request"
+              type="submit"
+              cy-data="add-request"
+              variant="primary"
+            >
+              Add request
+            </Button>
+          </Modal.Footer>
+        </form>
+      </Modal>
+    </>
   );
 };
 
