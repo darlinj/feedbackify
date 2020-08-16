@@ -7,7 +7,7 @@ import {
   Modal
 } from "react-bootstrap";
 
-const AddRequestForm = params => {
+const AddQuestionnaireForm = params => {
   const [newRequest, setNewRequest] = useState("");
   const [show, setShow] = useState(false);
 
@@ -72,4 +72,4 @@ const AddRequestForm = params => {
   );
 };
 
-export default AddRequestForm;
+export default AddQuestionnaireForm;

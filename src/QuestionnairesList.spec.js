@@ -1,7 +1,7 @@
 import React from "react";
 import { mount, shallow } from "enzyme";
 import { act } from "react-dom/test-utils";
-import RequestsList from "./RequestsList";
+import QuestionnairesList from "./QuestionnairesList";
 import { MemoryRouter } from "react-router-dom";
 
 describe("Shows request list", () => {
@@ -13,7 +13,7 @@ describe("Shows request list", () => {
     ];
     const component = mount(
       <MemoryRouter initialEntries={["/"]}>
-        <RequestsList requestList={requests} />
+        <QuestionnairesList requestList={requests} />
       </MemoryRouter>
     );
     expect(component.find("div.list-group-item").length).toEqual(3);
@@ -41,7 +41,10 @@ describe("Shows request list", () => {
     ];
     const component = mount(
       <MemoryRouter initialEntries={["/"]}>
-        <RequestsList requestList={requests} handleDelete={handleDelete} />
+        <QuestionnairesList
+          requestList={requests}
+          handleDelete={handleDelete}
+        />
       </MemoryRouter>
     );
     component.find("button[requestid=999]").forEach(n => console.log(n.html()));

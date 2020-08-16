@@ -32,8 +32,8 @@ describe("Adding requests to the list", () => {
 
   it("Presents the form", () => {
     const component = shallow(<QuestionnairesPage />);
-    expect(component.find("AddRequestForm").length).toBe(1);
-    expect(component.find("RequestsList").length).toBe(1);
+    expect(component.find("AddQuestionnaireForm").length).toBe(1);
+    expect(component.find("QuestionnairesList").length).toBe(1);
   });
 
   it("Gets the Requests from the database", async () => {
@@ -47,7 +47,7 @@ describe("Adding requests to the list", () => {
     });
     component.update();
     expect(getFeedbackRequests.mock.calls.length).toEqual(1);
-    expect(component.find("RequestsList").prop("requestList")).toEqual([
+    expect(component.find("QuestionnairesList").prop("requestList")).toEqual([
       { id: 1234, request: "This is a request" },
       { id: 4321, request: "This is another request" }
     ]);
@@ -74,7 +74,7 @@ describe("Adding requests to the list", () => {
     });
     const component = shallow(<QuestionnairesPage />);
     await act(async () => {
-      component.find("AddRequestForm").prop("handleAddingRequest")(
+      component.find("AddQuestionnaireForm").prop("handleAddingRequest")(
         "some request"
       );
     });
@@ -90,7 +90,7 @@ describe("Adding requests to the list", () => {
     const component = shallow(
       <QuestionnairesPage match={{ params: { id: "999" } }} />
     );
-    component.find("AddRequestForm").prop("handleAddingRequest")(
+    component.find("AddQuestionnaireForm").prop("handleAddingRequest")(
       "some request"
     );
     return new Promise(resolve => setImmediate(resolve)).then(() => {
@@ -113,14 +113,14 @@ describe("Adding requests to the list", () => {
     });
     component.update();
     await act(async () => {
-      component.find("RequestsList").prop("handleDelete")(1234);
+      component.find("QuestionnairesList").prop("handleDelete")(1234);
     });
     component.update();
     expect(removeFeedbackRequest.mock.calls.length).toEqual(1);
     expect(removeFeedbackRequest.mock.calls[0][0]).toEqual({
       id: 1234
     });
-    expect(component.find("RequestsList").prop("requestList")).toEqual([
+    expect(component.find("QuestionnairesList").prop("requestList")).toEqual([
       { id: 4321, request: "This is another request" }
     ]);
   });
@@ -130,7 +130,7 @@ describe("Adding requests to the list", () => {
     const component = shallow(
       <QuestionnairesPage match={{ params: { id: "999" } }} />
     );
-    component.find("RequestsList").prop("handleDelete")(1234);
+    component.find("QuestionnairesList").prop("handleDelete")(1234);
     return new Promise(resolve => setImmediate(resolve)).then(() => {
       expect(toast.error.mock.calls.length).toEqual(1);
       expect(toast.error.mock.calls[0][0]).toEqual(

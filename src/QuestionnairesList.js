@@ -3,7 +3,7 @@ import { ListGroup, Jumbotron } from "react-bootstrap";
 import { FaMinusSquare } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const RequestsList = params => {
+const QuestionnairesList = params => {
   const handleDelete = (id, event) => {
     event.preventDefault();
     params.handleDelete(id);
@@ -47,4 +47,4 @@ const RequestsList = params => {
   );
 };
 
-export default RequestsList;
+export default QuestionnairesList;

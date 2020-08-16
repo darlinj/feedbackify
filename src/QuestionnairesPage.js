@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import AddRequestForm from "./AddRequestForm";
-import RequestsList from "./RequestsList";
+import AddQuestionnaireForm from "./AddQuestionnaireForm";
+import QuestionnairesList from "./QuestionnairesList";
 import {
   getFeedbackRequests,
   addFeedbackRequest,
@@ -51,12 +51,15 @@ const QuestionnairesPage = props => {
 
   return (
     <>
-      <RequestsList
+      <QuestionnairesList
         {...props}
         requestList={requestList}
         handleDelete={handleDelete}
       />
-      <AddRequestForm {...props} handleAddingRequest={handleAddingRequest} />
+      <AddQuestionnaireForm
+        {...props}
+        handleAddingRequest={handleAddingRequest}
+      />
     </>
   );
 };
