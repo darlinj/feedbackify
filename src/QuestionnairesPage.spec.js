@@ -4,9 +4,9 @@ import { act } from "react-dom/test-utils";
 import QuestionnairesPage from "./QuestionnairesPage";
 import { API, graphqlOperation } from "aws-amplify";
 import {
-  addFeedbackRequest,
-  getFeedbackRequests,
-  removeFeedbackRequest
+  addQuestionnaire,
+  getQuestionnaires,
+  removeQuestionnaire
 } from "./apiCalls";
 import { toast } from "react-toastify";
 import { MemoryRouter, Redirect } from "react-router-dom";
@@ -16,7 +16,7 @@ jest.mock("react-toastify");
 
 describe("Adding requests to the list", () => {
   beforeEach(() => {
-    getFeedbackRequests.mockResolvedValue([
+    getQuestionnaires.mockResolvedValue([
       { id: 1234, request: "This is a request" },
       { id: 4321, request: "This is another request" }
     ]);
@@ -24,9 +24,9 @@ describe("Adding requests to the list", () => {
   });
 
   afterEach(() => {
-    getFeedbackRequests.mockClear();
-    addFeedbackRequest.mockClear();
-    removeFeedbackRequest.mockClear();
+    getQuestionnaires.mockClear();
+    addQuestionnaire.mockClear();
+    removeQuestionnaire.mockClear();
     toast.error.mockClear();
   });
 
@@ -46,7 +46,7 @@ describe("Adding requests to the list", () => {
       );
     });
     component.update();
-    expect(getFeedbackRequests.mock.calls.length).toEqual(1);
+    expect(getQuestionnaires.mock.calls.length).toEqual(1);
     expect(component.find("QuestionnairesList").prop("requestList")).toEqual([
       { id: 1234, request: "This is a request" },
       { id: 4321, request: "This is another request" }
@@ -54,7 +54,7 @@ describe("Adding requests to the list", () => {
   });
 
   it("raises an error if the connection to the API fails", async () => {
-    getFeedbackRequests.mockRejectedValue("some listing error");
+    getQuestionnaires.mockRejectedValue("some listing error");
     let component = null;
     await act(async () => {
       component = mount(<QuestionnairesPage />);
@@ -68,7 +68,7 @@ describe("Adding requests to the list", () => {
   });
 
   it("Adds requests to the request list", async () => {
-    addFeedbackRequest.mockResolvedValue({
+    addQuestionnaire.mockResolvedValue({
       id: 9999,
       request: "This is a request"
     });
@@ -78,15 +78,15 @@ describe("Adding requests to the list", () => {
         "some request"
       );
     });
-    expect(addFeedbackRequest.mock.calls.length).toEqual(1);
-    expect(addFeedbackRequest.mock.calls[0][0]).toEqual({
+    expect(addQuestionnaire.mock.calls.length).toEqual(1);
+    expect(addQuestionnaire.mock.calls[0][0]).toEqual({
       name: "some request",
       userid: 1234
     });
   });
 
   it("Raises an error if the add fails", async () => {
-    addFeedbackRequest.mockRejectedValue("some error");
+    addQuestionnaire.mockRejectedValue("some error");
     const component = shallow(
       <QuestionnairesPage match={{ params: { id: "999" } }} />
     );
@@ -102,7 +102,7 @@ describe("Adding requests to the list", () => {
   });
 
   it("deletes requests from the list", async () => {
-    removeFeedbackRequest.mockResolvedValue({ id: 1234 });
+    removeQuestionnaire.mockResolvedValue({ id: 1234 });
     let component = null;
     await act(async () => {
       component = mount(
@@ -116,8 +116,8 @@ describe("Adding requests to the list", () => {
       component.find("QuestionnairesList").prop("handleDelete")(1234);
     });
     component.update();
-    expect(removeFeedbackRequest.mock.calls.length).toEqual(1);
-    expect(removeFeedbackRequest.mock.calls[0][0]).toEqual({
+    expect(removeQuestionnaire.mock.calls.length).toEqual(1);
+    expect(removeQuestionnaire.mock.calls[0][0]).toEqual({
       id: 1234
     });
     expect(component.find("QuestionnairesList").prop("requestList")).toEqual([
@@ -126,7 +126,7 @@ describe("Adding requests to the list", () => {
   });
 
   it("Raises an error if the delete fails", async () => {
-    removeFeedbackRequest.mockRejectedValue("some error");
+    removeQuestionnaire.mockRejectedValue("some error");
     const component = shallow(
       <QuestionnairesPage match={{ params: { id: "999" } }} />
     );

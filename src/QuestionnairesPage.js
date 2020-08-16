@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import AddQuestionnaireForm from "./AddQuestionnaireForm";
 import QuestionnairesList from "./QuestionnairesList";
 import {
-  getFeedbackRequests,
-  addFeedbackRequest,
-  removeFeedbackRequest
+  getQuestionnaires,
+  addQuestionnaire,
+  removeQuestionnaire
 } from "./apiCalls";
 import { toast } from "react-toastify";
 
@@ -12,7 +12,7 @@ const QuestionnairesPage = props => {
   const [requestList, setRequestList] = useState([]);
 
   useEffect(() => {
-    getFeedbackRequests()
+    getQuestionnaires()
       .then(response => {
         setRequestList(response);
       })
@@ -28,7 +28,7 @@ const QuestionnairesPage = props => {
       userid: 1234,
       name: newRequest
     };
-    addFeedbackRequest(request)
+    addQuestionnaire(request)
       .then(result => {
         setRequestList([...requestList, result]);
       })
@@ -38,7 +38,7 @@ const QuestionnairesPage = props => {
   };
 
   const handleDelete = id => {
-    removeFeedbackRequest({ id: id })
+    removeQuestionnaire({ id: id })
       .then(result => {
         setRequestList(requestList.filter(q => q.id !== id));
       })
