@@ -1,7 +1,7 @@
 import React from "react";
 import { mount, shallow } from "enzyme";
 import { act } from "react-dom/test-utils";
-import RequestsPage from "./RequestsPage";
+import QuestionnairesPage from "./QuestionnairesPage";
 import { API, graphqlOperation } from "aws-amplify";
 import {
   addFeedbackRequest,
@@ -31,7 +31,7 @@ describe("Adding requests to the list", () => {
   });
 
   it("Presents the form", () => {
-    const component = shallow(<RequestsPage />);
+    const component = shallow(<QuestionnairesPage />);
     expect(component.find("AddRequestForm").length).toBe(1);
     expect(component.find("RequestsList").length).toBe(1);
   });
@@ -41,7 +41,7 @@ describe("Adding requests to the list", () => {
     await act(async () => {
       component = mount(
         <MemoryRouter initialEntries={["/"]}>
-          <RequestsPage />
+          <QuestionnairesPage />
         </MemoryRouter>
       );
     });
@@ -57,7 +57,7 @@ describe("Adding requests to the list", () => {
     getFeedbackRequests.mockRejectedValue("some listing error");
     let component = null;
     await act(async () => {
-      component = mount(<RequestsPage />);
+      component = mount(<QuestionnairesPage />);
     });
     return new Promise(resolve => setImmediate(resolve)).then(() => {
       expect(toast.error.mock.calls.length).toEqual(1);
@@ -72,7 +72,7 @@ describe("Adding requests to the list", () => {
       id: 9999,
       request: "This is a request"
     });
-    const component = shallow(<RequestsPage />);
+    const component = shallow(<QuestionnairesPage />);
     await act(async () => {
       component.find("AddRequestForm").prop("handleAddingRequest")(
         "some request"
@@ -88,7 +88,7 @@ describe("Adding requests to the list", () => {
   it("Raises an error if the add fails", async () => {
     addFeedbackRequest.mockRejectedValue("some error");
     const component = shallow(
-      <RequestsPage match={{ params: { id: "999" } }} />
+      <QuestionnairesPage match={{ params: { id: "999" } }} />
     );
     component.find("AddRequestForm").prop("handleAddingRequest")(
       "some request"
@@ -107,7 +107,7 @@ describe("Adding requests to the list", () => {
     await act(async () => {
       component = mount(
         <MemoryRouter initialEntries={["/"]}>
-          <RequestsPage match={{ params: { id: "999" } }} />
+          <QuestionnairesPage match={{ params: { id: "999" } }} />
         </MemoryRouter>
       );
     });
@@ -128,7 +128,7 @@ describe("Adding requests to the list", () => {
   it("Raises an error if the delete fails", async () => {
     removeFeedbackRequest.mockRejectedValue("some error");
     const component = shallow(
-      <RequestsPage match={{ params: { id: "999" } }} />
+      <QuestionnairesPage match={{ params: { id: "999" } }} />
     );
     component.find("RequestsList").prop("handleDelete")(1234);
     return new Promise(resolve => setImmediate(resolve)).then(() => {

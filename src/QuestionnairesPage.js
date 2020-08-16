@@ -8,7 +8,7 @@ import {
 } from "./apiCalls";
 import { toast } from "react-toastify";
 
-const RequestsPage = props => {
+const QuestionnairesPage = props => {
   const [requestList, setRequestList] = useState([]);
 
   useEffect(() => {
@@ -61,4 +61,4 @@ const RequestsPage = props => {
   );
 };
 
-export default RequestsPage;
+export default QuestionnairesPage;
