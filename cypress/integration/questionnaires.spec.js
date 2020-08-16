@@ -8,55 +8,55 @@ describe("questionnaires", async () => {
   });
 
   it("adds questionnaires to the list", () => {
-    const feedbackRequest1 = faker.lorem.words(10);
-    const feedbackRequest2 = faker.lorem.words(10);
-    cy.get('button[cy-data="add-new-request"]').click();
-    cy.get('input[cy-data="feedback-request"]').type(feedbackRequest1);
-    cy.get('button[cy-data="add-request"]').click();
-    cy.get('button[cy-data="add-new-request"]').click();
-    cy.get('input[cy-data="feedback-request"]').type(feedbackRequest2);
-    cy.get('button[cy-data="add-request"]').click();
-    cy.get('div[cy-data="request-list"]').should(
+    const questionnaire1 = faker.lorem.words(10);
+    const questionnaire2 = faker.lorem.words(10);
+    cy.get('button[cy-data="add-new-questionnaire"]').click();
+    cy.get('input[cy-data="questionnaire"]').type(questionnaire1);
+    cy.get('button[cy-data="add-questionnaire"]').click();
+    cy.get('button[cy-data="add-new-questionnaire"]').click();
+    cy.get('input[cy-data="questionnaire"]').type(questionnaire2);
+    cy.get('button[cy-data="add-questionnaire"]').click();
+    cy.get('div[cy-data="questionnaire-list"]').should(
       "contain.text",
-      feedbackRequest1
+      questionnaire1
     );
-    cy.get('div[cy-data="request-list"]').should(
+    cy.get('div[cy-data="questionnaire-list"]').should(
       "contain.text",
-      feedbackRequest2
+      questionnaire2
     );
   });
 
   it.skip("adds a questionnaire", () => {
-    const feedbackRequest1 = faker.lorem.words(10);
-    cy.get('button[cy-data="add-new-request"]').click();
-    cy.get('input[cy-data="feedback-request"]').type(feedbackRequest1);
-    cy.get('button[cy-data="add-request"]').click();
-    cy.get('div[cy-data="request-title"]').should(
+    const questionnaire1 = faker.lorem.words(10);
+    cy.get('button[cy-data="add-new-questionnaire"]').click();
+    cy.get('input[cy-data="questionnaire"]').type(questionnaire1);
+    cy.get('button[cy-data="add-questionnaire"]').click();
+    cy.get('div[cy-data="questionnaire-title"]').should(
       "contain.text",
-      feedbackRequest1
+      questionnaire1
     );
   });
 
   it("removes feedback questionires from the list", () => {
-    const deleteThisQuestionair = faker.lorem.words(10);
-    const keepThisQuestionair = faker.lorem.words(10);
-    cy.addFeedbackSurvey(deleteThisQuestionair);
-    cy.addFeedbackSurvey(keepThisQuestionair);
+    const deleteThisQuestionnaire = faker.lorem.words(10);
+    const keepThisQuestionnaire = faker.lorem.words(10);
+    cy.addFeedbackSurvey(deleteThisQuestionnaire);
+    cy.addFeedbackSurvey(keepThisQuestionnaire);
     cy.visit("/");
     cy.wait(500);
     cy.get("a")
-      .contains(deleteThisQuestionair)
+      .contains(deleteThisQuestionnaire)
       .parent()
       .children("button")
       .click();
     cy.wait(500);
-    cy.get('div[cy-data="request-list"]').should(
+    cy.get('div[cy-data="questionnaire-list"]').should(
       "not.contain.text",
-      deleteThisQuestionair
+      deleteThisQuestionnaire
     );
-    cy.get('div[cy-data="request-list"]').should(
+    cy.get('div[cy-data="questionnaire-list"]').should(
       "contain.text",
-      keepThisQuestionair
+      keepThisQuestionnaire
     );
   });
 });

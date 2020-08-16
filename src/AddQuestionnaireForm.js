@@ -8,20 +8,20 @@ import {
 } from "react-bootstrap";
 
 const AddQuestionnaireForm = params => {
-  const [newRequest, setNewRequest] = useState("");
+  const [newQuestionnaire, setNewQuestionnaire] = useState("");
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleNewRequest = event => {
-    setNewRequest(event.target.value);
+  const handleNewQuestionnaire = event => {
+    setNewQuestionnaire(event.target.value);
   };
 
   const handleSubmit = event => {
     event.preventDefault();
-    params.handleAddingRequest(newRequest);
-    setNewRequest("");
+    params.handleAddingRequest(newQuestionnaire);
+    setNewQuestionnaire("");
     setShow(false);
   };
 
@@ -29,27 +29,27 @@ const AddQuestionnaireForm = params => {
     <>
       <Button
         variant="primary"
-        name="add-new-request"
-        cy-data="add-new-request"
+        name="add-new-questionnaire"
+        cy-data="add-new-questionnaire"
         onClick={handleShow}
       >
-        Add new feedback survey
+        Add new questionnaire
       </Button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Adding new questionnaire</Modal.Title>
         </Modal.Header>
-        <form onSubmit={handleSubmit} className="requests-form">
+        <form onSubmit={handleSubmit} className="questionnaire">
           <Modal.Body>
-            <FormGroup controlId="feedback-request">
-              <FormLabel>New request title</FormLabel>
+            <FormGroup controlId="questionnaire">
+              <FormLabel>Title</FormLabel>
               <FormControl
                 autoFocus
-                name="feedback-request"
-                cy-data="feedback-request"
-                value={newRequest}
-                onChange={handleNewRequest}
+                name="questionnaire"
+                cy-data="questionnaire"
+                value={newQuestionnaire}
+                onChange={handleNewQuestionnaire}
               />
             </FormGroup>
           </Modal.Body>
@@ -58,9 +58,9 @@ const AddQuestionnaireForm = params => {
               Close
             </Button>
             <Button
-              name="add-request"
+              name="add-questionnaire"
               type="submit"
-              cy-data="add-request"
+              cy-data="add-questionnaire"
               variant="primary"
             >
               Add request

@@ -47,7 +47,9 @@ describe("Adding requests to the list", () => {
     });
     component.update();
     expect(getQuestionnaires.mock.calls.length).toEqual(1);
-    expect(component.find("QuestionnairesList").prop("requestList")).toEqual([
+    expect(
+      component.find("QuestionnairesList").prop("questionnaireList")
+    ).toEqual([
       { id: 1234, request: "This is a request" },
       { id: 4321, request: "This is another request" }
     ]);
@@ -120,9 +122,9 @@ describe("Adding requests to the list", () => {
     expect(removeQuestionnaire.mock.calls[0][0]).toEqual({
       id: 1234
     });
-    expect(component.find("QuestionnairesList").prop("requestList")).toEqual([
-      { id: 4321, request: "This is another request" }
-    ]);
+    expect(
+      component.find("QuestionnairesList").prop("questionnaireList")
+    ).toEqual([{ id: 4321, request: "This is another request" }]);
   });
 
   it("Raises an error if the delete fails", async () => {

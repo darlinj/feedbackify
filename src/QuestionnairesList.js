@@ -9,16 +9,20 @@ const QuestionnairesList = params => {
     params.handleDelete(id);
   };
 
-  const showRequestList = () => {
-    const requestList = params.requestList || [];
-    if (requestList.length === 0) {
+  const showQuestionnaires = () => {
+    const questionnaireList = params.questionnaireList || [];
+    if (questionnaireList.length === 0) {
       return <div>No feedback surveys yet. Please add one below</div>;
     } else {
       return (
-        <ListGroup name="requests" cy-data="request-list" className="requests">
-          {requestList.map((requestObject, index) => {
+        <ListGroup
+          name="requests"
+          cy-data="questionnaire-list"
+          className="requests"
+        >
+          {questionnaireList.map((requestObject, index) => {
             return (
-              <ListGroup.Item className="request-item" key={index}>
+              <ListGroup.Item className="questionnaire-item" key={index}>
                 <Link to={`/request/${requestObject.id}`}>
                   {requestObject.name}{" "}
                 </Link>
@@ -42,7 +46,7 @@ const QuestionnairesList = params => {
   return (
     <Jumbotron>
       <h2>Feedback surveys</h2>
-      {showRequestList()}
+      {showQuestionnaires()}
     </Jumbotron>
   );
 };

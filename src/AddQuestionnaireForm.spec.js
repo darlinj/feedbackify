@@ -6,10 +6,8 @@ import AddQuestionnaireForm from "./AddQuestionnaireForm";
 describe("Adding requests to the list", () => {
   it("Presents the form", () => {
     const component = shallow(<AddQuestionnaireForm />);
-    expect(component.find('FormControl[name="feedback-request"]').length).toBe(
-      1
-    );
-    expect(component.find('Button[name="add-request"]').length).toBe(1);
+    expect(component.find('FormControl[name="questionnaire"]').length).toBe(1);
+    expect(component.find('Button[name="add-questionnaire"]').length).toBe(1);
   });
 
   it("Adds requests to the request list", async () => {
@@ -17,11 +15,11 @@ describe("Adding requests to the list", () => {
     const component = mount(
       <AddQuestionnaireForm handleAddingRequest={callback} />
     );
-    component.find('Button[name="add-new-request"]').simulate("click");
-    component.find('FormControl[name="feedback-request"]').simulate("change", {
-      target: { name: "feedback-request", value: "some request" }
+    component.find('Button[name="add-new-questionnaire"]').simulate("click");
+    component.find('FormControl[name="questionnaire"]').simulate("change", {
+      target: { name: "questionnaire", value: "some questionnaire" }
     });
     component.find("form").simulate("submit", { preventDefault: () => {} });
-    expect(callback).toHaveBeenCalledWith("some request");
+    expect(callback).toHaveBeenCalledWith("some questionnaire");
   });
 });

@@ -9,7 +9,7 @@ import {
 import { toast } from "react-toastify";
 
 const QuestionnairesPage = props => {
-  const [requestList, setRequestList] = useState([]);
+  const [questionnaireList, setRequestList] = useState([]);
 
   useEffect(() => {
     getQuestionnaires()
@@ -30,7 +30,7 @@ const QuestionnairesPage = props => {
     };
     addQuestionnaire(request)
       .then(result => {
-        setRequestList([...requestList, result]);
+        setRequestList([...questionnaireList, result]);
       })
       .catch(e => {
         toast.error(`Failed to save request. Check your internet connection`);
@@ -40,7 +40,7 @@ const QuestionnairesPage = props => {
   const handleDelete = id => {
     removeQuestionnaire({ id: id })
       .then(result => {
-        setRequestList(requestList.filter(q => q.id !== id));
+        setRequestList(questionnaireList.filter(q => q.id !== id));
       })
       .catch(e => {
         toast.error(
@@ -53,7 +53,7 @@ const QuestionnairesPage = props => {
     <>
       <QuestionnairesList
         {...props}
-        requestList={requestList}
+        questionnaireList={questionnaireList}
         handleDelete={handleDelete}
       />
       <AddQuestionnaireForm

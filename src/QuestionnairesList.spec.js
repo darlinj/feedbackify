@@ -13,7 +13,7 @@ describe("Shows request list", () => {
     ];
     const component = mount(
       <MemoryRouter initialEntries={["/"]}>
-        <QuestionnairesList requestList={requests} />
+        <QuestionnairesList questionnaireList={requests} />
       </MemoryRouter>
     );
     expect(component.find("div.list-group-item").length).toEqual(3);
@@ -42,7 +42,7 @@ describe("Shows request list", () => {
     const component = mount(
       <MemoryRouter initialEntries={["/"]}>
         <QuestionnairesList
-          requestList={requests}
+          questionnaireList={requests}
           handleDelete={handleDelete}
         />
       </MemoryRouter>
