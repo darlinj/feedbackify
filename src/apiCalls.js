@@ -1,11 +1,11 @@
 import { API, graphqlOperation } from "aws-amplify";
 import {
   createQuestion,
-  createFeedbackRequest,
+  createQuestionnaire,
   deleteQuestion,
-  deleteFeedbackRequest
+  deleteQuestionnaire
 } from "./graphql/mutations";
-import { listQuestions, listFeedbackRequests } from "./graphql/queries";
+import { listQuestions, listQuestionnaires } from "./graphql/queries";
 
 const addQuestion = newQuestion => {
   return new Promise((resolve, reject) => {
@@ -19,13 +19,13 @@ const addQuestion = newQuestion => {
   });
 };
 
-const addQuestionnaire = newFeedbackRequest => {
+const addQuestionnaire = newQuestionnaire => {
   return new Promise((resolve, reject) => {
     API.graphql(
-      graphqlOperation(createFeedbackRequest, { input: newFeedbackRequest })
+      graphqlOperation(createQuestionnaire, { input: newQuestionnaire })
     )
       .then(result => {
-        resolve(result.data.createFeedbackRequest);
+        resolve(result.data.createQuestionnaire);
       })
       .catch(e => {
         console.log(e);
@@ -48,9 +48,9 @@ const getQuestions = () => {
 
 const getQuestionnaires = () => {
   return new Promise((resolve, reject) => {
-    API.graphql(graphqlOperation(listFeedbackRequests))
+    API.graphql(graphqlOperation(listQuestionnaires))
       .then(result => {
-        resolve(result.data.listFeedbackRequests.items);
+        resolve(result.data.listQuestionnaires.items);
       })
       .catch(e => {
         reject({ error: e });
@@ -72,9 +72,9 @@ const removeQuestion = id => {
 
 const removeQuestionnaire = id => {
   return new Promise((resolve, reject) => {
-    API.graphql(graphqlOperation(deleteFeedbackRequest, { input: id }))
+    API.graphql(graphqlOperation(deleteQuestionnaire, { input: id }))
       .then(result => {
-        resolve(result.data.deleteFeedbackRequest);
+        resolve(result.data.deleteQuestionnaire);
       })
       .catch(e => {
         reject({ error: e });

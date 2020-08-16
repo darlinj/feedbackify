@@ -1,9 +1,9 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateFeedbackRequest = /* GraphQL */ `
-  subscription OnCreateFeedbackRequest {
-    onCreateFeedbackRequest {
+export const onCreateQuestionnaire = /* GraphQL */ `
+  subscription OnCreateQuestionnaire {
+    onCreateQuestionnaire {
       id
       userid
       name
@@ -18,9 +18,9 @@ export const onCreateFeedbackRequest = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateFeedbackRequest = /* GraphQL */ `
-  subscription OnUpdateFeedbackRequest {
-    onUpdateFeedbackRequest {
+export const onUpdateQuestionnaire = /* GraphQL */ `
+  subscription OnUpdateQuestionnaire {
+    onUpdateQuestionnaire {
       id
       userid
       name
@@ -35,9 +35,9 @@ export const onUpdateFeedbackRequest = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteFeedbackRequest = /* GraphQL */ `
-  subscription OnDeleteFeedbackRequest {
-    onDeleteFeedbackRequest {
+export const onDeleteQuestionnaire = /* GraphQL */ `
+  subscription OnDeleteQuestionnaire {
+    onDeleteQuestionnaire {
       id
       userid
       name

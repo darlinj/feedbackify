@@ -15,7 +15,7 @@
         "name" : "Query",
         "description" : null,
         "fields" : [ {
-          "name" : "getFeedbackRequest",
+          "name" : "getQuestionnaire",
           "description" : null,
           "args" : [ {
             "name" : "id",
@@ -33,20 +33,20 @@
           } ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "FeedbackRequest",
+            "name" : "Questionnaire",
             "ofType" : null
           },
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "listFeedbackRequests",
+          "name" : "listQuestionnaires",
           "description" : null,
           "args" : [ {
             "name" : "filter",
             "description" : null,
             "type" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelFeedbackRequestFilterInput",
+              "name" : "ModelQuestionnaireFilterInput",
               "ofType" : null
             },
             "defaultValue" : null
@@ -71,7 +71,7 @@
           } ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "ModelFeedbackRequestConnection",
+            "name" : "ModelQuestionnaireConnection",
             "ofType" : null
           },
           "isDeprecated" : false,
@@ -207,7 +207,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "OBJECT",
-        "name" : "FeedbackRequest",
+        "name" : "Questionnaire",
         "description" : null,
         "fields" : [ {
           "name" : "id",
@@ -1113,7 +1113,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "OBJECT",
-        "name" : "ModelFeedbackRequestConnection",
+        "name" : "ModelQuestionnaireConnection",
         "description" : null,
         "fields" : [ {
           "name" : "items",
@@ -1124,7 +1124,7 @@
             "name" : null,
             "ofType" : {
               "kind" : "OBJECT",
-              "name" : "FeedbackRequest",
+              "name" : "Questionnaire",
               "ofType" : null
             }
           },
@@ -1148,7 +1148,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "INPUT_OBJECT",
-        "name" : "ModelFeedbackRequestFilterInput",
+        "name" : "ModelQuestionnaireFilterInput",
         "description" : null,
         "fields" : null,
         "inputFields" : [ {
@@ -1186,7 +1186,7 @@
             "name" : null,
             "ofType" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelFeedbackRequestFilterInput",
+              "name" : "ModelQuestionnaireFilterInput",
               "ofType" : null
             }
           },
@@ -1199,7 +1199,7 @@
             "name" : null,
             "ofType" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelFeedbackRequestFilterInput",
+              "name" : "ModelQuestionnaireFilterInput",
               "ofType" : null
             }
           },
@@ -1209,7 +1209,7 @@
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
-            "name" : "ModelFeedbackRequestFilterInput",
+            "name" : "ModelQuestionnaireFilterInput",
             "ofType" : null
           },
           "defaultValue" : null
@@ -1222,7 +1222,7 @@
         "name" : "Mutation",
         "description" : null,
         "fields" : [ {
-          "name" : "createFeedbackRequest",
+          "name" : "createQuestionnaire",
           "description" : null,
           "args" : [ {
             "name" : "input",
@@ -1232,7 +1232,7 @@
               "name" : null,
               "ofType" : {
                 "kind" : "INPUT_OBJECT",
-                "name" : "CreateFeedbackRequestInput",
+                "name" : "CreateQuestionnaireInput",
                 "ofType" : null
               }
             },
@@ -1242,20 +1242,20 @@
             "description" : null,
             "type" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelFeedbackRequestConditionInput",
+              "name" : "ModelQuestionnaireConditionInput",
               "ofType" : null
             },
             "defaultValue" : null
           } ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "FeedbackRequest",
+            "name" : "Questionnaire",
             "ofType" : null
           },
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "updateFeedbackRequest",
+          "name" : "updateQuestionnaire",
           "description" : null,
           "args" : [ {
             "name" : "input",
@@ -1265,7 +1265,7 @@
               "name" : null,
               "ofType" : {
                 "kind" : "INPUT_OBJECT",
-                "name" : "UpdateFeedbackRequestInput",
+                "name" : "UpdateQuestionnaireInput",
                 "ofType" : null
               }
             },
@@ -1275,20 +1275,20 @@
             "description" : null,
             "type" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelFeedbackRequestConditionInput",
+              "name" : "ModelQuestionnaireConditionInput",
               "ofType" : null
             },
             "defaultValue" : null
           } ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "FeedbackRequest",
+            "name" : "Questionnaire",
             "ofType" : null
           },
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "deleteFeedbackRequest",
+          "name" : "deleteQuestionnaire",
           "description" : null,
           "args" : [ {
             "name" : "input",
@@ -1298,7 +1298,7 @@
               "name" : null,
               "ofType" : {
                 "kind" : "INPUT_OBJECT",
-                "name" : "DeleteFeedbackRequestInput",
+                "name" : "DeleteQuestionnaireInput",
                 "ofType" : null
               }
             },
@@ -1308,14 +1308,14 @@
             "description" : null,
             "type" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelFeedbackRequestConditionInput",
+              "name" : "ModelQuestionnaireConditionInput",
               "ofType" : null
             },
             "defaultValue" : null
           } ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "FeedbackRequest",
+            "name" : "Questionnaire",
             "ofType" : null
           },
           "isDeprecated" : false,
@@ -1525,7 +1525,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "INPUT_OBJECT",
-        "name" : "CreateFeedbackRequestInput",
+        "name" : "CreateQuestionnaireInput",
         "description" : null,
         "fields" : null,
         "inputFields" : [ {
@@ -1565,7 +1565,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "INPUT_OBJECT",
-        "name" : "ModelFeedbackRequestConditionInput",
+        "name" : "ModelQuestionnaireConditionInput",
         "description" : null,
         "fields" : null,
         "inputFields" : [ {
@@ -1594,7 +1594,7 @@
             "name" : null,
             "ofType" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelFeedbackRequestConditionInput",
+              "name" : "ModelQuestionnaireConditionInput",
               "ofType" : null
             }
           },
@@ -1607,7 +1607,7 @@
             "name" : null,
             "ofType" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelFeedbackRequestConditionInput",
+              "name" : "ModelQuestionnaireConditionInput",
               "ofType" : null
             }
           },
@@ -1617,7 +1617,7 @@
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
-            "name" : "ModelFeedbackRequestConditionInput",
+            "name" : "ModelQuestionnaireConditionInput",
             "ofType" : null
           },
           "defaultValue" : null
@@ -1627,7 +1627,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "INPUT_OBJECT",
-        "name" : "UpdateFeedbackRequestInput",
+        "name" : "UpdateQuestionnaireInput",
         "description" : null,
         "fields" : null,
         "inputFields" : [ {
@@ -1667,7 +1667,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "INPUT_OBJECT",
-        "name" : "DeleteFeedbackRequestInput",
+        "name" : "DeleteQuestionnaireInput",
         "description" : null,
         "fields" : null,
         "inputFields" : [ {
@@ -2008,34 +2008,34 @@
         "name" : "Subscription",
         "description" : null,
         "fields" : [ {
-          "name" : "onCreateFeedbackRequest",
+          "name" : "onCreateQuestionnaire",
           "description" : null,
           "args" : [ ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "FeedbackRequest",
+            "name" : "Questionnaire",
             "ofType" : null
           },
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "onUpdateFeedbackRequest",
+          "name" : "onUpdateQuestionnaire",
           "description" : null,
           "args" : [ ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "FeedbackRequest",
+            "name" : "Questionnaire",
             "ofType" : null
           },
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "onDeleteFeedbackRequest",
+          "name" : "onDeleteQuestionnaire",
           "description" : null,
           "args" : [ ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "FeedbackRequest",
+            "name" : "Questionnaire",
             "ofType" : null
           },
           "isDeprecated" : false,
@@ -3166,6 +3166,23 @@
         "onFragment" : false,
         "onField" : false
       }, {
+        "name" : "deprecated",
+        "description" : null,
+        "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
+        "args" : [ {
+          "name" : "reason",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : "\"No longer supported\""
+        } ],
+        "onOperation" : false,
+        "onFragment" : false,
+        "onField" : false
+      }, {
         "name" : "aws_cognito_user_pools",
         "description" : "Tells the service this field/object has access authorized by a Cognito User Pools token.",
         "locations" : [ "OBJECT", "FIELD_DEFINITION" ],
@@ -3232,23 +3249,6 @@
             }
           },
           "defaultValue" : null
-        } ],
-        "onOperation" : false,
-        "onFragment" : false,
-        "onField" : false
-      }, {
-        "name" : "deprecated",
-        "description" : null,
-        "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
-        "args" : [ {
-          "name" : "reason",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : "\"No longer supported\""
         } ],
         "onOperation" : false,
         "onFragment" : false,

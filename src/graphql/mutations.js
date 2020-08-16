@@ -1,12 +1,12 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createFeedbackRequest = /* GraphQL */ `
-  mutation CreateFeedbackRequest(
-    $input: CreateFeedbackRequestInput!
-    $condition: ModelFeedbackRequestConditionInput
+export const createQuestionnaire = /* GraphQL */ `
+  mutation CreateQuestionnaire(
+    $input: CreateQuestionnaireInput!
+    $condition: ModelQuestionnaireConditionInput
   ) {
-    createFeedbackRequest(input: $input, condition: $condition) {
+    createQuestionnaire(input: $input, condition: $condition) {
       id
       userid
       name
@@ -21,12 +21,12 @@ export const createFeedbackRequest = /* GraphQL */ `
     }
   }
 `;
-export const updateFeedbackRequest = /* GraphQL */ `
-  mutation UpdateFeedbackRequest(
-    $input: UpdateFeedbackRequestInput!
-    $condition: ModelFeedbackRequestConditionInput
+export const updateQuestionnaire = /* GraphQL */ `
+  mutation UpdateQuestionnaire(
+    $input: UpdateQuestionnaireInput!
+    $condition: ModelQuestionnaireConditionInput
   ) {
-    updateFeedbackRequest(input: $input, condition: $condition) {
+    updateQuestionnaire(input: $input, condition: $condition) {
       id
       userid
       name
@@ -41,12 +41,12 @@ export const updateFeedbackRequest = /* GraphQL */ `
     }
   }
 `;
-export const deleteFeedbackRequest = /* GraphQL */ `
-  mutation DeleteFeedbackRequest(
-    $input: DeleteFeedbackRequestInput!
-    $condition: ModelFeedbackRequestConditionInput
+export const deleteQuestionnaire = /* GraphQL */ `
+  mutation DeleteQuestionnaire(
+    $input: DeleteQuestionnaireInput!
+    $condition: ModelQuestionnaireConditionInput
   ) {
-    deleteFeedbackRequest(input: $input, condition: $condition) {
+    deleteQuestionnaire(input: $input, condition: $condition) {
       id
       userid
       name

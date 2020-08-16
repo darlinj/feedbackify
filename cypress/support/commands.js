@@ -1,9 +1,9 @@
 import {
   getQuestions,
   removeQuestion,
-  addFeedbackRequest,
-  getFeedbackRequests,
-  removeFeedbackRequest
+  addQuestionnaire,
+  getQuestionnaires,
+  removeQuestionnaire
 } from "../../src/apiCalls";
 //import Auth from '../../src/authentication'
 import Amplify, { Auth } from "aws-amplify";
@@ -41,10 +41,10 @@ Cypress.Commands.add("deleteAllQuestions", () => {
   });
 });
 
-Cypress.Commands.add("deleteAllFeedbackRequests", () => {
-  return getFeedbackRequests().then(feedbackRequests => {
+Cypress.Commands.add("deleteAllQuestionnaires", () => {
+  return getQuestionnaires().then(feedbackRequests => {
     feedbackRequests.forEach(feedbackRequest => {
-      removeFeedbackRequest({ id: feedbackRequest.id });
+      removeQuestionnaire({ id: feedbackRequest.id });
     });
   });
 });
@@ -54,7 +54,7 @@ Cypress.Commands.add("addFeedbackSurvey", newRequest => {
     userid: 1234,
     name: newRequest
   };
-  return addFeedbackRequest(request)
+  return addQuestionnaire(request)
     .then(result => {
       setRequestList([...requestList, result]);
     })

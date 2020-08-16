@@ -53,14 +53,12 @@ describe("api calls", () => {
         { someOther: "feedback requests as well" }
       ];
       API.graphql.mockResolvedValue({
-        data: { listFeedbackRequests: { items: feedbackRequests } }
+        data: { listQuestionnaires: { items: feedbackRequests } }
       });
       graphqlOperation.mockReturnValue("the list feedback requests query");
       const feedbackRequestList = await getQuestionnaires();
       expect(graphqlOperation.mock.calls.length).toEqual(1);
-      expect(graphqlOperation.mock.calls[0][0]).toContain(
-        "listFeedbackRequests"
-      );
+      expect(graphqlOperation.mock.calls[0][0]).toContain("listQuestionnaires");
       expect(API.graphql.mock.calls.length).toEqual(1);
       expect(API.graphql.mock.calls[0][0]).toEqual(
         "the list feedback requests query"
@@ -78,39 +76,37 @@ describe("api calls", () => {
     });
   });
 
-  describe("the createFeedbackRequest operation", () => {
+  describe("the createQuestionnaire operation", () => {
     it("creates a feedback", async () => {
-      const newFeedbackRequest = { feedback: "some feedback" };
-      const addedFeedbackRequest = { id: 1234, feedback: "some feedback" };
+      const newQuestionnaire = { feedback: "some feedback" };
+      const addedQuestionnaire = { id: 1234, feedback: "some feedback" };
       API.graphql.mockResolvedValue({
-        data: { createFeedbackRequest: addedFeedbackRequest }
+        data: { createQuestionnaire: addedQuestionnaire }
       });
       graphqlOperation.mockReturnValue("the add feedback mutation");
-      const returnedFeedbackRequest = await addQuestionnaire(
-        newFeedbackRequest
-      );
+      const returnedQuestionnaire = await addQuestionnaire(newQuestionnaire);
       expect(graphqlOperation.mock.calls.length).toEqual(1);
       expect(graphqlOperation.mock.calls[0][0]).toContain(
-        "CreateFeedbackRequest"
+        "CreateQuestionnaire"
       );
       expect(graphqlOperation.mock.calls[0][1]).toEqual({
-        input: newFeedbackRequest
+        input: newQuestionnaire
       });
       expect(API.graphql.mock.calls.length).toEqual(1);
       expect(API.graphql.mock.calls[0][0]).toEqual("the add feedback mutation");
-      expect(returnedFeedbackRequest).toEqual(addedFeedbackRequest);
+      expect(returnedQuestionnaire).toEqual(addedQuestionnaire);
     });
 
     it("resolves to the new feedback", () => {
-      const newFeedbackRequest = { feedback: "some feedback" };
-      const addedFeedbackRequest = { id: 1234, feedback: "some feedback" };
+      const newQuestionnaire = { feedback: "some feedback" };
+      const addedQuestionnaire = { id: 1234, feedback: "some feedback" };
       API.graphql.mockResolvedValue({
-        data: { createFeedbackRequest: addedFeedbackRequest }
+        data: { createQuestionnaire: addedQuestionnaire }
       });
       graphqlOperation.mockReturnValue("the add feedback mutation");
       expect.assertions(1);
       return addQuestionnaire().then(newQ => {
-        expect(newQ).toEqual(addedFeedbackRequest);
+        expect(newQ).toEqual(addedQuestionnaire);
       });
     });
 
@@ -196,24 +192,24 @@ describe("api calls", () => {
 
   describe("the removeQuestionnaire operation", () => {
     it("deletes a feedback request", async () => {
-      const deleteFeedbackRequestId = 1234;
+      const deleteQuestionnaireId = 1234;
       API.graphql.mockResolvedValue({
-        data: { deleteFeedbackRequest: deleteFeedbackRequestId }
+        data: { deleteQuestionnaire: deleteQuestionnaireId }
       });
       graphqlOperation.mockReturnValue("the delete feedback request mutation");
-      const deletedID = await removeQuestionnaire(deleteFeedbackRequestId);
+      const deletedID = await removeQuestionnaire(deleteQuestionnaireId);
       expect(graphqlOperation.mock.calls.length).toEqual(1);
       expect(graphqlOperation.mock.calls[0][0]).toContain(
-        "DeleteFeedbackRequest"
+        "DeleteQuestionnaire"
       );
       expect(graphqlOperation.mock.calls[0][1]).toEqual({
-        input: deleteFeedbackRequestId
+        input: deleteQuestionnaireId
       });
       expect(API.graphql.mock.calls.length).toEqual(1);
       expect(API.graphql.mock.calls[0][0]).toEqual(
         "the delete feedback request mutation"
       );
-      expect(deletedID).toEqual(deleteFeedbackRequestId);
+      expect(deletedID).toEqual(deleteQuestionnaireId);
     });
 
     it("delete propogates the errors", async () => {

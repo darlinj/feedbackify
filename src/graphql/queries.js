@@ -1,9 +1,9 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getFeedbackRequest = /* GraphQL */ `
-  query GetFeedbackRequest($id: ID!) {
-    getFeedbackRequest(id: $id) {
+export const getQuestionnaire = /* GraphQL */ `
+  query GetQuestionnaire($id: ID!) {
+    getQuestionnaire(id: $id) {
       id
       userid
       name
@@ -18,17 +18,13 @@ export const getFeedbackRequest = /* GraphQL */ `
     }
   }
 `;
-export const listFeedbackRequests = /* GraphQL */ `
-  query ListFeedbackRequests(
-    $filter: ModelFeedbackRequestFilterInput
+export const listQuestionnaires = /* GraphQL */ `
+  query ListQuestionnaires(
+    $filter: ModelQuestionnaireFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listFeedbackRequests(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
+    listQuestionnaires(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         userid

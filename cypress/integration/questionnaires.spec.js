@@ -1,13 +1,13 @@
 import faker from "faker";
 
-describe("feedback requests", async () => {
+describe("questionnaires", async () => {
   beforeEach(() => {
     cy.login();
-    cy.deleteAllFeedbackRequests();
+    cy.deleteAllQuestionnaires();
     cy.visit("/");
   });
 
-  it("adds feedback requests to the list", () => {
+  it("adds questionnaires to the list", () => {
     const feedbackRequest1 = faker.lorem.words(10);
     const feedbackRequest2 = faker.lorem.words(10);
     cy.get('button[cy-data="add-new-request"]').click();
@@ -26,7 +26,7 @@ describe("feedback requests", async () => {
     );
   });
 
-  it.skip("adds a feedback request", () => {
+  it.skip("adds a questionnaire", () => {
     const feedbackRequest1 = faker.lorem.words(10);
     cy.get('button[cy-data="add-new-request"]').click();
     cy.get('input[cy-data="feedback-request"]').type(feedbackRequest1);
