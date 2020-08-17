@@ -18,7 +18,7 @@ const Routes = params => {
       <ProtectedRoute
         {...params}
         component={QuestionsPage}
-        path="/request/:id"
+        path="/questionnaire/:id"
       />
       <Route path="/">
         <HomePage {...params} />

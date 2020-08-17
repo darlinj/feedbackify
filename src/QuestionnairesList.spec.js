@@ -4,21 +4,21 @@ import { act } from "react-dom/test-utils";
 import QuestionnairesList from "./QuestionnairesList";
 import { MemoryRouter } from "react-router-dom";
 
-describe("Shows request list", () => {
-  it("Shows the request list", async () => {
-    const requests = [
-      { id: 1234, name: "this is some request" },
-      { id: 1235, name: "this is another request" },
-      { id: 1236, name: "this is a third request" }
+describe("Shows questionnaire list", () => {
+  it("Shows the questionnaire list", async () => {
+    const questionnaires = [
+      { id: 1234, name: "this is some questionnaire" },
+      { id: 1235, name: "this is another questionnaire" },
+      { id: 1236, name: "this is a third questionnaire" }
     ];
     const component = mount(
       <MemoryRouter initialEntries={["/"]}>
-        <QuestionnairesList questionnaireList={requests} />
+        <QuestionnairesList questionnaireList={questionnaires} />
       </MemoryRouter>
     );
     expect(component.find("div.list-group-item").length).toEqual(3);
-    expect(component.find('ListGroup[name="requests"]').text()).toContain(
-      "this is another request"
+    expect(component.find('ListGroup[name="questionnaires"]').text()).toContain(
+      "this is another questionnaire"
     );
     expect(component.find("Link").length).toEqual(3);
     expect(
@@ -26,28 +26,30 @@ describe("Shows request list", () => {
         .find("Link")
         .first()
         .prop("to")
-    ).toEqual("/request/1234");
+    ).toEqual("/questionnaire/1234");
   });
 
   it("calls the delete function if the delete button is pressed", () => {
     let foo = 0;
-    const handleDelete = requestId => {
-      foo = requestId;
+    const handleDelete = questionnaireId => {
+      foo = questionnaireId;
     };
-    const requests = [
-      { id: 1234, name: "this is some request" },
-      { id: 999, name: "delete this request" },
-      { id: 1236, name: "this is a third request" }
+    const questionnaires = [
+      { id: 1234, name: "this is some questionnaire" },
+      { id: 999, name: "delete this questionnaire" },
+      { id: 1236, name: "this is a third questionnaire" }
     ];
     const component = mount(
       <MemoryRouter initialEntries={["/"]}>
         <QuestionnairesList
-          questionnaireList={requests}
+          questionnaireList={questionnaires}
           handleDelete={handleDelete}
         />
       </MemoryRouter>
     );
-    component.find("button[requestid=999]").forEach(n => console.log(n.html()));
+    component
+      .find("button[questionnaireid=999]")
+      .forEach(n => console.log(n.html()));
     component.find("button[value=999]").simulate("click");
     expect(foo).toEqual(999);
   });

@@ -8,7 +8,7 @@ import QuestionsPage from "./QuestionsPage";
 import QuestionnairesPage from "./QuestionnairesPage";
 
 describe("routing", () => {
-  it("shows the page to manage requests when the path is / and the user is logged in", () => {
+  it("shows the page to manage questionnaires when the path is / and the user is logged in", () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={["/"]}>
         <Routes currentUser={{ some: "user" }} />
@@ -28,16 +28,16 @@ describe("routing", () => {
 
   it("shows the login form when not logged in and trying to access a protected page", () => {
     const wrapper = mount(
-      <MemoryRouter initialEntries={["/request/123"]}>
+      <MemoryRouter initialEntries={["/questionnaire/123"]}>
         <Routes />
       </MemoryRouter>
     );
     expect(wrapper.find(LoginForm)).toHaveLength(1);
   });
 
-  it("shows the page to edit the request when the path is /request/123", () => {
+  it("shows the page to edit the questionnaire when the path is /questionnaire/123", () => {
     const wrapper = mount(
-      <MemoryRouter initialEntries={["/request/123"]}>
+      <MemoryRouter initialEntries={["/questionnaire/123"]}>
         <Routes currentUser={{ some: "user" }} />
       </MemoryRouter>
     );

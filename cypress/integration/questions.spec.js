@@ -1,24 +1,24 @@
-import faker from 'faker';
+import faker from "faker";
 
-describe('manage questions', async () => {
+describe("manage questions", async () => {
   beforeEach(() => {
     cy.login();
-    cy.deleteAllQuestions()
-    cy.visit('/request/123');
+    cy.deleteAllQuestions();
+    cy.visit("/questionnaire/123");
   });
 
-  it('adds questions to the list', () => {
+  it("adds questions to the list", () => {
     const question1 = faker.lorem.words(10);
     const question2 = faker.lorem.words(10);
     cy.get('input[cy-data="feedback-question"]').type(question1);
     cy.get('button[cy-data="add-question"]').click();
     cy.get('input[cy-data="feedback-question"]').type(question2);
     cy.get('button[cy-data="add-question"]').click();
-    cy.get('div[cy-data="question-list"]').should('contain.text', question1);
-    cy.get('div[cy-data="question-list"]').should('contain.text', question2);
+    cy.get('div[cy-data="question-list"]').should("contain.text", question1);
+    cy.get('div[cy-data="question-list"]').should("contain.text", question2);
   });
 
-  it('removes questions from the list', () => {
+  it("removes questions from the list", () => {
     const deleteQuestion = faker.lorem.words(10);
     const keepQuestion = faker.lorem.words(10);
     cy.get('input[cy-data="feedback-question"]').type(deleteQuestion);
@@ -26,15 +26,15 @@ describe('manage questions', async () => {
     cy.get('input[cy-data="feedback-question"]').type(keepQuestion);
     cy.get('button[cy-data="add-question"]').click();
     cy.wait(500);
-    cy.get('div.list-group-item')
+    cy.get("div.list-group-item")
       .contains(deleteQuestion)
-      .children('button')
+      .children("button")
       .click();
     cy.wait(500);
     cy.get('div[cy-data="question-list"]').should(
-      'not.contain.text',
-      deleteQuestion,
+      "not.contain.text",
+      deleteQuestion
     );
-    cy.get('div[cy-data="question-list"]').should('contain.text', keepQuestion);
+    cy.get('div[cy-data="question-list"]').should("contain.text", keepQuestion);
   });
 });

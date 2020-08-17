@@ -16,21 +16,21 @@ const QuestionnairesList = params => {
     } else {
       return (
         <ListGroup
-          name="requests"
+          name="questionnaires"
           cy-data="questionnaire-list"
-          className="requests"
+          className="questionnaires"
         >
-          {questionnaireList.map((requestObject, index) => {
+          {questionnaireList.map((questionnaireObject, index) => {
             return (
               <ListGroup.Item className="questionnaire-item" key={index}>
-                <Link to={`/request/${requestObject.id}`}>
-                  {requestObject.name}{" "}
+                <Link to={`/questionnaire/${questionnaireObject.id}`}>
+                  {questionnaireObject.name}{" "}
                 </Link>
                 <button
                   className="btn"
-                  onClick={e => handleDelete(requestObject.id, e)}
-                  value={requestObject.id}
-                  cy-data="delete-request"
+                  onClick={e => handleDelete(questionnaireObject.id, e)}
+                  value={questionnaireObject.id}
+                  cy-data="delete-questionnaire"
                   style={{ float: "right" }}
                 >
                   <FaMinusSquare style={{ color: "red" }} />
