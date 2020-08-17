@@ -10,7 +10,7 @@ export const getQuestionnaire = /* GraphQL */ `
       questions {
         items {
           id
-          requestid
+          questionnaireid
           question
         }
         nextToken
@@ -41,7 +41,7 @@ export const getQuestion = /* GraphQL */ `
   query GetQuestion($id: ID!) {
     getQuestion(id: $id) {
       id
-      requestid
+      questionnaireid
       question
       feedback {
         items {
@@ -63,7 +63,7 @@ export const listQuestions = /* GraphQL */ `
     listQuestions(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        requestid
+        questionnaireid
         question
         feedback {
           nextToken

@@ -13,7 +13,7 @@ export const createQuestionnaire = /* GraphQL */ `
       questions {
         items {
           id
-          requestid
+          questionnaireid
           question
         }
         nextToken
@@ -33,7 +33,7 @@ export const updateQuestionnaire = /* GraphQL */ `
       questions {
         items {
           id
-          requestid
+          questionnaireid
           question
         }
         nextToken
@@ -53,7 +53,7 @@ export const deleteQuestionnaire = /* GraphQL */ `
       questions {
         items {
           id
-          requestid
+          questionnaireid
           question
         }
         nextToken
@@ -68,7 +68,7 @@ export const createQuestion = /* GraphQL */ `
   ) {
     createQuestion(input: $input, condition: $condition) {
       id
-      requestid
+      questionnaireid
       question
       feedback {
         items {
@@ -88,7 +88,7 @@ export const updateQuestion = /* GraphQL */ `
   ) {
     updateQuestion(input: $input, condition: $condition) {
       id
-      requestid
+      questionnaireid
       question
       feedback {
         items {
@@ -108,7 +108,7 @@ export const deleteQuestion = /* GraphQL */ `
   ) {
     deleteQuestion(input: $input, condition: $condition) {
       id
-      requestid
+      questionnaireid
       question
       feedback {
         items {

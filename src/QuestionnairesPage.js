@@ -9,42 +9,44 @@ import {
 import { toast } from "react-toastify";
 
 const QuestionnairesPage = props => {
-  const [questionnaireList, setRequestList] = useState([]);
+  const [questionnaireList, setQuestionnairesList] = useState([]);
 
   useEffect(() => {
     getQuestionnaires()
       .then(response => {
-        setRequestList(response);
+        setQuestionnairesList(response);
       })
       .catch(e => {
         toast.error(
-          `Failed to get feedback requests. Check your internet connection`
+          `Failed to get feedback questionnaires. Check your internet connection`
         );
       });
   }, []);
 
-  const handleAddingRequest = newRequest => {
-    const request = {
+  const handleAddingQuestionnaire = newQuestionnaireName => {
+    const questionnaire = {
       userid: 1234,
-      name: newRequest
+      name: newQuestionnaireName
     };
-    addQuestionnaire(request)
+    addQuestionnaire(questionnaire)
       .then(result => {
-        setRequestList([...questionnaireList, result]);
+        setQuestionnairesList([...questionnaireList, result]);
       })
       .catch(e => {
-        toast.error(`Failed to save request. Check your internet connection`);
+        toast.error(
+          `Failed to save questionnaire. Check your internet connection`
+        );
       });
   };
 
   const handleDelete = id => {
     removeQuestionnaire({ id: id })
       .then(result => {
-        setRequestList(questionnaireList.filter(q => q.id !== id));
+        setQuestionnairesList(questionnaireList.filter(q => q.id !== id));
       })
       .catch(e => {
         toast.error(
-          `Failed to delete feedback request. Check your internet connection`
+          `Failed to delete feedback questionnaire. Check your internet connection`
         );
       });
   };
@@ -58,7 +60,7 @@ const QuestionnairesPage = props => {
       />
       <AddQuestionnaireForm
         {...props}
-        handleAddingRequest={handleAddingRequest}
+        handleAddingQuestionnaire={handleAddingQuestionnaire}
       />
     </>
   );

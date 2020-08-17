@@ -14,11 +14,11 @@ import { MemoryRouter, Redirect } from "react-router-dom";
 jest.mock("./apiCalls");
 jest.mock("react-toastify");
 
-describe("Adding requests to the list", () => {
+describe("Adding questionnaires to the list", () => {
   beforeEach(() => {
     getQuestionnaires.mockResolvedValue([
-      { id: 1234, request: "This is a request" },
-      { id: 4321, request: "This is another request" }
+      { id: 1234, questionnaire: "This is a questionnaire" },
+      { id: 4321, questionnaire: "This is another questionnaire" }
     ]);
     toast.error.mockImplementation(() => true);
   });
@@ -36,7 +36,7 @@ describe("Adding requests to the list", () => {
     expect(component.find("QuestionnairesList").length).toBe(1);
   });
 
-  it("Gets the Requests from the database", async () => {
+  it("Gets the questionnaires from the database", async () => {
     let component = null;
     await act(async () => {
       component = mount(
@@ -50,8 +50,8 @@ describe("Adding requests to the list", () => {
     expect(
       component.find("QuestionnairesList").prop("questionnaireList")
     ).toEqual([
-      { id: 1234, request: "This is a request" },
-      { id: 4321, request: "This is another request" }
+      { id: 1234, questionnaire: "This is a questionnaire" },
+      { id: 4321, questionnaire: "This is another questionnaire" }
     ]);
   });
 
@@ -64,25 +64,25 @@ describe("Adding requests to the list", () => {
     return new Promise(resolve => setImmediate(resolve)).then(() => {
       expect(toast.error.mock.calls.length).toEqual(1);
       expect(toast.error.mock.calls[0][0]).toEqual(
-        "Failed to get feedback requests. Check your internet connection"
+        "Failed to get feedback questionnaires. Check your internet connection"
       );
     });
   });
 
-  it("Adds requests to the request list", async () => {
+  it("Adds questionnaires to the questionnaire list", async () => {
     addQuestionnaire.mockResolvedValue({
       id: 9999,
-      request: "This is a request"
+      questionnaire: "This is a questionnaire"
     });
     const component = shallow(<QuestionnairesPage />);
     await act(async () => {
-      component.find("AddQuestionnaireForm").prop("handleAddingRequest")(
-        "some request"
+      component.find("AddQuestionnaireForm").prop("handleAddingQuestionnaire")(
+        "some questionnaire"
       );
     });
     expect(addQuestionnaire.mock.calls.length).toEqual(1);
     expect(addQuestionnaire.mock.calls[0][0]).toEqual({
-      name: "some request",
+      name: "some questionnaire",
       userid: 1234
     });
   });
@@ -92,18 +92,18 @@ describe("Adding requests to the list", () => {
     const component = shallow(
       <QuestionnairesPage match={{ params: { id: "999" } }} />
     );
-    component.find("AddQuestionnaireForm").prop("handleAddingRequest")(
-      "some request"
+    component.find("AddQuestionnaireForm").prop("handleAddingQuestionnaire")(
+      "some questionnaire"
     );
     return new Promise(resolve => setImmediate(resolve)).then(() => {
       expect(toast.error.mock.calls.length).toEqual(1);
       expect(toast.error.mock.calls[0][0]).toEqual(
-        "Failed to save request. Check your internet connection"
+        "Failed to save questionnaire. Check your internet connection"
       );
     });
   });
 
-  it("deletes requests from the list", async () => {
+  it("deletes questionnaires from the list", async () => {
     removeQuestionnaire.mockResolvedValue({ id: 1234 });
     let component = null;
     await act(async () => {
@@ -124,7 +124,7 @@ describe("Adding requests to the list", () => {
     });
     expect(
       component.find("QuestionnairesList").prop("questionnaireList")
-    ).toEqual([{ id: 4321, request: "This is another request" }]);
+    ).toEqual([{ id: 4321, questionnaire: "This is another questionnaire" }]);
   });
 
   it("Raises an error if the delete fails", async () => {
@@ -136,7 +136,7 @@ describe("Adding requests to the list", () => {
     return new Promise(resolve => setImmediate(resolve)).then(() => {
       expect(toast.error.mock.calls.length).toEqual(1);
       expect(toast.error.mock.calls[0][0]).toEqual(
-        "Failed to delete feedback request. Check your internet connection"
+        "Failed to delete feedback questionnaire. Check your internet connection"
       );
     });
   });

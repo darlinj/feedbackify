@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import QuestionsList from './QuestionsList';
-import AddQuestionForm from './AddQuestionForm';
-import {addQuestion, getQuestions, removeQuestion} from './apiCalls';
-import {toast} from 'react-toastify';
+import React, { useState, useEffect } from "react";
+import QuestionsList from "./QuestionsList";
+import AddQuestionForm from "./AddQuestionForm";
+import { addQuestion, getQuestions, removeQuestion } from "./apiCalls";
+import { toast } from "react-toastify";
 
 const QuestionsPage = props => {
   const [questionList, setQuestionList] = useState([]);
@@ -19,8 +19,8 @@ const QuestionsPage = props => {
 
   const handleAddingQuestion = async newQuestion => {
     const question = {
-      requestid: props.match.params.id,
-      question: newQuestion,
+      questionnaireid: props.match.params.id,
+      question: newQuestion
     };
     addQuestion(question)
       .then(result => {
@@ -32,12 +32,14 @@ const QuestionsPage = props => {
   };
 
   const handleDelete = id => {
-    removeQuestion({id: id})
+    removeQuestion({ id: id })
       .then(result => {
         setQuestionList(questionList.filter(q => q.id !== id));
       })
       .catch(e => {
-        toast.error(`Failed to delete question. Check your internet connection`);
+        toast.error(
+          `Failed to delete question. Check your internet connection`
+        );
       });
   };
 

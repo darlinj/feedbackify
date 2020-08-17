@@ -20,7 +20,7 @@ const AddQuestionnaireForm = params => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    params.handleAddingRequest(newQuestionnaire);
+    params.handleAddingQuestionnaire(newQuestionnaire);
     setNewQuestionnaire("");
     setShow(false);
   };
@@ -63,7 +63,7 @@ const AddQuestionnaireForm = params => {
               cy-data="add-questionnaire"
               variant="primary"
             >
-              Add request
+              Add questionnaire
             </Button>
           </Modal.Footer>
         </form>

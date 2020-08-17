@@ -10,7 +10,7 @@ export const onCreateQuestionnaire = /* GraphQL */ `
       questions {
         items {
           id
-          requestid
+          questionnaireid
           question
         }
         nextToken
@@ -27,7 +27,7 @@ export const onUpdateQuestionnaire = /* GraphQL */ `
       questions {
         items {
           id
-          requestid
+          questionnaireid
           question
         }
         nextToken
@@ -44,7 +44,7 @@ export const onDeleteQuestionnaire = /* GraphQL */ `
       questions {
         items {
           id
-          requestid
+          questionnaireid
           question
         }
         nextToken
@@ -56,7 +56,7 @@ export const onCreateQuestion = /* GraphQL */ `
   subscription OnCreateQuestion {
     onCreateQuestion {
       id
-      requestid
+      questionnaireid
       question
       feedback {
         items {
@@ -73,7 +73,7 @@ export const onUpdateQuestion = /* GraphQL */ `
   subscription OnUpdateQuestion {
     onUpdateQuestion {
       id
-      requestid
+      questionnaireid
       question
       feedback {
         items {
@@ -90,7 +90,7 @@ export const onDeleteQuestion = /* GraphQL */ `
   subscription OnDeleteQuestion {
     onDeleteQuestion {
       id
-      requestid
+      questionnaireid
       question
       feedback {
         items {
