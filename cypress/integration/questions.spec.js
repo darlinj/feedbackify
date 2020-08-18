@@ -18,6 +18,31 @@ describe("manage questions", async () => {
     cy.get('div[cy-data="question-list"]').should("contain.text", question2);
   });
 
+  it("shows the questions that are linked to that questionnaire", () => {
+    const question1 = faker.lorem.words(10);
+    const question2 = faker.lorem.words(10);
+    return cy.addQuestionnaire("Questionnaire 1").then(q => {
+      console.log("IN PROMISE", q);
+      cy.addQuestion({
+        questionnaireid: q.id,
+        question: question1
+      });
+      cy.addQuestion({
+        questionnaireid: 1234,
+        question: question2
+      });
+      cy.wait(500);
+      cy.visit(`/questionnaire/${q.id}`);
+      cy.wait(500);
+      cy.get('div[cy-data="question-list"]').should("contain.text", question1);
+      cy.get('div[cy-data="question-list"]').should(
+        "contain.not.text",
+        question2
+      );
+    });
+    //cy.addQuestionnaire("Questionnaire 2");
+  });
+
   it("removes questions from the list", () => {
     const deleteQuestion = faker.lorem.words(10);
     const keepQuestion = faker.lorem.words(10);

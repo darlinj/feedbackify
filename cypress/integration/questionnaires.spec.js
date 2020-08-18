@@ -40,8 +40,8 @@ describe("questionnaires", async () => {
   it("removes feedback questionires from the list", () => {
     const deleteThisQuestionnaire = faker.lorem.words(10);
     const keepThisQuestionnaire = faker.lorem.words(10);
-    cy.addFeedbackSurvey(deleteThisQuestionnaire);
-    cy.addFeedbackSurvey(keepThisQuestionnaire);
+    cy.addQuestionnaire(deleteThisQuestionnaire);
+    cy.addQuestionnaire(keepThisQuestionnaire);
     cy.visit("/");
     cy.wait(500);
     cy.get("a")

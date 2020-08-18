@@ -1,6 +1,7 @@
 import {
   getQuestions,
   removeQuestion,
+  addQuestion,
   addQuestionnaire,
   getQuestionnaires,
   removeQuestionnaire
@@ -49,14 +50,28 @@ Cypress.Commands.add("deleteAllQuestionnaires", () => {
   });
 });
 
-Cypress.Commands.add("addFeedbackSurvey", newRequest => {
+Cypress.Commands.add("addQuestion", question => {
+  const request = {
+    questionnaireid: question.questionnaireid,
+    question: question.question
+  };
+  return addQuestion(request)
+    .then(result => {
+      return cy.wrap(result);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+});
+
+Cypress.Commands.add("addQuestionnaire", async newRequest => {
   const request = {
     userid: 1234,
     name: newRequest
   };
   return addQuestionnaire(request)
     .then(result => {
-      setRequestList([...requestList, result]);
+      return cy.wrap(result);
     })
     .catch(e => {
       console.log(e);
