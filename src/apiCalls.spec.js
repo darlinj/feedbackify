@@ -2,6 +2,7 @@ import React from "react";
 import {
   getQuestions,
   getQuestionnaires,
+  retrieveQuestionnaire,
   addQuestionnaire,
   addQuestion,
   removeQuestion,
@@ -43,6 +44,25 @@ describe("api calls", () => {
       return getQuestions().catch(errorMessage => {
         expect(errorMessage).toEqual({ error: "some error" });
       });
+    });
+  });
+
+  describe("the getQuestionnaire operation", () => {
+    it("gets a specific questionaire", async () => {
+      const questionnaire = { some: "questionnaire" };
+      API.graphql.mockResolvedValue({
+        data: { getQuestionnaire: questionnaire }
+      });
+      graphqlOperation.mockReturnValue("the get questionnaire query");
+      const aQuestionnaire = await retrieveQuestionnaire(1234);
+      expect(graphqlOperation.mock.calls.length).toEqual(1);
+      expect(graphqlOperation.mock.calls[0][0]).toContain("getQuestionnaire");
+      expect(graphqlOperation.mock.calls[0][1]).toEqual({ id: 1234 });
+      expect(API.graphql.mock.calls.length).toEqual(1);
+      expect(API.graphql.mock.calls[0][0]).toEqual(
+        "the get questionnaire query"
+      );
+      expect(aQuestionnaire).toEqual(questionnaire);
     });
   });
 

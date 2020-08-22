@@ -5,7 +5,11 @@ import {
   deleteQuestion,
   deleteQuestionnaire
 } from "./graphql/mutations";
-import { listQuestions, listQuestionnaires } from "./graphql/queries";
+import {
+  listQuestions,
+  listQuestionnaires,
+  getQuestionnaire
+} from "./graphql/queries";
 
 const addQuestion = newQuestion => {
   return new Promise((resolve, reject) => {
@@ -39,6 +43,18 @@ const getQuestions = () => {
     API.graphql(graphqlOperation(listQuestions))
       .then(result => {
         resolve(result.data.listQuestions.items);
+      })
+      .catch(e => {
+        reject({ error: e });
+      });
+  });
+};
+
+const retrieveQuestionnaire = id => {
+  return new Promise((resolve, reject) => {
+    API.graphql(graphqlOperation(getQuestionnaire, { id: id }))
+      .then(result => {
+        resolve(result.data.getQuestionnaire);
       })
       .catch(e => {
         reject({ error: e });
@@ -85,6 +101,7 @@ export {
   addQuestionnaire,
   addQuestion,
   getQuestionnaires,
+  retrieveQuestionnaire,
   getQuestions,
   removeQuestion,
   removeQuestionnaire

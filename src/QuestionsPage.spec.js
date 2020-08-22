@@ -3,7 +3,7 @@ import { mount, shallow } from "enzyme";
 import { act } from "react-dom/test-utils";
 import QuestionsPage from "./QuestionsPage";
 import { API, graphqlOperation } from "aws-amplify";
-import { addQuestion, getQuestions, removeQuestion } from "./apiCalls";
+import { addQuestion, retrieveQuestionnaire, removeQuestion } from "./apiCalls";
 import QuestionsList from "./QuestionsList";
 import { toast } from "react-toastify";
 
@@ -12,22 +12,28 @@ jest.mock("react-toastify");
 
 describe("Adding questions to the list", () => {
   beforeEach(() => {
-    getQuestions.mockResolvedValue([
-      { id: 1234, question: "This is a question" },
-      { id: 4321, question: "This is another question" }
-    ]);
+    retrieveQuestionnaire.mockResolvedValue({
+      questions: {
+        items: [
+          { id: 1234, question: "This is a question" },
+          { id: 4321, question: "This is another question" }
+        ]
+      }
+    });
     toast.error.mockImplementation(() => true);
   });
 
   afterEach(() => {
-    getQuestions.mockClear();
+    retrieveQuestionnaire.mockClear();
     addQuestion.mockClear();
     removeQuestion.mockClear();
     toast.error.mockClear();
   });
 
   it("Presents the form", () => {
-    const component = shallow(<QuestionsPage />);
+    const component = shallow(
+      <QuestionsPage match={{ params: { id: "999" } }} />
+    );
     expect(component.find("AddQuestionForm").length).toBe(1);
     expect(component.find("QuestionsList").length).toBe(1);
   });
@@ -35,21 +41,34 @@ describe("Adding questions to the list", () => {
   it("Gets the Questions from the database", async () => {
     let component = null;
     await act(async () => {
-      component = mount(<QuestionsPage />);
+      component = mount(<QuestionsPage match={{ params: { id: "999" } }} />);
     });
     component.update();
-    expect(getQuestions.mock.calls.length).toEqual(1);
+    expect(retrieveQuestionnaire.mock.calls.length).toEqual(1);
     expect(component.find("QuestionsList").prop("questionList")).toEqual([
       { id: 1234, question: "This is a question" },
       { id: 4321, question: "This is another question" }
     ]);
   });
 
-  it("raises an error if the connection to the API fails", async () => {
-    getQuestions.mockRejectedValue("some listing error");
+  it("if it fails to find the questionaire it put up a relevant error", async () => {
+    retrieveQuestionnaire.mockResolvedValue(null);
     let component = null;
     await act(async () => {
-      component = mount(<QuestionsPage />);
+      component = mount(<QuestionsPage match={{ params: { id: "999" } }} />);
+    });
+    component.update();
+    expect(toast.error.mock.calls.length).toEqual(1);
+    expect(toast.error.mock.calls[0][0]).toEqual(
+      "We couldn't find that questionnaire.  Was it deleted?"
+    );
+  });
+
+  it("raises an error if the connection to the API fails", async () => {
+    retrieveQuestionnaire.mockRejectedValue("some listing error");
+    let component = null;
+    await act(async () => {
+      component = mount(<QuestionsPage match={{ params: { id: "999" } }} />);
     });
     return new Promise(resolve => setImmediate(resolve)).then(() => {
       expect(toast.error.mock.calls.length).toEqual(1);

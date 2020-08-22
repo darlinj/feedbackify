@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
 import QuestionsList from "./QuestionsList";
 import AddQuestionForm from "./AddQuestionForm";
-import { addQuestion, getQuestions, removeQuestion } from "./apiCalls";
+import { addQuestion, retrieveQuestionnaire, removeQuestion } from "./apiCalls";
 import { toast } from "react-toastify";
 
 const QuestionsPage = props => {
   const [questionList, setQuestionList] = useState([]);
+  const questionnaireId = props.match.params.id;
 
   useEffect(() => {
-    getQuestions()
+    retrieveQuestionnaire(questionnaireId)
       .then(response => {
-        setQuestionList(response);
+        if (response === null) {
+          toast.error("We couldn't find that questionnaire.  Was it deleted?");
+        } else {
+          setQuestionList(response.questions.items);
+        }
       })
       .catch(e => {
         toast.error(`Failed to get questions. Check your internet connection`);
@@ -19,7 +24,7 @@ const QuestionsPage = props => {
 
   const handleAddingQuestion = async newQuestion => {
     const question = {
-      questionnaireid: props.match.params.id,
+      questionnaireid: questionnaireId,
       question: newQuestion
     };
     addQuestion(question)

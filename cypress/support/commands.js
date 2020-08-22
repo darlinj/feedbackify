@@ -25,10 +25,7 @@ Amplify.configure(aws_exports);
 Cypress.Commands.add("login", () => {
   return Auth.signIn("fred@bedrock.com", "password")
     .then(user => {
-      console.log("===> user", user);
       let session = Auth.currentSession();
-      console.log("===> session", session);
-      cy.wait(500);
     })
     .catch(err => console.log("===> err", err));
 });
@@ -36,7 +33,6 @@ Cypress.Commands.add("login", () => {
 Cypress.Commands.add("deleteAllQuestions", () => {
   return getQuestions().then(questions => {
     questions.forEach(question => {
-      console.log(question, question.id);
       removeQuestion({ id: question.id });
     });
   });
@@ -57,21 +53,21 @@ Cypress.Commands.add("addQuestion", question => {
   };
   return addQuestion(request)
     .then(result => {
-      return cy.wrap(result);
+      return result;
     })
     .catch(e => {
       console.log(e);
     });
 });
 
-Cypress.Commands.add("addQuestionnaire", async newRequest => {
+Cypress.Commands.add("addQuestionnaire", newRequest => {
   const request = {
     userid: 1234,
     name: newRequest
   };
   return addQuestionnaire(request)
     .then(result => {
-      return cy.wrap(result);
+      return result;
     })
     .catch(e => {
       console.log(e);

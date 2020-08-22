@@ -4,7 +4,9 @@ describe("manage questions", async () => {
   beforeEach(() => {
     cy.login();
     cy.deleteAllQuestions();
-    cy.visit("/questionnaire/123");
+    cy.addQuestionnaire("random questionnaire").then(questionnaire => {
+      cy.visit(`/questionnaire/${questionnaire.id}`);
+    });
   });
 
   it("adds questions to the list", () => {
@@ -22,7 +24,6 @@ describe("manage questions", async () => {
     const question1 = faker.lorem.words(10);
     const question2 = faker.lorem.words(10);
     return cy.addQuestionnaire("Questionnaire 1").then(q => {
-      console.log("IN PROMISE", q);
       cy.addQuestion({
         questionnaireid: q.id,
         question: question1
