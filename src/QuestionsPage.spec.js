@@ -13,6 +13,7 @@ jest.mock("react-toastify");
 describe("Adding questions to the list", () => {
   beforeEach(() => {
     retrieveQuestionnaire.mockResolvedValue({
+      name: "Some Questionnaire",
       questions: {
         items: [
           { id: 1234, question: "This is a question" },
@@ -36,6 +37,18 @@ describe("Adding questions to the list", () => {
     );
     expect(component.find("AddQuestionForm").length).toBe(1);
     expect(component.find("QuestionsList").length).toBe(1);
+    expect(component.find("TitleBar").length).toBe(1);
+  });
+
+  it("sets the title to the questionnaire name", async () => {
+    let component = null;
+    await act(async () => {
+      component = mount(<QuestionsPage match={{ params: { id: "999" } }} />);
+    });
+    component.update();
+    expect(component.find("TitleBar").prop("title")).toEqual(
+      "Some Questionnaire"
+    );
   });
 
   it("Gets the Questions from the database", async () => {

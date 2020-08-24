@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import QuestionsList from "./QuestionsList";
 import AddQuestionForm from "./AddQuestionForm";
+import TitleBar from "./TitleBar";
 import { addQuestion, retrieveQuestionnaire, removeQuestion } from "./apiCalls";
 import { toast } from "react-toastify";
 
 const QuestionsPage = props => {
   const [questionList, setQuestionList] = useState([]);
+  const [questionnaire, setQuestionnaire] = useState({
+    name: "Loading...",
+    questions: { items: [] }
+  });
   const questionnaireId = props.match.params.id;
 
   useEffect(() => {
@@ -15,6 +20,7 @@ const QuestionsPage = props => {
           toast.error("We couldn't find that questionnaire.  Was it deleted?");
         } else {
           setQuestionList(response.questions.items);
+          setQuestionnaire(response);
         }
       })
       .catch(e => {
@@ -50,6 +56,7 @@ const QuestionsPage = props => {
 
   return (
     <div className="questions-form">
+      <TitleBar title={questionnaire.name} />
       <QuestionsList questionList={questionList} handleDelete={handleDelete} />
       <AddQuestionForm handleAddingQuestion={handleAddingQuestion} />
     </div>
