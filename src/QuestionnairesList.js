@@ -1,5 +1,5 @@
 import React from "react";
-import { ListGroup, Jumbotron } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { FaMinusSquare } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -12,42 +12,66 @@ const QuestionnairesList = params => {
   const showQuestionnaires = () => {
     const questionnaireList = params.questionnaireList || [];
     if (questionnaireList.length === 0) {
-      return <div>No feedback surveys yet. Please add one below</div>;
+      return (
+        <tr>
+          <td colSpan="2">No questionnaires yet. Please add one below</td>
+        </tr>
+      );
     } else {
       return (
-        <ListGroup
-          name="questionnaires"
-          cy-data="questionnaire-list"
-          className="questionnaires"
-        >
+        <>
           {questionnaireList.map((questionnaireObject, index) => {
             return (
-              <ListGroup.Item className="questionnaire-item" key={index}>
-                <Link to={`/questionnaire/${questionnaireObject.id}`}>
-                  {questionnaireObject.name}{" "}
-                </Link>
-                <button
-                  className="btn"
-                  onClick={e => handleDelete(questionnaireObject.id, e)}
-                  value={questionnaireObject.id}
-                  cy-data="delete-questionnaire"
-                  style={{ float: "right" }}
-                >
-                  <FaMinusSquare style={{ color: "red" }} />
-                </button>{" "}
-              </ListGroup.Item>
+              <tr className="questionnaire-item" key={index}>
+                <td align="left">
+                  <Link to={`/questionnaire/${questionnaireObject.id}`}>
+                    {questionnaireObject.name}
+                  </Link>
+                </td>
+                <td>
+                  <button
+                    id={questionnaireObject.id}
+                    className="btn"
+                    onClick={e => handleDelete(questionnaireObject.id, e)}
+                    value={questionnaireObject.id}
+                    cy-data="delete-question"
+                    style={{
+                      float: "right",
+                      paddingTop: "1px",
+                      paddingBottom: "1px"
+                    }}
+                  >
+                    <FaMinusSquare style={{ color: "red" }} />
+                  </button>{" "}
+                </td>
+              </tr>
             );
           })}
-        </ListGroup>
+        </>
       );
     }
   };
 
   return (
-    <Jumbotron>
-      <h2>Feedback surveys</h2>
-      {showQuestionnaires()}
-    </Jumbotron>
+    <>
+      <h2>Questionnaires</h2>
+      <Table
+        striped
+        borderless
+        hover
+        name="questionnaires"
+        cy-data="questionnaire-list"
+        className="questionnaires"
+      >
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>{showQuestionnaires()}</tbody>
+      </Table>
+    </>
   );
 };
 

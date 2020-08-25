@@ -16,11 +16,11 @@ describe("questionnaires", async () => {
     cy.get('button[cy-data="add-new-questionnaire"]').click();
     cy.get('input[cy-data="questionnaire"]').type(questionnaire2);
     cy.get('button[cy-data="add-questionnaire"]').click();
-    cy.get('div[cy-data="questionnaire-list"]').should(
+    cy.get('Table[cy-data="questionnaire-list"]').should(
       "contain.text",
       questionnaire1
     );
-    cy.get('div[cy-data="questionnaire-list"]').should(
+    cy.get('Table[cy-data="questionnaire-list"]').should(
       "contain.text",
       questionnaire2
     );
@@ -39,24 +39,18 @@ describe("questionnaires", async () => {
 
   it("removes feedback questionires from the list", () => {
     const deleteThisQuestionnaire = faker.lorem.words(10);
-    const keepThisQuestionnaire = faker.lorem.words(10);
-    cy.addQuestionnaire(deleteThisQuestionnaire);
-    cy.addQuestionnaire(keepThisQuestionnaire);
-    cy.visit("/");
-    cy.wait(500);
-    cy.get("a")
-      .contains(deleteThisQuestionnaire)
-      .parent()
-      .children("button")
-      .click();
-    cy.wait(500);
-    cy.get('div[cy-data="questionnaire-list"]').should(
-      "not.contain.text",
-      deleteThisQuestionnaire
-    );
-    cy.get('div[cy-data="questionnaire-list"]').should(
-      "contain.text",
-      keepThisQuestionnaire
-    );
+    return cy.addQuestionnaire(deleteThisQuestionnaire).then(questionnaire => {
+      cy.wait(500);
+      cy.visit("/");
+      cy.get('Table[cy-data="questionnaire-list"]').should(
+        "contain.text",
+        deleteThisQuestionnaire
+      );
+      cy.get(`button#${questionnaire.id}`).click();
+      cy.get('Table[cy-data="questionnaire-list"]').should(
+        "not.contain.text",
+        deleteThisQuestionnaire
+      );
+    });
   });
 });

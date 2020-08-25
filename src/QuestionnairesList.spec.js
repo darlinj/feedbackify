@@ -16,8 +16,8 @@ describe("Shows questionnaire list", () => {
         <QuestionnairesList questionnaireList={questionnaires} />
       </MemoryRouter>
     );
-    expect(component.find("div.list-group-item").length).toEqual(3);
-    expect(component.find('ListGroup[name="questionnaires"]').text()).toContain(
+    expect(component.find("tr.questionnaire-item").length).toEqual(3);
+    expect(component.find("table.questionnaires").text()).toContain(
       "this is another questionnaire"
     );
     expect(component.find("Link").length).toEqual(3);
