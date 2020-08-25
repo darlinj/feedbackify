@@ -1,6 +1,6 @@
-import React from 'react';
-import {ListGroup, Jumbotron} from 'react-bootstrap';
-import {FaMinusSquare} from 'react-icons/fa';
+import React from "react";
+import { Table } from "react-bootstrap";
+import { FaMinusSquare } from "react-icons/fa";
 
 const QuestionsList = params => {
   const handleDelete = (id, event) => {
@@ -11,38 +11,62 @@ const QuestionsList = params => {
   const showQuestionList = () => {
     const questionList = params.questionList || [];
     if (questionList.length === 0) {
-      return <div>No questions yet. Please add questions below</div>;
+      return (
+        <tr>
+          <td colSpan="2">No questions yet. Please add questions below</td>
+        </tr>
+      );
     } else {
       return (
-        <ListGroup
-          name="questions"
-          cy-data="question-list"
-          className="questions">
+        <>
           {questionList.map((questionObject, index) => {
             return (
-              <ListGroup.Item className="question-item" key={index}>
-                {questionObject.question}{' '}
-                <button
-                  className="btn"
-                  onClick={e => handleDelete(questionObject.id, e)}
-                  value={questionObject.id}
-                  cy-data="delete-question"
-                  style={{float: 'right'}}>
-                  <FaMinusSquare style={{color: 'red'}} />
-                </button>{' '}
-              </ListGroup.Item>
+              <tr className="question-item" key={index}>
+                <td align="left">{questionObject.question}</td>
+                <td>
+                  <button
+                    id={questionObject.id}
+                    className="btn"
+                    onClick={e => handleDelete(questionObject.id, e)}
+                    value={questionObject.id}
+                    cy-data="delete-question"
+                    style={{
+                      float: "right",
+                      paddingTop: "1px",
+                      paddingBottom: "1px"
+                    }}
+                  >
+                    <FaMinusSquare style={{ color: "red" }} />
+                  </button>{" "}
+                </td>
+              </tr>
             );
           })}
-        </ListGroup>
+        </>
       );
     }
   };
 
   return (
-    <Jumbotron>
+    <>
       <h2>Question list</h2>
-      {showQuestionList()}
-    </Jumbotron>
+      <Table
+        striped
+        borderless
+        hover
+        name="questions"
+        cy-data="question-list"
+        className="questions"
+      >
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>{showQuestionList()}</tbody>
+      </Table>
+    </>
   );
 };
 
