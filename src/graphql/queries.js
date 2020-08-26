@@ -12,9 +12,13 @@ export const getQuestionnaire = /* GraphQL */ `
           id
           questionnaireid
           question
+          createdAt
+          updatedAt
         }
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -32,6 +36,8 @@ export const listQuestionnaires = /* GraphQL */ `
         questions {
           nextToken
         }
+        createdAt
+        updatedAt
       }
       nextToken
     }
@@ -48,9 +54,13 @@ export const getQuestion = /* GraphQL */ `
           id
           questionid
           content
+          createdAt
+          updatedAt
         }
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -68,6 +78,8 @@ export const listQuestions = /* GraphQL */ `
         feedback {
           nextToken
         }
+        createdAt
+        updatedAt
       }
       nextToken
     }
@@ -79,6 +91,8 @@ export const getFeedback = /* GraphQL */ `
       id
       questionid
       content
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -93,6 +107,8 @@ export const listFeedbacks = /* GraphQL */ `
         id
         questionid
         content
+        createdAt
+        updatedAt
       }
       nextToken
     }

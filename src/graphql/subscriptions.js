@@ -12,9 +12,13 @@ export const onCreateQuestionnaire = /* GraphQL */ `
           id
           questionnaireid
           question
+          createdAt
+          updatedAt
         }
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -29,9 +33,13 @@ export const onUpdateQuestionnaire = /* GraphQL */ `
           id
           questionnaireid
           question
+          createdAt
+          updatedAt
         }
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -46,9 +54,13 @@ export const onDeleteQuestionnaire = /* GraphQL */ `
           id
           questionnaireid
           question
+          createdAt
+          updatedAt
         }
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -63,9 +75,13 @@ export const onCreateQuestion = /* GraphQL */ `
           id
           questionid
           content
+          createdAt
+          updatedAt
         }
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -80,9 +96,13 @@ export const onUpdateQuestion = /* GraphQL */ `
           id
           questionid
           content
+          createdAt
+          updatedAt
         }
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -97,9 +117,13 @@ export const onDeleteQuestion = /* GraphQL */ `
           id
           questionid
           content
+          createdAt
+          updatedAt
         }
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -109,6 +133,8 @@ export const onCreateFeedback = /* GraphQL */ `
       id
       questionid
       content
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -118,6 +144,8 @@ export const onUpdateFeedback = /* GraphQL */ `
       id
       questionid
       content
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -127,6 +155,8 @@ export const onDeleteFeedback = /* GraphQL */ `
       id
       questionid
       content
+      createdAt
+      updatedAt
     }
   }
 `;

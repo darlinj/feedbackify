@@ -19,6 +19,7 @@ const QuestionsPage = props => {
         if (response === null) {
           toast.error("We couldn't find that questionnaire.  Was it deleted?");
         } else {
+          console.log(response);
           setQuestionList(response.questions.items);
           setQuestionnaire(response);
         }

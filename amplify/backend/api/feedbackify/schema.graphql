@@ -1,7 +1,7 @@
 type Questionnaire @model {
   id: ID!
   userid: String!
-  name: String
+  name: String!
   questions: [Question]
     @connection(keyName: "questionnairelink", fields: ["id"])
 }

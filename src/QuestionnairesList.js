@@ -2,6 +2,7 @@ import React from "react";
 import { Table } from "react-bootstrap";
 import { FaMinusSquare } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 const QuestionnairesList = params => {
   const handleDelete = (id, event) => {
@@ -23,10 +24,20 @@ const QuestionnairesList = params => {
           {questionnaireList.map((questionnaireObject, index) => {
             return (
               <tr className="questionnaire-item" key={index}>
-                <td align="left">
+                <td>
                   <Link to={`/questionnaire/${questionnaireObject.id}`}>
                     {questionnaireObject.name}
                   </Link>
+                </td>
+                <td>
+                  {moment(questionnaireObject.createdAt).format(
+                    "hh:mm Do MMM YYYY"
+                  )}
+                </td>
+                <td>
+                  {moment(questionnaireObject.updatedAt).format(
+                    "hh:mm Do MMM YYYY"
+                  )}
                 </td>
                 <td>
                   <button
@@ -66,6 +77,8 @@ const QuestionnairesList = params => {
         <thead>
           <tr>
             <th>Title</th>
+            <th>Created at</th>
+            <th>Updated at</th>
             <th></th>
           </tr>
         </thead>
