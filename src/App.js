@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
 import Navigator from "./Navigator";
 import { Container } from "react-bootstrap";
 import Amplify from "aws-amplify";
@@ -11,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 
 Amplify.configure(awsconfig);
 

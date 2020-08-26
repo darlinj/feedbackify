@@ -49,7 +49,6 @@ describe("manage questions", async () => {
 
   it("removes questions from the list", () => {
     const deleteQuestion = faker.lorem.words(10);
-    const keepQuestion = faker.lorem.words(10);
     return cy.addQuestionnaire("Questionnaire 1").then(questionnaire => {
       cy.addQuestion({
         questionnaireid: questionnaire.id,
