@@ -30,6 +30,13 @@ const QuestionnairesList = params => {
                   </Link>
                 </td>
                 <td>
+                  <a
+                    href={`http://${window.location.href}feedback/${questionnaireObject.id}`}
+                  >
+                    Link
+                  </a>
+                </td>
+                <td>
                   {moment(questionnaireObject.createdAt).format(
                     "hh:mm Do MMM YYYY"
                   )}
@@ -77,6 +84,7 @@ const QuestionnairesList = params => {
         <thead>
           <tr>
             <th>Title</th>
+            <th>Send this link</th>
             <th>Created at</th>
             <th>Updated at</th>
             <th></th>
