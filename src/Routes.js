@@ -3,7 +3,9 @@ import QuestionsPage from "./QuestionsPage";
 import Signup from "./Signup";
 import LoginForm from "./LoginForm";
 import HomePage from "./HomePage";
+import NotFoundPage from "./NotFoundPage";
 import ProtectedRoute from "./ProtectedRoute";
+import FeedbackPage from "./FeedbackPage";
 import { Switch, Route } from "react-router-dom";
 
 const Routes = params => {
@@ -20,8 +22,12 @@ const Routes = params => {
         component={QuestionsPage}
         path="/questionnaire/:id"
       />
-      <Route path="/">
+      <Route exact path="/">
         <HomePage {...params} />
+      </Route>
+      <Route path="/feedback/:id" component={FeedbackPage} />
+      <Route>
+        <NotFoundPage />
       </Route>
     </Switch>
   );

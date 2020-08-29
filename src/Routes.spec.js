@@ -8,6 +8,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import HomePage from "./HomePage";
 import QuestionsPage from "./QuestionsPage";
 import QuestionnairesPage from "./QuestionnairesPage";
+import FeedbackPage from "./FeedbackPage";
+import NotFoundPage from "./NotFoundPage";
 
 describe("routing", () => {
   it("shows the page to manage questionnaires when the path is / and the user is logged in", () => {
@@ -38,6 +40,20 @@ describe("routing", () => {
     ).toHaveLength(1);
   });
 
+  it("shows the 404 page if the page does not exist", () => {
+    const wrapper = shallow(
+      <MemoryRouter initialEntries={["/doesnotexist"]}>
+        <Routes />
+      </MemoryRouter>
+    );
+    expect(
+      wrapper
+        .find(Routes)
+        .dive()
+        .find(NotFoundPage)
+    ).toHaveLength(1);
+  });
+
   it("shows the login form when not logged in and trying to access a protected page", () => {
     const wrapper = shallow(
       <MemoryRouter initialEntries={["/questionnaire/123"]}>
@@ -63,6 +79,20 @@ describe("routing", () => {
         .find(Routes)
         .dive()
         .find(ProtectedRoute)
+    ).toHaveLength(1);
+  });
+
+  it("shows the feedback page when the path is /feedback/1234", () => {
+    const wrapper = shallow(
+      <MemoryRouter initialEntries={["/feedback/1234"]}>
+        <Routes />
+      </MemoryRouter>
+    );
+    expect(
+      wrapper
+        .find(Routes)
+        .dive()
+        .find(FeedbackPage)
     ).toHaveLength(1);
   });
 });
