@@ -84,15 +84,15 @@ describe("routing", () => {
 
   it("shows the feedback page when the path is /feedback/1234", () => {
     const wrapper = shallow(
-      <MemoryRouter initialEntries={["/feedback/1234"]}>
         <Routes />
-      </MemoryRouter>
     );
+    const routeMap = wrapper.find(Route).reduce((pathMap, route) => {
+      const pathProps = route.props();
+      pathMap[pathProps.path] = pathProps.component;
+      return pathMap
+    }, {})
     expect(
-      wrapper
-        .find(Routes)
-        .dive()
-        .find(FeedbackPage)
-    ).toHaveLength(1);
+      routeMap["/feedback/:id"]
+    ).toEqual(FeedbackPage);
   });
 });
