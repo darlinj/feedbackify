@@ -23,7 +23,14 @@ describe("Provide feedback", async () => {
             "contain.text",
             "Questionnaire 1"
           );
-          cy.get(`Label.${q1.id}`).should("contain.text", question1);
+          cy.get(`Label#${q1.id}`).should("contain.text", question1);
+          cy.get(`input[cy-data="question-${q1.id}"`).type("some answer");
+          cy.get(`input[cy-data="question-${q2.id}"`).type("some other answer");
+          cy.get('button[cy-data="submit"]').click();
+          cy.get('div[cy-data="title"]').should(
+            "contain.text",
+            "Thank you for your feedback :)"
+          );
         });
       });
     });

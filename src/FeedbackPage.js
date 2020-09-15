@@ -27,10 +27,15 @@ const FeedbackPage = props => {
       });
   }, []);
 
+  const submitFeedback = feedback => {};
+
   return (
     <>
       <TitleBar title={questionnaire.name} />
-      <FeedbackForm />
+      <FeedbackForm
+        questionList={questionnaire.questions.items}
+        submitFeedback={submitFeedback}
+      />
     </>
   );
 };

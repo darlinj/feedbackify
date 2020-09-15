@@ -4,10 +4,10 @@ import { act } from "react-dom/test-utils";
 import FeedbackPage from "./FeedbackPage";
 import FeedbackForm from "./FeedbackForm";
 import { retrieveQuestionnaire } from "./apiCalls";
-//import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 jest.mock("./apiCalls");
-//jest.mock("react-toastify");
+jest.mock("react-toastify");
 
 describe("Providing feedback", () => {
   beforeEach(() => {
@@ -20,12 +20,12 @@ describe("Providing feedback", () => {
         ]
       }
     });
-    //    toast.error.mockImplementation(() => true);
+    toast.error.mockImplementation(() => true);
   });
-  //
+
   afterEach(() => {
     retrieveQuestionnaire.mockClear();
-    //    toast.error.mockClear();
+    toast.error.mockClear();
   });
 
   it("Presents the form", () => {
@@ -47,43 +47,43 @@ describe("Providing feedback", () => {
     );
   });
 
-  //  it("Gets the Questions from the database", async () => {
-  //    let component = null;
-  //    await act(async () => {
-  //      component = mount(<FeedbackPage match={{ params: { id: "999" } }} />);
-  //    });
-  //    component.update();
-  //    expect(retrieveQuestionnaire.mock.calls.length).toEqual(1);
-  //    expect(component.find("FeedbackForm").prop("questionList")).toEqual([
-  //      { id: 1234, question: "This is a question" },
-  //      { id: 4321, question: "This is another question" }
-  //    ]);
-  //  });
-  //
-  //  it("if it fails to find the questionaire it put up a relevant error", async () => {
-  //    retrieveQuestionnaire.mockResolvedValue(null);
-  //    let component = null;
-  //    await act(async () => {
-  //      component = mount(<FeedbackPage match={{ params: { id: "999" } }} />);
-  //    });
-  //    component.update();
-  //    expect(toast.error.mock.calls.length).toEqual(1);
-  //    expect(toast.error.mock.calls[0][0]).toEqual(
-  //      "We couldn't find that questionnaire.  Was it deleted?"
-  //    );
-  //  });
-  //
-  //  it("raises an error if the connection to the API fails", async () => {
-  //    retrieveQuestionnaire.mockRejectedValue("some listing error");
-  //    let component = null;
-  //    await act(async () => {
-  //      component = mount(<FeedbackPage match={{ params: { id: "999" } }} />);
-  //    });
-  //    return new Promise(resolve => setImmediate(resolve)).then(() => {
-  //      expect(toast.error.mock.calls.length).toEqual(1);
-  //      expect(toast.error.mock.calls[0][0]).toEqual(
-  //        "Failed to get questions. Check your internet connection"
-  //      );
-  //    });
-  //  });
+  it("Gets the Questions from the database", async () => {
+    let component = null;
+    await act(async () => {
+      component = mount(<FeedbackPage match={{ params: { id: "999" } }} />);
+    });
+    component.update();
+    expect(retrieveQuestionnaire.mock.calls.length).toEqual(1);
+    expect(component.find("FeedbackForm").prop("questionList")).toEqual([
+      { id: 1234, question: "This is a question" },
+      { id: 4321, question: "This is another question" }
+    ]);
+  });
+
+  it("if it fails to find the questionaire it put up a relevant error", async () => {
+    retrieveQuestionnaire.mockResolvedValue(null);
+    let component = null;
+    await act(async () => {
+      component = mount(<FeedbackPage match={{ params: { id: "999" } }} />);
+    });
+    component.update();
+    expect(toast.error.mock.calls.length).toEqual(1);
+    expect(toast.error.mock.calls[0][0]).toEqual(
+      "We couldn't find that questionnaire.  Was it deleted?"
+    );
+  });
+
+  it("raises an error if the connection to the API fails", async () => {
+    retrieveQuestionnaire.mockRejectedValue("some listing error");
+    let component = null;
+    await act(async () => {
+      component = mount(<FeedbackPage match={{ params: { id: "999" } }} />);
+    });
+    return new Promise(resolve => setImmediate(resolve)).then(() => {
+      expect(toast.error.mock.calls.length).toEqual(1);
+      expect(toast.error.mock.calls[0][0]).toEqual(
+        "Failed to get this questionnaire. Check your internet connection"
+      );
+    });
+  });
 });
