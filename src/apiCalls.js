@@ -38,6 +38,8 @@ const addQuestionnaire = newQuestionnaire => {
   });
 };
 
+const addFeedback = feedback => {};
+
 const getQuestions = () => {
   return new Promise((resolve, reject) => {
     API.graphql(graphqlOperation(listQuestions))
@@ -100,6 +102,7 @@ const removeQuestionnaire = id => {
 export {
   addQuestionnaire,
   addQuestion,
+  addFeedback,
   getQuestionnaires,
   retrieveQuestionnaire,
   getQuestions,

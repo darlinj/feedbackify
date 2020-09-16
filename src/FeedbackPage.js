@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { retrieveQuestionnaire } from "./apiCalls";
+import { retrieveQuestionnaire, addFeedback } from "./apiCalls";
 import FeedbackForm from "./FeedbackForm";
 import TitleBar from "./TitleBar";
 import { toast } from "react-toastify";
 
 const FeedbackPage = props => {
   const questionnaireId = props.match.params.id;
+  const [feedbackSubmitted, setfeedbackSubmitted] = useState(false);
   const [questionnaire, setQuestionnaire] = useState({
     name: "Loading...",
     questions: { items: [] }
@@ -27,17 +28,33 @@ const FeedbackPage = props => {
       });
   }, []);
 
-  const submitFeedback = feedback => {};
+  const submitFeedback = feedback => {
+    Object.keys(feedback).forEach(question_id => {
+      addFeedback({
+        question_id: question_id,
+        feedback: feedback[question_id]
+      });
+    });
+    setfeedbackSubmitted(true);
+  };
 
-  return (
-    <>
-      <TitleBar title={questionnaire.name} />
-      <FeedbackForm
-        questionList={questionnaire.questions.items}
-        submitFeedback={submitFeedback}
-      />
-    </>
-  );
+  const feedbackPage = () => {
+    return (
+      <>
+        <TitleBar title={questionnaire.name} />
+        <FeedbackForm
+          questionList={questionnaire.questions.items}
+          submitFeedback={submitFeedback}
+        />
+      </>
+    );
+  };
+
+  const thankYouMessage = () => {
+    return <TitleBar title="Thanks for your feedback" />;
+  };
+
+  return feedbackSubmitted ? thankYouMessage() : feedbackPage();
 };
 
 export default FeedbackPage;

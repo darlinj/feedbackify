@@ -35,12 +35,12 @@ describe("Filling in the feedback form", () => {
       target: { name: "54321", value: "some feedback for you" }
     });
     component.find('FormControl[name="12345"]').simulate("change", {
-      target: { name: "54321", value: "some more feedback for you" }
+      target: { name: "12345", value: "some more feedback for you" }
     });
     component.find("form").simulate("submit", { preventDefault: () => {} });
     expect(callback).toHaveBeenCalledWith({
       "54321": "some feedback for you",
-      "12345": "some more feedback for you tooooooo"
+      "12345": "some more feedback for you"
     });
   });
 });

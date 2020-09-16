@@ -3,14 +3,16 @@ import { FormGroup, FormLabel, FormControl, Button } from "react-bootstrap";
 
 const FeedbackForm = ({ questionList, submitFeedback }) => {
   const [feedback, setFeedback] = useState({});
+
   const handleSubmit = event => {
     event.preventDefault();
-    submitFeedback();
+    submitFeedback(feedback);
   };
+
   const handleNewFeedback = event => {
     setFeedback({ ...feedback, [event.target.name]: event.target.value });
-    console.log(feedback);
   };
+
   return (
     <form onSubmit={handleSubmit} className="FeedbackForm">
       {questionList.map(question => {

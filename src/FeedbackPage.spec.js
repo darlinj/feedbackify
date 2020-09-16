@@ -3,7 +3,7 @@ import { mount, shallow } from "enzyme";
 import { act } from "react-dom/test-utils";
 import FeedbackPage from "./FeedbackPage";
 import FeedbackForm from "./FeedbackForm";
-import { retrieveQuestionnaire } from "./apiCalls";
+import { retrieveQuestionnaire, addFeedback } from "./apiCalls";
 import { toast } from "react-toastify";
 
 jest.mock("./apiCalls");
@@ -20,11 +20,13 @@ describe("Providing feedback", () => {
         ]
       }
     });
+    addFeedback.mockResolvedValue(true);
     toast.error.mockImplementation(() => true);
   });
 
   afterEach(() => {
     retrieveQuestionnaire.mockClear();
+    addFeedback.mockClear();
     toast.error.mockClear();
   });
 
@@ -85,5 +87,30 @@ describe("Providing feedback", () => {
         "Failed to get this questionnaire. Check your internet connection"
       );
     });
+  });
+
+  it("posts the feedback to the database", async () => {
+    let component = null;
+    await act(async () => {
+      component = shallow(<FeedbackPage match={{ params: { id: "999" } }} />);
+    });
+    await act(async () => {
+      component.find("FeedbackForm").prop("submitFeedback")({
+        "12345": "Some feedback",
+        "54321": "Some other feedback"
+      });
+    });
+    expect(addFeedback.mock.calls.length).toEqual(2);
+    expect(addFeedback.mock.calls[0][0]).toEqual({
+      question_id: "12345",
+      feedback: "Some feedback"
+    });
+    expect(addFeedback.mock.calls[1][0]).toEqual({
+      question_id: "54321",
+      feedback: "Some other feedback"
+    });
+    expect(component.find("TitleBar").prop("title")).toEqual(
+      "Thanks for your feedback"
+    );
   });
 });
