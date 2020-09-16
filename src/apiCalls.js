@@ -2,6 +2,7 @@ import { API, graphqlOperation } from "aws-amplify";
 import {
   createQuestion,
   createQuestionnaire,
+  createFeedback,
   deleteQuestion,
   deleteQuestionnaire
 } from "./graphql/mutations";
@@ -38,7 +39,18 @@ const addQuestionnaire = newQuestionnaire => {
   });
 };
 
-const addFeedback = feedback => {};
+const addFeedback = feedback => {
+  return new Promise((resolve, reject) => {
+    API.graphql(graphqlOperation(createFeedback, { input: feedback }))
+      .then(result => {
+        resolve(result.data.createFeedback);
+      })
+      .catch(e => {
+        console.log(e);
+        reject({ error: e });
+      });
+  });
+};
 
 const getQuestions = () => {
   return new Promise((resolve, reject) => {

@@ -5,6 +5,7 @@ import {
   retrieveQuestionnaire,
   addQuestionnaire,
   addQuestion,
+  addFeedback,
   removeQuestion,
   removeQuestionnaire
 } from "./apiCalls";
@@ -179,6 +180,46 @@ describe("api calls", () => {
       graphqlOperation.mockReturnValue("the add question mutation");
       expect.assertions(1);
       return addQuestion().catch(errorMessage => {
+        expect(errorMessage).toEqual({ error: "some error" });
+      });
+    });
+  });
+
+  describe("the addFeedback operation", () => {
+    it("creates a item of feedback", async () => {
+      const newFeedback = { questionid: "12345", content: "some feedback" };
+      const addedFeedback = { id: 1234, feedback: "some feedback" };
+      API.graphql.mockResolvedValue({
+        data: { createFeedback: addedFeedback }
+      });
+      graphqlOperation.mockReturnValue("the add feedback mutation");
+      const returnedFeedback = await addFeedback(newFeedback);
+      expect(graphqlOperation.mock.calls.length).toEqual(1);
+      expect(graphqlOperation.mock.calls[0][0]).toContain("CreateFeedback");
+      expect(graphqlOperation.mock.calls[0][1]).toEqual({ input: newFeedback });
+      expect(API.graphql.mock.calls.length).toEqual(1);
+      expect(API.graphql.mock.calls[0][0]).toEqual("the add feedback mutation");
+      expect(returnedFeedback).toEqual(addedFeedback);
+    });
+
+    it("resolves to the new feedback", () => {
+      const newFeedback = { questionid: "12345", content: "some feedback" };
+      const addedFeedback = { id: 1234, feedback: "some feedback" };
+      API.graphql.mockResolvedValue({
+        data: { createFeedback: addedFeedback }
+      });
+      graphqlOperation.mockReturnValue("the add feedback mutation");
+      expect.assertions(1);
+      return addFeedback().then(newQ => {
+        expect(newQ).toEqual(addedFeedback);
+      });
+    });
+
+    it("propogates the errors", async () => {
+      API.graphql.mockRejectedValue("some error");
+      graphqlOperation.mockReturnValue("the add feedback mutation");
+      expect.assertions(1);
+      return addFeedback().catch(errorMessage => {
         expect(errorMessage).toEqual({ error: "some error" });
       });
     });

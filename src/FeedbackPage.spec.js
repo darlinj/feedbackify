@@ -102,12 +102,12 @@ describe("Providing feedback", () => {
     });
     expect(addFeedback.mock.calls.length).toEqual(2);
     expect(addFeedback.mock.calls[0][0]).toEqual({
-      question_id: "12345",
-      feedback: "Some feedback"
+      questionid: "12345",
+      content: "Some feedback"
     });
     expect(addFeedback.mock.calls[1][0]).toEqual({
-      question_id: "54321",
-      feedback: "Some other feedback"
+      questionid: "54321",
+      content: "Some other feedback"
     });
     expect(component.find("TitleBar").prop("title")).toEqual(
       "Thanks for your feedback"
