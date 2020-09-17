@@ -29,7 +29,7 @@ describe("Provide feedback", async () => {
           cy.get('button[cy-data="submit"]').click();
           cy.get('div[cy-data="title"]').should(
             "contain.text",
-            "Thank you for your feedback :)"
+            "Thanks for your feedback"
           );
         });
       });
