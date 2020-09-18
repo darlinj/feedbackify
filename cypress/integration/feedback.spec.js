@@ -1,14 +1,13 @@
 import faker from "faker";
 
 describe("Provide feedback", async () => {
-  beforeEach(() => {});
+  let question1Id = 0;
+  let question2Id = 0;
+  const question1 = faker.lorem.words(10);
+  const question2 = faker.lorem.words(10);
 
-  it("fills in the feedback page", () => {
+  beforeEach(() => {
     cy.login();
-    const question1 = faker.lorem.words(10);
-    const question2 = faker.lorem.words(10);
-    let question1Id = 0;
-    let question2Id = 0;
     return cy.addQuestionnaire("Questionnaire 1").then(qu => {
       cy.addQuestion({
         questionnaireid: qu.id,
@@ -19,20 +18,22 @@ describe("Provide feedback", async () => {
           question: question2
         }).then(q2 => {
           cy.visit(`/feedback/${qu.id}`);
-          cy.get('div[cy-data="title"]').should(
-            "contain.text",
-            "Questionnaire 1"
-          );
-          cy.get(`Label#${q1.id}`).should("contain.text", question1);
-          cy.get(`input[cy-data="question-${q1.id}"`).type("some answer");
-          cy.get(`input[cy-data="question-${q2.id}"`).type("some other answer");
-          cy.get('button[cy-data="submit"]').click();
-          cy.get('div[cy-data="title"]').should(
-            "contain.text",
-            "Thanks for your feedback"
-          );
+          question1Id = q1.id;
+          question2Id = q2.id;
         });
       });
     });
+  });
+
+  it("fills in the feedback page", () => {
+    cy.get('div[cy-data="title"]').should("contain.text", "Questionnaire 1");
+    cy.get(`Label#${question1Id}`).should("contain.text", question1);
+    cy.get(`input[cy-data="question-${question1Id}"`).type("some answer");
+    cy.get(`input[cy-data="question-${question2Id}"`).type("some other answer");
+    cy.get('button[cy-data="submit"]').click();
+    cy.get('div[cy-data="title"]').should(
+      "contain.text",
+      "Thanks for your feedback"
+    );
   });
 });
