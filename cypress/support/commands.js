@@ -10,18 +10,7 @@ import {
 import Amplify, { Auth } from "aws-amplify";
 import aws_exports from "../../src/aws-exports.js";
 Amplify.configure(aws_exports);
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
+
 Cypress.Commands.add("login", () => {
   return Auth.signIn("fred@bedrock.com", "password")
     .then(user => {
@@ -56,7 +45,7 @@ Cypress.Commands.add("addQuestion", question => {
       return result;
     })
     .catch(e => {
-      console.log(e);
+      console.log("Failed to add question", e);
     });
 });
 
@@ -73,6 +62,87 @@ Cypress.Commands.add("addQuestionnaire", newRequest => {
       console.log(e);
     });
 });
+
+const addQuestion = (questionnaireId, question) => {
+  const request = {
+    questionnaireid: questionnaireId,
+    question: question
+  };
+  return addQuestion(request).then(result => {
+    return result;
+  });
+};
+
+Cypress.Commands.add("createFeedback", feedbackData => {
+  const request = {
+    userid: 1234,
+    name: feedbackData.questionnaireName
+  };
+  return addQuestionnaire(request)
+    .then(addedQuestionnaire => {
+      feedbackData.questionnaireId = addedQuestionnaire.id;
+      return feedbackData;
+    })
+    .then(feedbackData => {
+      let promises = [];
+      feedbackData.questions.forEach(question => {
+        promises.push(
+          addQuestion(feedbackData.questionnaireId, question.question)
+        );
+      });
+      Promise.all(promises).then(addedQuestions => {
+        addedQuestions.forEach((question, index) => {
+          feedbackData.questions[index].id = question.id;
+        });
+      });
+      return feedbackData;
+    })
+    .catch(e => {
+      console.log(e);
+    });
+});
+//Cypress.Commands.add("createFeedback", feedbackData => {
+//  return cy
+//    .addQuestionnaire(feedbackData.questionnaireName)
+//    .then(addedQuestionnaire => {
+//      feedbackData.questionnaireId = addedQuestionnaire.id;
+//      return feedbackData;
+//    })
+//    .then(feedbackData => {
+//      console.log("feedbackData", feedbackData);
+//      cy.wrap(feedbackData.questions).each((question, i, array) => {
+//        question.questionnaireid = feedbackData.questionnaireId;
+//        cy.addQuestion(question).then(addedQuestion => {
+//          console.log("added question", addedQuestion);
+//          feedbackData.questions[i].id = addedQuestion.id;
+//        });
+//        console.log("feedbackData out", feedbackData);
+//        return feedbackData;
+//      });
+//      return cy
+//        .addQuestions(feedbackData.questionnaireId, feedbackData.questions)
+//        .then(addedQuestions => {
+//          console.log("addedQuestions", addedQuestions);
+//          feedbackData.questions = addedQuestions;
+//          return feedbackData;
+//        });
+//    });
+//});
+//  return addQuestionnaire(questionniareReq).then(questionnaireResult => {
+//    feedbackData.questionnaireId = questionnaireResult.id;
+//    feedbackData.questions.forEach((question, index) => {
+//      const questionReq = {
+//        questionnaireid: questionnaireResult.id,
+//        question: question.question
+//      };
+//      addQuestion(questionReq).then(questionResult => {
+//        // Add feedback here
+//        feedbackData.questions[index].id = questionResult.id;
+//        console.log(feedbackData);
+//        return feedbackData;
+//      });
+//    });
+//  });
 //
 //
 // -- This is a child command --

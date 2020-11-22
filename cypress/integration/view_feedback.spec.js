@@ -1,20 +1,37 @@
 import faker from "faker";
 
 describe("view feedback", async () => {
+  let feedbackData = {};
+
   beforeEach(() => {
     cy.login();
-    cy.createFeedback();
-    cy.visit("/feedback/12345/");
+    cy.createFeedback({
+      questionnaireName: "Questionaire1",
+      questions: [
+        {
+          question: "How great am I?",
+          feedback: [{ feedbackText: "You are great!" }]
+        },
+        {
+          question: "How great am I now?",
+          feedback: [{ feedbackText: "You are really great!" }]
+        }
+      ]
+    }).then(data => {
+      console.log("questionnaire data with ids", data);
+      feedbackData = data;
+    });
+    cy.wait(500);
   });
 
   it("shows the feedback for the questionnaire", () => {
-    cy.get(`Label#${q1.id}`).should("contain.text", question1);
-    cy.get(`input[cy-data="question-${q1.id}"`).type("some answer");
-    cy.get(`input[cy-data="question-${q2.id}"`).type("some other answer");
-    cy.get('button[cy-data="submit"]').click();
-    cy.get('div[cy-data="title"]').should(
+    cy.visit(`/feedback/${feedbackData.questionnaireId}`);
+    cy.get(`Label#${feedbackData.questions[0].id}`).should(
       "contain.text",
-      "Thanks for your feedback"
+      "How great am I?"
     );
+    cy.get(
+      `div[cy-data="feedback-${feedbackData.questions[0].feedback[0].id}}"`
+    ).type("You are great!");
   });
 });

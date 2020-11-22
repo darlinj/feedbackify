@@ -1,6 +1,6 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import { FaMinusSquare } from "react-icons/fa";
+import { FaMinusSquare, FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
@@ -24,11 +24,7 @@ const QuestionnairesList = params => {
           {questionnaireList.map((questionnaireObject, index) => {
             return (
               <tr className="questionnaire-item" key={index}>
-                <td>
-                  <Link to={`/questionnaire/${questionnaireObject.id}`}>
-                    {questionnaireObject.name}
-                  </Link>
-                </td>
+                <td>{questionnaireObject.name}</td>
                 <td>
                   <a
                     href={`http://${window.location.href}feedback/${questionnaireObject.id}`}
@@ -47,6 +43,12 @@ const QuestionnairesList = params => {
                   )}
                 </td>
                 <td>
+                  <Link
+                    to={`/questionnaire/${questionnaireObject.id}`}
+                    alt="Edit"
+                  >
+                    <FaEdit style={{ color: "red" }} />
+                  </Link>
                   <button
                     id={questionnaireObject.id}
                     className="btn"
@@ -54,13 +56,12 @@ const QuestionnairesList = params => {
                     value={questionnaireObject.id}
                     cy-data="delete-question"
                     style={{
-                      float: "right",
                       paddingTop: "1px",
                       paddingBottom: "1px"
                     }}
                   >
                     <FaMinusSquare style={{ color: "red" }} />
-                  </button>{" "}
+                  </button>
                 </td>
               </tr>
             );
