@@ -63,7 +63,7 @@ Cypress.Commands.add("addQuestionnaire", newRequest => {
     });
 });
 
-const addQuestion = (questionnaireId, question) => {
+const createQuestion = (questionnaireId, question) => {
   const request = {
     questionnaireid: questionnaireId,
     question: question
@@ -71,6 +71,26 @@ const addQuestion = (questionnaireId, question) => {
   return addQuestion(request).then(result => {
     return result;
   });
+};
+
+const addQuestions = feedbackData => {
+  let promises = [];
+  feedbackData.questions.forEach(question => {
+    promises.push(
+      createQuestion(feedbackData.questionnaireId, question.question)
+    );
+  });
+  Promise.all(promises).then(addedQuestions => {
+    addedQuestions.forEach((question, index) => {
+      feedbackData.questions[index].id = question.id;
+    });
+    createFeedbacks(feedbackData);
+  });
+  return feedbackData;
+};
+
+const createFeedbacks = feedbackdata => {
+  console.log("START HERE: create the feedback");
 };
 
 Cypress.Commands.add("createFeedback", feedbackData => {
@@ -83,20 +103,7 @@ Cypress.Commands.add("createFeedback", feedbackData => {
       feedbackData.questionnaireId = addedQuestionnaire.id;
       return feedbackData;
     })
-    .then(feedbackData => {
-      let promises = [];
-      feedbackData.questions.forEach(question => {
-        promises.push(
-          addQuestion(feedbackData.questionnaireId, question.question)
-        );
-      });
-      Promise.all(promises).then(addedQuestions => {
-        addedQuestions.forEach((question, index) => {
-          feedbackData.questions[index].id = question.id;
-        });
-      });
-      return feedbackData;
-    })
+    .then(addQuestions)
     .catch(e => {
       console.log(e);
     });
