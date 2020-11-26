@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@cypress/webpack-preprocessor": "^5.4.11",
-    "cypress": "^5.6.0",
+    "cypress": "^6.0.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "faker": "^4.1.0",
