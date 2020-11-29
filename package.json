@@ -10,6 +10,7 @@
     "amazon-cognito-identity-js": "^4.5.5",
     "aws-amplify": "^3.3.9",
     "bootstrap": "^4.5.3",
+    "cypress-graphql-mock": "^0.5.0-alpha.4",
     "moment": "^2.29.1",
     "react": "^16.14.0",
     "react-bootstrap": "^1.4.0",
