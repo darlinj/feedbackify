@@ -25,6 +25,7 @@ const FeedbackPage = props => {
         toast.error(
           `Failed to get this questionnaire. Check your internet connection`
         );
+        console.log(e);
       });
   }, []);
 

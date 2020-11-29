@@ -69,6 +69,7 @@ const retrieveQuestionnaire = id => {
     API.graphql(graphqlOperation(getQuestionnaire, { id: id }))
       .then(result => {
         resolve(result.data.getQuestionnaire);
+        console.log("result:", result);
       })
       .catch(e => {
         reject({ error: e });
