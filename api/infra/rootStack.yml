@@ -1,0 +1,81 @@
+---
+Description: AWS AppSync Questionnaires API
+
+Parameters:
+  APIName:
+    Type: String
+    Description: Name of the API - used to generate unique names for resources
+    MinLength: 3
+    MaxLength: 20
+    AllowedPattern: '^[a-zA-Z][a-zA-Z0-9_]*$'
+
+Resources:
+  CognitoPool:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: "./cognito.yml"
+      Parameters:
+        NamePrefix: 
+          Ref: APIName
+  DynamoDbTable:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: "./dynamoDB.yml"
+      Parameters:
+        NamePrefix: 
+          Ref: APIName
+  AppsyncAPI:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: "./appsyncAPI.yml"
+      Parameters:
+        NamePrefix: 
+          Ref: APIName
+        UserPoolId: 
+          Fn::GetAtt:
+            - CognitoPool
+            - Outputs.UserPoolId
+        QuestionnaireTableName: 
+          Fn::GetAtt:
+            - DynamoDbTable
+            - Outputs.QuestionnaireTableID
+        QuestionTableName: 
+          Fn::GetAtt:
+            - DynamoDbTable
+            - Outputs.QuestionTableID
+        ServiceRoleArn: 
+          Fn::GetAtt:
+            - DynamoDbTable
+            - Outputs.DBRoleARN
+
+Outputs:
+  CognitoUserPoolId:
+    Description: The pool id of the cognito user pool
+    Value: 
+      Fn::GetAtt:
+        - CognitoPool
+        - Outputs.UserPoolId
+  CognitoUserPoolClientId:
+    Description: The Client ID for AWS AppSync Auth
+    Value: 
+      Fn::GetAtt:
+        - CognitoPool
+        - Outputs.UserPoolClientId
+  QuestionnairesTable:
+    Description: The name of the DynamoDB Table
+    Value: 
+      Fn::GetAtt:
+        - DynamoDbTable
+        - Outputs.QuestionnaireTableID
+  GraphQLApiEndpoint:
+    Description: The URL to the GraphQL Endpoint
+    Value: 
+      Fn::GetAtt:
+        - AppsyncAPI
+        - Outputs.GraphQLApiEndpoint
+  GraphQLApiId:
+    Description: The API ID of the GraphQL API
+    Value: 
+      Fn::GetAtt:
+        - AppsyncAPI
+        - Outputs.GraphQLApiId

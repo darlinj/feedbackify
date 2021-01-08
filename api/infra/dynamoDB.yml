@@ -1,0 +1,136 @@
+---
+Description: create DynamoDB table for Appsync
+
+Parameters:
+  NamePrefix:
+    Type: String
+    Description: Name of the API - used to generate unique names for resources
+    MinLength: 3
+    MaxLength: 20
+    AllowedPattern: '^[a-zA-Z][a-zA-Z0-9_]*$'
+
+Resources:
+  DynamoDBRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${NamePrefix}-appsync-dynamodb-role
+      ManagedPolicyArns:
+        - Ref: AppSyncDynamoDBPolicy
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - sts:AssumeRole
+            Principal:
+              Service:
+                - appsync.amazonaws.com
+    DependsOn:
+      - AppSyncDynamoDBPolicy
+
+  AppSyncDynamoDBPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Managed policy to allow AWS AppSync to access the tables created by this template.
+      Path: /appsync/
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - dynamodb:GetItem
+              - dynamodb:PutItem
+              - dynamodb:DeleteItem
+              - dynamodb:UpdateItem
+              - dynamodb:Query
+              - dynamodb:Scan
+              - dynamodb:BatchGetItem
+              - dynamodb:BatchWriteItem
+            Resource: 
+              - !Join [ "", [ !GetAtt QuestionnairesTable.Arn, "*" ] ]
+              - !Join [ "", [ !GetAtt QuestionsTable.Arn, "*" ] ]
+
+  QuestionnairesTable:
+    Type: "AWS::DynamoDB::Table"
+    Description: "Data store for AWS AppSync Questionnaires Type"
+    Properties:
+      TableName: !Sub ${NamePrefix}-questionnaires-table
+      AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "S"
+        - AttributeName: "UserId"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "id"
+          KeyType: "HASH"
+        - AttributeName: "UserId"
+          KeyType: "RANGE"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      GlobalSecondaryIndexes:
+        - IndexName: "UserId-index"
+          KeySchema: 
+            - AttributeName: "UserId"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+  QuestionsTable:
+    Type: "AWS::DynamoDB::Table"
+    Description: "Data store for AWS AppSync Questions Type"
+    Properties:
+      TableName: !Sub ${NamePrefix}-questions-table
+      AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "S"
+        - AttributeName: "UserId"
+          AttributeType: "S"
+        - AttributeName: "questionnaireId"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "id"
+          KeyType: "HASH"
+        - AttributeName: "UserId"
+          KeyType: "RANGE"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      GlobalSecondaryIndexes:
+        - IndexName: "UserId-index"
+          KeySchema: 
+            - AttributeName: "UserId"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+        - IndexName: "QuestionnaireIdGSI"
+          KeySchema: 
+            - AttributeName: "questionnaireId"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+Outputs:
+  DBRoleARN:
+    Description: The ARN of the role that can connect to the table
+    Value: 
+      !GetAtt DynamoDBRole.Arn
+  QuestionnaireTableID:
+    Description: The ID of the questionnaires table
+    Value: 
+      !Ref QuestionnairesTable
+  QuestionTableID:
+    Description: The ID of the questions table
+    Value: 
+      !Ref QuestionsTable
+  QuestionTableID:
+    Description: The ID of the question table
+    Value: 
+      !Ref QuestionsTable

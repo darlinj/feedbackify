@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - npm install
+      - ./api/tests/createCognitoUser.sh testuser
+  build:
+    commands:
+      - npm build
+      - npm test
+
+reports:
+  jest_reports:
+    files:
+      - "testReports/*.xml"
+    file-format: JUNITXML

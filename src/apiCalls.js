@@ -1,124 +1,97 @@
-import { API, graphqlOperation } from "aws-amplify";
-import {
-  createQuestion,
-  createQuestionnaire,
-  createFeedback,
-  deleteQuestion,
-  deleteQuestionnaire
-} from "./graphql/mutations";
-import {
-  listQuestions,
-  listQuestionnaires,
-  getQuestionnaire
-} from "./graphql/queries";
+import Amplify, { API, graphqlOperation } from "aws-amplify";
 
-const addQuestion = newQuestion => {
-  return new Promise((resolve, reject) => {
-    API.graphql(graphqlOperation(createQuestion, { input: newQuestion }))
-      .then(result => {
-        resolve(result.data.createQuestion);
-      })
-      .catch(e => {
-        reject({ error: e });
-      });
-  });
+const runGraphqlOperation = query_string => {
+  const query = graphqlOperation(query_string);
+  return API.graphql(query);
 };
 
-const addQuestionnaire = newQuestionnaire => {
-  return new Promise((resolve, reject) => {
-    API.graphql(
-      graphqlOperation(createQuestionnaire, { input: newQuestionnaire })
-    )
-      .then(result => {
-        resolve(result.data.createQuestionnaire);
-      })
-      .catch(e => {
-        console.log(e);
-        reject({ error: e });
-      });
-  });
+export const getQuestionnaires = () => {
+  return runGraphqlOperation(`query MyQuery {
+  getQuestionnaires {
+    questionnaires {
+      id
+      name
+    }
+  }
+}`);
 };
 
-const addFeedback = feedback => {
-  return new Promise((resolve, reject) => {
-    API.graphql(graphqlOperation(createFeedback, { input: feedback }))
-      .then(result => {
-        resolve(result.data.createFeedback);
-      })
-      .catch(e => {
-        console.log(e);
-        reject({ error: e });
-      });
-  });
+export const getQuestionnaire = id => {
+  return runGraphqlOperation(`query MyQuery {
+  getQuestionnaire(id: "${id}") {
+    id
+    name
+  }
+}`);
 };
 
-const getQuestions = () => {
-  return new Promise((resolve, reject) => {
-    API.graphql(graphqlOperation(listQuestions))
-      .then(result => {
-        resolve(result.data.listQuestions.items);
-      })
-      .catch(e => {
-        reject({ error: e });
-      });
-  });
+export const getQuestionnaireWithQuestions = id => {
+  return runGraphqlOperation(`query MyQuery {
+  getQuestionnaire(id: "${id}") {
+    id
+    name
+    questions {
+      items {
+        question
+      }
+    }
+  }
+}`);
 };
 
-const retrieveQuestionnaire = id => {
-  return new Promise((resolve, reject) => {
-    API.graphql(graphqlOperation(getQuestionnaire, { id: id }))
-      .then(result => {
-        resolve(result.data.getQuestionnaire);
-        console.log("result:", result);
-      })
-      .catch(e => {
-        reject({ error: e });
-      });
-  });
+export const deleteQuestionnaire = id => {
+  return runGraphqlOperation(`mutation MyMutation {
+  deleteQuestionnaire(id: "${id}") {
+    id
+  }
+}`);
 };
 
-const getQuestionnaires = () => {
-  return new Promise((resolve, reject) => {
-    API.graphql(graphqlOperation(listQuestionnaires))
-      .then(result => {
-        resolve(result.data.listQuestionnaires.items);
-      })
-      .catch(e => {
-        reject({ error: e });
-      });
-  });
+export const saveQuestionnaire = questionnaire => {
+  return runGraphqlOperation(`mutation MyMutation {
+    saveQuestionnaire(name: "${questionnaire.name}") {
+      id
+      name
+    }
+  }`);
 };
 
-const removeQuestion = id => {
-  return new Promise((resolve, reject) => {
-    API.graphql(graphqlOperation(deleteQuestion, { input: id }))
-      .then(result => {
-        resolve(result.data.deleteQuestion);
-      })
-      .catch(e => {
-        reject({ error: e });
-      });
-  });
+export const getQuestions = () => {
+  return runGraphqlOperation(`query MyQuery {
+  getQuestions {
+    questions {
+      id
+      questionnaireId
+      question
+    }
+  }
+}`);
 };
 
-const removeQuestionnaire = id => {
-  return new Promise((resolve, reject) => {
-    API.graphql(graphqlOperation(deleteQuestionnaire, { input: id }))
-      .then(result => {
-        resolve(result.data.deleteQuestionnaire);
-      })
-      .catch(e => {
-        reject({ error: e });
-      });
-  });
+export const saveQuestion = question => {
+  return runGraphqlOperation(`mutation MyMutation {
+    saveQuestion(questionnaireId: "${question.questionnaireId}", question: "${question.question}") {
+      id
+      questionnaireId
+      question
+    }
+  }`);
 };
-export {
-  addQuestionnaire,
-  addQuestion,
-  addFeedback,
-  getQuestionnaires,
-  retrieveQuestionnaire,
-  getQuestions,
-  removeQuestion,
-  removeQuestionnaire
+
+export const getQuestion = id => {
+  return runGraphqlOperation(`query MyQuery {
+  getQuestion(id: "${id}") {
+    id
+    questionnaireId
+    question
+  }
+}`);
+};
+
+export const deleteQuestion = id => {
+  return runGraphqlOperation(`mutation MyMutation {
+  deleteQuestion(id: "${id}") {
+    id
+  }
+}`);
 };
