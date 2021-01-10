@@ -1,12 +1,21 @@
 import { API, graphqlOperation } from "aws-amplify";
-import * as rawAPI from "./rawApiCalls.js";
 
-const addQuestion = newQuestion => {
+const runGraphqlOperation = query_string => {
+  const query = graphqlOperation(query_string);
+  return API.graphql(query);
+};
+
+const addQuestion = question => {
   return new Promise((resolve, reject) => {
-    rawAPI
-      .saveQuestion(newQuestion)
+    runGraphqlOperation(`mutation MyMutation {
+        saveQuestion(questionnaireId: "${question.questionnaireId}", question: "${question.question}") {
+          id
+          questionnaireId
+          question
+        }
+      }`)
       .then(result => {
-        resolve(result.data.createQuestion);
+        resolve(result.data.saveQuestion);
       })
       .catch(e => {
         reject({ error: e });
@@ -16,10 +25,14 @@ const addQuestion = newQuestion => {
 
 const addQuestionnaire = newQuestionnaire => {
   return new Promise((resolve, reject) => {
-    rawAPI
-      .saveQuestionnaire(newQuestionnaire)
+    runGraphqlOperation(`mutation MyMutation {
+    saveQuestionnaire(name: "${newQuestionnaire.name}") {
+         id
+         name
+       }
+     }`)
       .then(result => {
-        resolve(result.data.createQuestionnaire);
+        resolve(result.data.saveQuestionnaire);
       })
       .catch(e => {
         reject({ error: e });
@@ -29,8 +42,13 @@ const addQuestionnaire = newQuestionnaire => {
 
 const addFeedback = feedback => {
   return new Promise((resolve, reject) => {
-    rawAPI
-      .saveQuestion(feedback) //CHANGE ME!!!
+    runGraphqlOperation(`mutation MyMutation {
+        saveQuestion(questionnaireId: "${question.questionnaireId}", question: "${question.question}") {
+          id
+          questionnaireId
+          question
+        }
+      }`)
       .then(result => {
         resolve(result.data.createFeedback);
       })
@@ -43,8 +61,15 @@ const addFeedback = feedback => {
 
 const getQuestions = () => {
   return new Promise((resolve, reject) => {
-    rawAPI
-      .getQuestions()
+    runGraphqlOperation(`query MyQuery {
+       getQuestions {
+         questions {
+           id
+           questionnaireId
+           question
+         }
+       }
+     }`)
       .then(result => {
         resolve(result.data.listQuestions.items);
       })
@@ -56,8 +81,12 @@ const getQuestions = () => {
 
 const retrieveQuestionnaire = id => {
   return new Promise((resolve, reject) => {
-    rawAPI
-      .getQuestionnaire(id)
+    runGraphqlOperation(`query MyQuery {
+      getQuestionnaire(id: "${id}") {
+       id
+       name
+     }
+    }`)
       .then(result => {
         resolve(result.data.getQuestionnaire);
         console.log("result:", result);
@@ -70,8 +99,14 @@ const retrieveQuestionnaire = id => {
 
 const getQuestionnaires = () => {
   return new Promise((resolve, reject) => {
-    rawAPI
-      .getQuestionnaires()
+    runGraphqlOperation(`query MyQuery {
+      getQuestionnaires {
+        questionnaires {
+          id
+          name
+        }
+      }
+    }`)
       .then(result => {
         console.log("data", result.data);
         resolve(result.data.getQuestionnaires.questionnaires);
@@ -84,8 +119,11 @@ const getQuestionnaires = () => {
 
 const removeQuestion = id => {
   return new Promise((resolve, reject) => {
-    rawAPI
-      .deleteQuestion(id)
+    runGraphqlOperation(`mutation MyMutation {
+       deleteQuestion(id: "${id}") {
+         id
+       }
+     }`)
       .then(result => {
         resolve(result.data.deleteQuestion);
       })
@@ -97,8 +135,11 @@ const removeQuestion = id => {
 
 const removeQuestionnaire = id => {
   return new Promise((resolve, reject) => {
-    rawAPI
-      .deleteQuestionnaire(id)
+    runGraphqlOperation(`mutation MyMutation {
+      deleteQuestionnaire(id: "${id}") {
+        id
+      }
+    }`)
       .then(result => {
         resolve(result.data.deleteQuestionnaire);
       })
