@@ -41,3 +41,4 @@ amplifyxc.config
 cypress/screenshots/*
 *.swp
 setEnv
+testReports
