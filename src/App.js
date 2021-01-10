@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navigator from "./Navigator";
 import { Container } from "react-bootstrap";
 import Amplify from "aws-amplify";
-import awsconfig from "./aws-exports";
+import awsConfig from "./aws-exports";
 import { getCurrentUser } from "./authentication";
 import { BrowserRouter as Router } from "react-router-dom";
 import Routes from "./Routes.js";
@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-Amplify.configure(awsconfig);
+Amplify.configure(awsConfig);
 
 function App() {
   const [currentUser, setCurrentUser] = useState();

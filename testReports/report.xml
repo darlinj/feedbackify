@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="12" failures="0" errors="0" time="8.011">
+  <testsuite name="The integrated API" errors="0" failures="0" skipped="0" timestamp="2021-01-09T10:57:22" time="3.444" tests="1">
+    <testcase classname="The integrated API Adds a questionnaire and a question and then retrieves both" name="The integrated API Adds a questionnaire and a question and then retrieves both" time="0.891">
+    </testcase>
+  </testsuite>
+  <testsuite name="The Questionnaire API" errors="0" failures="0" skipped="0" timestamp="2021-01-09T10:57:22" time="6.778" tests="6">
+    <testcase classname="The Questionnaire API Returns an empty array if there are no records in the DB" name="The Questionnaire API Returns an empty array if there are no records in the DB" time="0.335">
+    </testcase>
+    <testcase classname="The Questionnaire API Adds a questionnaire and then checks it is there" name="The Questionnaire API Adds a questionnaire and then checks it is there" time="0.522">
+    </testcase>
+    <testcase classname="The Questionnaire API Can&apos;t see items that don&apos;t belong to this user" name="The Questionnaire API Can&apos;t see items that don&apos;t belong to this user" time="0.509">
+    </testcase>
+    <testcase classname="The Questionnaire API Can get an individual Questionnaire by ID" name="The Questionnaire API Can get an individual Questionnaire by ID" time="0.491">
+    </testcase>
+    <testcase classname="The Questionnaire API Can delete an individual Questionnaire by ID" name="The Questionnaire API Can delete an individual Questionnaire by ID" time="1.032">
+    </testcase>
+    <testcase classname="The Questionnaire API deleting a Questionnaire that doesn&apos;t exist" name="The Questionnaire API deleting a Questionnaire that doesn&apos;t exist" time="0.284">
+    </testcase>
+  </testsuite>
+  <testsuite name="The Question API" errors="0" failures="0" skipped="0" timestamp="2021-01-09T10:57:22" time="7.317" tests="5">
+    <testcase classname="The Question API Returns an empty array if there are no records in the DB" name="The Question API Returns an empty array if there are no records in the DB" time="1.17">
+    </testcase>
+    <testcase classname="The Question API Adds a question and then checks it is there" name="The Question API Adds a question and then checks it is there" time="0.964">
+    </testcase>
+    <testcase classname="The Question API Can&apos;t see items that don&apos;t belong to this user" name="The Question API Can&apos;t see items that don&apos;t belong to this user" time="0.974">
+    </testcase>
+    <testcase classname="The Question API Can get an individual Question by ID" name="The Question API Can get an individual Question by ID" time="1.02">
+    </testcase>
+    <testcase classname="The Question API Can delete an individual Question by ID" name="The Question API Can delete an individual Question by ID" time="1.409">
+    </testcase>
+  </testsuite>
+</testsuites>

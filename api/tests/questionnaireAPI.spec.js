@@ -5,8 +5,8 @@ import {
   getQuestionnaire,
   deleteQuestionnaire,
   getQuestionnaires
-} from "../../src/apiCalls.js";
-import awsConfig from "../../aws_config";
+} from "../../src/rawApiCalls.js";
+import awsConfig from "../../src/aws-exports";
 
 Amplify.configure(awsConfig);
 
@@ -15,12 +15,15 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  const tableName = `${process.env.API_NAME}-questionnaires-table`;
+  const tableName = `${process.env.REACT_APP_API_NAME}-questionnaires-table`;
   await clearDatabase(tableName);
 });
 
 const login = async () => {
-  await Auth.signIn(process.env.TEST_USERNAME, process.env.TEST_USER_PASSWORD);
+  await Auth.signIn(
+    process.env.REACT_APP_TEST_USERNAME,
+    process.env.REACT_APP_TEST_USER_PASSWORD
+  );
 };
 
 describe("The Questionnaire API", () => {
@@ -48,7 +51,7 @@ describe("The Questionnaire API", () => {
   });
 
   it("Can't see items that don't belong to this user", async () => {
-    const tableName = `${process.env.API_NAME}-questionnaires-table`;
+    const tableName = `${process.env.REACT_APP_API_NAME}-questionnaires-table`;
     await addQuestionnaireForAnotherUser(tableName);
 
     let questionnaireId = 0;

@@ -5,18 +5,21 @@ import {
   getQuestion,
   deleteQuestion,
   getQuestions
-} from "../../src/apiCalls.js";
-import awsConfig from "../../aws_config";
+} from "../../src/rawApiCalls.js";
+import awsConfig from "../../src/aws-exports";
 
 Amplify.configure(awsConfig);
 
 beforeEach(async () => {
   await login();
-  await clearDatabase(`${process.env.API_NAME}-questions-table`);
+  await clearDatabase(`${process.env.REACT_APP_API_NAME}-questions-table`);
 });
 
 const login = async () => {
-  await Auth.signIn(process.env.TEST_USERNAME, process.env.TEST_USER_PASSWORD);
+  await Auth.signIn(
+    process.env.REACT_APP_TEST_USERNAME,
+    process.env.REACT_APP_TEST_USER_PASSWORD
+  );
 };
 
 describe("The Question API", () => {
@@ -48,7 +51,7 @@ describe("The Question API", () => {
   });
 
   it("Can't see items that don't belong to this user", async () => {
-    const tableName = `${process.env.API_NAME}-questions-table`;
+    const tableName = `${process.env.REACT_APP_API_NAME}-questions-table`;
     await addQuestionForAnotherUser(tableName);
 
     const question = { questionnaireId: "12345", question: "Some question" };

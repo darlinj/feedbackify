@@ -1,97 +1,120 @@
-import Amplify, { API, graphqlOperation } from "aws-amplify";
+import { API, graphqlOperation } from "aws-amplify";
+import * as rawAPI from "./rawApiCalls.js";
 
-const runGraphqlOperation = query_string => {
-  const query = graphqlOperation(query_string);
-  return API.graphql(query);
+const addQuestion = newQuestion => {
+  return new Promise((resolve, reject) => {
+    rawAPI
+      .saveQuestion(newQuestion)
+      .then(result => {
+        resolve(result.data.createQuestion);
+      })
+      .catch(e => {
+        reject({ error: e });
+      });
+  });
 };
 
-export const getQuestionnaires = () => {
-  return runGraphqlOperation(`query MyQuery {
-  getQuestionnaires {
-    questionnaires {
-      id
-      name
-    }
-  }
-}`);
+const addQuestionnaire = newQuestionnaire => {
+  return new Promise((resolve, reject) => {
+    rawAPI
+      .saveQuestionnaire(newQuestionnaire)
+      .then(result => {
+        resolve(result.data.createQuestionnaire);
+      })
+      .catch(e => {
+        reject({ error: e });
+      });
+  });
 };
 
-export const getQuestionnaire = id => {
-  return runGraphqlOperation(`query MyQuery {
-  getQuestionnaire(id: "${id}") {
-    id
-    name
-  }
-}`);
+const addFeedback = feedback => {
+  return new Promise((resolve, reject) => {
+    rawAPI
+      .saveQuestion(feedback) //CHANGE ME!!!
+      .then(result => {
+        resolve(result.data.createFeedback);
+      })
+      .catch(e => {
+        console.log(e);
+        reject({ error: e });
+      });
+  });
 };
 
-export const getQuestionnaireWithQuestions = id => {
-  return runGraphqlOperation(`query MyQuery {
-  getQuestionnaire(id: "${id}") {
-    id
-    name
-    questions {
-      items {
-        question
-      }
-    }
-  }
-}`);
+const getQuestions = () => {
+  return new Promise((resolve, reject) => {
+    rawAPI
+      .getQuestions()
+      .then(result => {
+        resolve(result.data.listQuestions.items);
+      })
+      .catch(e => {
+        reject({ error: e });
+      });
+  });
 };
 
-export const deleteQuestionnaire = id => {
-  return runGraphqlOperation(`mutation MyMutation {
-  deleteQuestionnaire(id: "${id}") {
-    id
-  }
-}`);
+const retrieveQuestionnaire = id => {
+  return new Promise((resolve, reject) => {
+    rawAPI
+      .getQuestionnaire(id)
+      .then(result => {
+        resolve(result.data.getQuestionnaire);
+        console.log("result:", result);
+      })
+      .catch(e => {
+        reject({ error: e });
+      });
+  });
 };
 
-export const saveQuestionnaire = questionnaire => {
-  return runGraphqlOperation(`mutation MyMutation {
-    saveQuestionnaire(name: "${questionnaire.name}") {
-      id
-      name
-    }
-  }`);
+const getQuestionnaires = () => {
+  return new Promise((resolve, reject) => {
+    rawAPI
+      .getQuestionnaires()
+      .then(result => {
+        console.log("data", result.data);
+        resolve(result.data.getQuestionnaires.questionnaires);
+      })
+      .catch(e => {
+        reject({ error: e });
+      });
+  });
 };
 
-export const getQuestions = () => {
-  return runGraphqlOperation(`query MyQuery {
-  getQuestions {
-    questions {
-      id
-      questionnaireId
-      question
-    }
-  }
-}`);
+const removeQuestion = id => {
+  return new Promise((resolve, reject) => {
+    rawAPI
+      .deleteQuestion(id)
+      .then(result => {
+        resolve(result.data.deleteQuestion);
+      })
+      .catch(e => {
+        reject({ error: e });
+      });
+  });
 };
 
-export const saveQuestion = question => {
-  return runGraphqlOperation(`mutation MyMutation {
-    saveQuestion(questionnaireId: "${question.questionnaireId}", question: "${question.question}") {
-      id
-      questionnaireId
-      question
-    }
-  }`);
+const removeQuestionnaire = id => {
+  return new Promise((resolve, reject) => {
+    rawAPI
+      .deleteQuestionnaire(id)
+      .then(result => {
+        resolve(result.data.deleteQuestionnaire);
+      })
+      .catch(e => {
+        reject({ error: e });
+      });
+  });
 };
 
-export const getQuestion = id => {
-  return runGraphqlOperation(`query MyQuery {
-  getQuestion(id: "${id}") {
-    id
-    questionnaireId
-    question
-  }
-}`);
-};
-
-export const deleteQuestion = id => {
-  return runGraphqlOperation(`mutation MyMutation {
-  deleteQuestion(id: "${id}") {
-    id
-  }
-}`);
+export {
+  addQuestionnaire,
+  addQuestion,
+  addFeedback,
+  getQuestionnaires,
+  retrieveQuestionnaire,
+  getQuestions,
+  removeQuestion,
+  removeQuestionnaire
 };
