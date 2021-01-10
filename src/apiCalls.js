@@ -80,7 +80,6 @@ const getQuestions = () => {
 };
 
 const retrieveQuestionnaire = id => {
-  console.log("QID", id);
   return new Promise((resolve, reject) => {
     runGraphqlOperation(`query MyQuery {
   getQuestionnaire(id: "${id}") {
@@ -94,7 +93,6 @@ const retrieveQuestionnaire = id => {
 }`)
       .then(result => {
         resolve(result.data.getQuestionnaire);
-        console.log("result:", result);
       })
       .catch(e => {
         reject({ error: e });
@@ -113,7 +111,6 @@ const getQuestionnaires = () => {
       }
     }`)
       .then(result => {
-        console.log("data", result.data);
         resolve(result.data.getQuestionnaires.questionnaires);
       })
       .catch(e => {

@@ -31,7 +31,7 @@ const QuestionsPage = props => {
 
   const handleAddingQuestion = async newQuestion => {
     const question = {
-      questionnaireid: questionnaireId,
+      questionnaireId: questionnaireId,
       question: newQuestion
     };
     addQuestion(question)
@@ -44,7 +44,7 @@ const QuestionsPage = props => {
   };
 
   const handleDelete = id => {
-    removeQuestion({ id: id })
+    removeQuestion(id)
       .then(result => {
         setQuestionList(questionList.filter(q => q.id !== id));
       })

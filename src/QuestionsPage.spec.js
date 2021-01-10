@@ -103,7 +103,7 @@ describe("Adding questions to the list", () => {
     });
     expect(addQuestion.mock.calls.length).toEqual(1);
     expect(addQuestion.mock.calls[0][0]).toEqual({
-      questionnaireid: "999",
+      questionnaireId: "999",
       question: "some question"
     });
   });
@@ -136,9 +136,7 @@ describe("Adding questions to the list", () => {
     });
     component.update();
     expect(removeQuestion.mock.calls.length).toEqual(1);
-    expect(removeQuestion.mock.calls[0][0]).toEqual({
-      id: 1234
-    });
+    expect(removeQuestion.mock.calls[0][0]).toEqual(1234);
     expect(component.find("QuestionsList").prop("questionList")).toEqual([
       { id: 4321, question: "This is another question" }
     ]);
