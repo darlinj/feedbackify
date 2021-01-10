@@ -119,9 +119,7 @@ describe("Adding questionnaires to the list", () => {
     });
     component.update();
     expect(removeQuestionnaire.mock.calls.length).toEqual(1);
-    expect(removeQuestionnaire.mock.calls[0][0]).toEqual({
-      id: 1234
-    });
+    expect(removeQuestionnaire.mock.calls[0][0]).toEqual(1234);
     expect(
       component.find("QuestionnairesList").prop("questionnaireList")
     ).toEqual([{ id: 4321, questionnaire: "This is another questionnaire" }]);

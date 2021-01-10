@@ -43,7 +43,7 @@ const addQuestionnaire = newQuestionnaire => {
 const addFeedback = feedback => {
   return new Promise((resolve, reject) => {
     runGraphqlOperation(`mutation MyMutation {
-        saveQuestion(questionnaireId: "${question.questionnaireId}", question: "${question.question}") {
+        saveQuestion(questionnaireId: "1234", question: "some question") {
           id
           questionnaireId
           question
@@ -80,13 +80,18 @@ const getQuestions = () => {
 };
 
 const retrieveQuestionnaire = id => {
+  console.log("QID", id);
   return new Promise((resolve, reject) => {
     runGraphqlOperation(`query MyQuery {
-      getQuestionnaire(id: "${id}") {
-       id
-       name
-     }
-    }`)
+  getQuestionnaire(id: "${id}") {
+    questions {
+      items {
+        id
+        question
+      }
+    }
+  }
+}`)
       .then(result => {
         resolve(result.data.getQuestionnaire);
         console.log("result:", result);

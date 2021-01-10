@@ -40,7 +40,7 @@ const QuestionnairesPage = props => {
   };
 
   const handleDelete = id => {
-    removeQuestionnaire({ id: id })
+    removeQuestionnaire(id)
       .then(result => {
         setQuestionnairesList(questionnaireList.filter(q => q.id !== id));
       })

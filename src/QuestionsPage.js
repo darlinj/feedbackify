@@ -24,6 +24,7 @@ const QuestionsPage = props => {
         }
       })
       .catch(e => {
+        console.log(e);
         toast.error(`Failed to get questions. Check your internet connection`);
       });
   }, []);
