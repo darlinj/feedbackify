@@ -23,7 +23,7 @@ describe("api calls", () => {
     it("gets a list of questions", async () => {
       const questions = [{ some: "question" }, { someOther: "question" }];
       API.graphql.mockResolvedValue({
-        data: { listQuestions: { items: questions } }
+        data: { getQuestions: { questions: questions } }
       });
       graphqlOperation.mockReturnValue("the list questions query");
       const questionList = await getQuestions();

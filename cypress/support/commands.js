@@ -8,11 +8,11 @@ import {
 } from "../../src/apiCalls";
 //import Auth from '../../src/authentication'
 import Amplify, { Auth } from "aws-amplify";
-import aws_exports from "../../src/aws-exports.js";
-Amplify.configure(aws_exports);
+import awsConfig from "../../src/aws-exports.js";
+Amplify.configure(awsConfig);
 
 Cypress.Commands.add("login", () => {
-  return Auth.signIn("fred@bedrock.com", "password")
+  return Auth.signIn("pinky@example.com", "Passw0rd!")
     .then(user => {
       let session = Auth.currentSession();
     })
@@ -20,27 +20,26 @@ Cypress.Commands.add("login", () => {
 });
 
 Cypress.Commands.add("deleteAllQuestions", () => {
+  console.log("something");
   return getQuestions().then(questions => {
+    console.log(questions);
     questions.forEach(question => {
-      removeQuestion({ id: question.id });
+      removeQuestion(question.id);
     });
   });
 });
 
 Cypress.Commands.add("deleteAllQuestionnaires", () => {
-  return getQuestionnaires().then(feedbackRequests => {
-    feedbackRequests.forEach(feedbackRequest => {
-      removeQuestionnaire({ id: feedbackRequest.id });
+  return getQuestionnaires().then(questionnaires => {
+    questionnaires.forEach(questionnaire => {
+      removeQuestionnaire(questionnaire.id);
     });
   });
 });
 
 Cypress.Commands.add("addQuestion", question => {
-  const request = {
-    questionnaireid: question.questionnaireid,
-    question: question.question
-  };
-  return addQuestion(request)
+  console.log(question);
+  return addQuestion(question)
     .then(result => {
       return result;
     })

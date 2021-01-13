@@ -10,7 +10,7 @@ describe("Provide feedback", async () => {
     cy.login();
     return cy.addQuestionnaire("Questionnaire 1").then(qu => {
       cy.addQuestion({
-        questionnaireid: qu.id,
+        questionnaireId: qu.id,
         question: question1
       }).then(q1 => {
         cy.addQuestion({

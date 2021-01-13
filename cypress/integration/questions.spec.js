@@ -1,15 +1,15 @@
 import faker from "faker";
 
 describe("manage questions", async () => {
-  beforeEach(() => {
-    cy.login();
+  beforeEach(async () => {
+    await cy.login();
     cy.deleteAllQuestions();
     cy.addQuestionnaire("random questionnaire").then(questionnaire => {
       cy.visit(`/questionnaire/${questionnaire.id}`);
     });
   });
 
-  it("adds questions to the list", () => {
+  it.only("adds questions to the list", () => {
     const question1 = faker.lorem.words(10);
     const question2 = faker.lorem.words(10);
     cy.get('input[cy-data="feedback-question"]').type(question1);
@@ -23,12 +23,12 @@ describe("manage questions", async () => {
   it("shows the questions that are linked to that questionnaire", () => {
     const question1 = faker.lorem.words(10);
     const question2 = faker.lorem.words(10);
-    return cy.addQuestionnaire("Questionnaire 1").then(q => {
-      cy.addQuestion({
+    return cy.addQuestionnaire("Questionnaire 1").then(async q => {
+      await cy.addQuestion({
         questionnaireid: q.id,
         question: question1
       });
-      cy.addQuestion({
+      await cy.addQuestion({
         questionnaireid: 1234,
         question: question2
       });
@@ -48,22 +48,22 @@ describe("manage questions", async () => {
   });
 
   it("removes questions from the list", () => {
-    const deleteQuestion = faker.lorem.words(10);
+    const questionToDelete = faker.lorem.words(10);
     return cy.addQuestionnaire("Questionnaire 1").then(questionnaire => {
       cy.addQuestion({
-        questionnaireid: questionnaire.id,
-        question: deleteQuestion
+        questionnaireId: questionnaire.id,
+        question: questionToDelete
       }).then(question => {
         cy.wait(500);
         cy.visit(`/questionnaire/${questionnaire.id}`);
         cy.get('Table[cy-data="question-list"]').should(
           "contain.text",
-          deleteQuestion
+          questionToDelete
         );
         cy.get(`button#${question.id}`).click();
         cy.get('Table[cy-data="question-list"]').should(
           "not.contain.text",
-          deleteQuestion
+          questionToDelete
         );
       });
     });
