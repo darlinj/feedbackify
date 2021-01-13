@@ -12,15 +12,21 @@ const QuestionnairesPage = props => {
   const [questionnaireList, setQuestionnairesList] = useState([]);
 
   useEffect(() => {
+    let unmounted = false;
     getQuestionnaires()
       .then(response => {
-        setQuestionnairesList(response);
+        if (!unmounted) {
+          setQuestionnairesList(response);
+        }
       })
       .catch(e => {
-        toast.error(
-          `Failed to get feedback questionnaires. Check your internet connection`
-        );
+        if (!unmounted) {
+          toast.error(
+            `Failed to get feedback questionnaires. Check your internet connection`
+          );
+        }
       });
+    return () => (unmounted = true);
   }, []);
 
   const handleAddingQuestionnaire = newQuestionnaireName => {
