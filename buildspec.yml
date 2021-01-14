@@ -7,7 +7,8 @@ phases:
       - ./api/tests/createCognitoUser.sh testuser
   build:
     commands:
-      - jest api/tests/*
+      - npm test api -- --watchAll=false
+      - npm test -- --watchAll=false
 
 reports:
   jest_reports:
