@@ -58,7 +58,12 @@ export const addQuestionForAnotherUser = async tableName => {
   });
 };
 
-export const clearDatabase = async tableName => {
+export const clearDatabase = async () => {
+  await clearTable(`${process.env.REACT_APP_API_NAME}-questionnaires-table`);
+  await clearTable(`${process.env.REACT_APP_API_NAME}-questions-table`);
+};
+
+export const clearTable = async tableName => {
   const params = {
     TableName: tableName
   };

@@ -12,7 +12,7 @@ Amplify.configure(awsConfig);
 
 beforeEach(async () => {
   await login();
-  await clearDatabase(`${process.env.REACT_APP_API_NAME}-questions-table`);
+  await clearDatabase();
 });
 
 const login = async () => {

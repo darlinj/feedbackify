@@ -15,8 +15,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  const tableName = `${process.env.REACT_APP_API_NAME}-questionnaires-table`;
-  await clearDatabase(tableName);
+  await clearDatabase();
 });
 
 const login = async () => {
