@@ -3,27 +3,31 @@ import { mount, shallow } from "enzyme";
 import { act } from "react-dom/test-utils";
 import QuestionnairesList from "./QuestionnairesList";
 import { MemoryRouter } from "react-router-dom";
+import moment from "moment";
 
 describe("Shows questionnaire list", () => {
   it("Shows the questionnaire list", async () => {
+    const currerntDate = moment()
+      .utc()
+      .format();
     const questionnaires = [
       {
         id: 1234,
         name: "this is some questionnaire",
-        createdAt: "2020-08-01T09:00:00.000Z",
-        updatedAt: "2020-08-01T09:00:00.000Z"
+        createdAt: currerntDate,
+        updatedAt: currerntDate
       },
       {
         id: 1235,
         name: "this is another questionnaire",
-        createdAt: "2020-08-01T09:00:00.000Z",
-        updatedAt: "2020-08-01T09:00:00.000Z"
+        createdAt: currerntDate,
+        updatedAt: currerntDate
       },
       {
         id: 1236,
         name: "this is a third questionnaire",
-        createdAt: "2020-08-01T09:00:00.000Z",
-        updatedAt: "2020-08-01T09:00:00.000Z"
+        createdAt: currerntDate,
+        updatedAt: currerntDate
       }
     ];
     const component = mount(
@@ -36,7 +40,7 @@ describe("Shows questionnaire list", () => {
       "this is another questionnaire"
     );
     expect(component.find("table.questionnaires").text()).toContain(
-      "10:00 1st Aug 2020"
+      moment(currerntDate).format("h:mm Do MMM YYYY")
     );
     expect(component.find("Link").length).toEqual(3);
     expect(
