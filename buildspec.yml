@@ -8,10 +8,10 @@ phases:
   build:
     commands:
       - npm test api -- --watchAll=false
-      - npm test -- --watchAll=false
+      - npm run test:ci
 
 reports:
   jest_reports:
     files:
-      - "testReports/*.xml"
+      - "junit.xml"
     file-format: JUNITXML

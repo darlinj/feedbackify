@@ -31,3 +31,4 @@ cypress/screenshots/*
 *.swp
 setEnv
 testReports
+junit.xml
