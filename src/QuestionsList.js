@@ -29,7 +29,7 @@ const QuestionsList = params => {
                     className="btn"
                     onClick={e => handleDelete(questionObject.id, e)}
                     value={questionObject.id}
-                    cy-data="delete-question"
+                    role="delete-question"
                     style={{
                       float: "right",
                       paddingTop: "1px",
