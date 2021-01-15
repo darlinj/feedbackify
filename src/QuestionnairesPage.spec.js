@@ -36,6 +36,11 @@ describe("Adding questionnaires to the list", () => {
     expect(component.find("QuestionnairesList").length).toBe(1);
   });
 
+  it("sets the questionaires list into loading state", () => {
+    const component = shallow(<QuestionnairesPage />);
+    expect(component.find("QuestionnairesList").props().isLoading).toBe(true);
+  });
+
   it("Gets the questionnaires from the database", async () => {
     let component = null;
     await act(async () => {
@@ -53,6 +58,7 @@ describe("Adding questionnaires to the list", () => {
       { id: 1234, questionnaire: "This is a questionnaire" },
       { id: 4321, questionnaire: "This is another questionnaire" }
     ]);
+    expect(component.find("QuestionnairesList").props().isLoading).toBe(false);
   });
 
   it("raises an error if the connection to the API fails", async () => {

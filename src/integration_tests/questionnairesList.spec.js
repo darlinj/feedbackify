@@ -31,7 +31,7 @@ describe("App", () => {
   it("delete a questionnaire", async () => {
     await addQuestionnaire({ name: "Some Title" });
     const app = render(<App />);
-    expect(await app.findByText(/No questionnaires yet/)).toBeInTheDocument();
+    expect(await app.findByText(/Loading.../)).toBeInTheDocument();
     expect(await app.findByText("Some Title")).toBeInTheDocument();
     fireEvent.click(await app.getByRole("delete-questionnaire"));
     expect(await app.findByText(/No questionnaires yet/)).toBeInTheDocument();

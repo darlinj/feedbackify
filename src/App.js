@@ -38,7 +38,7 @@ function App() {
           currentUser={currentUser}
           isLoading={isLoading}
         />
-        <div cy-data="page-body">
+        <div role="page-body">
           <Routes
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}

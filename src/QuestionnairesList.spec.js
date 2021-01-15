@@ -6,6 +6,17 @@ import { MemoryRouter } from "react-router-dom";
 import moment from "moment";
 
 describe("Shows questionnaire list", () => {
+  it("Shows loading when loading", () => {
+    const component = mount(
+      <MemoryRouter initialEntries={["/"]}>
+        <QuestionnairesList isLoading={true} />
+      </MemoryRouter>
+    );
+    expect(component.find("div[role='loading-banner']").text()).toContain(
+      "Loading..."
+    );
+  });
+
   it("Shows the questionnaire list", async () => {
     const currerntDate = moment()
       .utc()

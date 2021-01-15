@@ -4,14 +4,14 @@ import { FaMinusSquare, FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
-const QuestionnairesList = params => {
+const QuestionnairesList = props => {
   const handleDelete = (id, event) => {
     event.preventDefault();
-    params.handleDelete(id);
+    props.handleDelete(id);
   };
 
   const showQuestionnaires = () => {
-    const questionnaireList = params.questionnaireList || [];
+    const questionnaireList = props.questionnaireList || [];
     if (questionnaireList.length === 0) {
       return (
         <tr>
@@ -71,9 +71,8 @@ const QuestionnairesList = params => {
     }
   };
 
-  return (
-    <>
-      <h2>Questionnaires</h2>
+  const questionnairesTable = () => {
+    return (
       <Table
         striped
         borderless
@@ -93,6 +92,21 @@ const QuestionnairesList = params => {
         </thead>
         <tbody>{showQuestionnaires()}</tbody>
       </Table>
+    );
+  };
+
+  const questionnaireBody = () => {
+    if (props.isLoading) {
+      return <div role="loading-banner">Loading...</div>;
+    } else {
+      return questionnairesTable();
+    }
+  };
+
+  return (
+    <>
+      <h2>Questionnaires</h2>
+      {questionnaireBody()}
     </>
   );
 };

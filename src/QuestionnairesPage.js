@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 
 const QuestionnairesPage = props => {
   const [questionnaireList, setQuestionnairesList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let unmounted = false;
@@ -17,6 +18,7 @@ const QuestionnairesPage = props => {
       .then(response => {
         if (!unmounted) {
           setQuestionnairesList(response);
+          setIsLoading(false);
         }
       })
       .catch(e => {
@@ -63,6 +65,7 @@ const QuestionnairesPage = props => {
         {...props}
         questionnaireList={questionnaireList}
         handleDelete={handleDelete}
+        isLoading={isLoading}
       />
       <AddQuestionnaireForm
         {...props}
