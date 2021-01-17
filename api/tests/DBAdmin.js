@@ -68,15 +68,16 @@ export const clearTable = async tableName => {
     TableName: tableName
   };
   const items = await dynamoDB.scan(params).promise();
-  items.Items.forEach(item => {
+  await items.Items.forEach(async item => {
     const deleteParams = {
       TableName: tableName,
+      ConsistentRead: true,
       Key: {
         id: item.id,
         UserId: item.UserId
       }
     };
-    dynamoDB.deleteItem(deleteParams, function(err, data) {
+    await dynamoDB.deleteItem(deleteParams, function(err, data) {
       if (err) {
         console.error(
           "Unable to delete item. Error JSON:",

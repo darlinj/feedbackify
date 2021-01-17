@@ -14,19 +14,25 @@ const QuestionsPage = props => {
   const questionnaireId = props.match.params.id;
 
   useEffect(() => {
+    let mounted = true;
     retrieveQuestionnaire(questionnaireId)
       .then(response => {
-        if (response === null) {
-          toast.error("We couldn't find that questionnaire.  Was it deleted?");
-        } else {
-          setQuestionList(response.questions.items);
-          setQuestionnaire(response);
+        if (mounted) {
+          if (response === null) {
+            toast.error(
+              "We couldn't find that questionnaire.  Was it deleted?"
+            );
+          } else {
+            setQuestionList(response.questions.items);
+            setQuestionnaire(response);
+          }
         }
       })
       .catch(e => {
         console.log(e);
         toast.error(`Failed to get questions. Check your internet connection`);
       });
+    return () => (mounted = false);
   }, []);
 
   const handleAddingQuestion = async newQuestion => {

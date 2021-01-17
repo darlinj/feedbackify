@@ -44,6 +44,7 @@ const QuestionnairesList = props => {
                 </td>
                 <td>
                   <Link
+                    role="edit-questionnaire"
                     to={`/questionnaire/${questionnaireObject.id}`}
                     alt="Edit"
                   >
