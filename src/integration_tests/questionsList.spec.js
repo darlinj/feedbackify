@@ -16,6 +16,8 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+let app = {};
+
 describe("App", () => {
   afterEach(cleanup);
 
@@ -23,33 +25,39 @@ describe("App", () => {
     sleep(2000);
     await clearDatabase();
     await login("pinky@example.com", "Passw0rd!");
+    await addQuestionnaire({ name: "Some Title" });
   });
 
   it("When there are no questions it shows and empty list", async () => {
-    await addQuestionnaire({ name: "Some Title" });
-    const app = render(<App />);
+    app = render(<App />);
+    expect(await app.findByText("Loading...")).toBeInTheDocument();
     expect(await app.findByText("Some Title")).toBeInTheDocument();
-    await act(async () => {
-      fireEvent.click(await app.getByRole("edit-questionnaire"));
-    });
+    fireEvent.click(await app.getByRole("edit-questionnaire"));
     expect(await app.findByText(/Loading/)).toBeInTheDocument();
     expect(await app.findByText(/No questions yet/)).toBeInTheDocument();
   });
 
-  //  it("Adding a questionnaire", async () => {
-  //    const app = render(<App />);
-  //    expect(await app.findByText(/No questionnaires yet/)).toBeInTheDocument();
-  //    fireEvent.click(await app.findByText("Add new questionnaire"));
-  //    expect(
-  //      await app.findByText(/Adding new questionnaire/)
-  //    ).toBeInTheDocument();
-  //    fireEvent.change(app.getByLabelText("Title"), {
-  //      target: { value: "Some Title" }
-  //    });
-  //    fireEvent.click(await app.findByText("Add questionnaire"));
-  //    expect(await app.findAllByText("Some Title")).toHaveLength(1);
-  //  });
-  //
+  it("Adding a question", async () => {
+    //    app = render(<App />);
+    //    expect(await app.findByText("Loading...")).toBeInTheDocument();
+    //    expect(await app.findByText("Some Title")).toBeInTheDocument();
+    //    await act(async () => {
+    //      fireEvent.click(await app.getByRole("edit-questionnaire"));
+    //    });
+    //    expect(await app.findByText(/Loading/)).toBeInTheDocument();
+    //    expect(await app.findByText(/No questions yet/)).toBeInTheDocument();
+    //    expect(await app.findByText(/No questionnaires yet/)).toBeInTheDocument();
+    //    fireEvent.click(await app.findByText("Add new questionnaire"));
+    //    expect(
+    //      await app.findByText(/Adding new questionnaire/)
+    //    ).toBeInTheDocument();
+    //    fireEvent.change(app.getByLabelText("Title"), {
+    //      target: { value: "Some Title" }
+    //    });
+    //    fireEvent.click(await app.findByText("Add questionnaire"));
+    //    expect(await app.findAllByText("Some Title")).toHaveLength(1);
+  });
+
   //  it("delete a questionnaire", async () => {
   //    await addQuestionnaire({ name: "Some Title" });
   //    const app = render(<App />);

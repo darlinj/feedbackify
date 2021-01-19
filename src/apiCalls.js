@@ -6,7 +6,6 @@ const runGraphqlOperation = query_string => {
 };
 
 const addQuestion = question => {
-  console.log("adding question:", question);
   return new Promise((resolve, reject) => {
     runGraphqlOperation(`mutation MyMutation {
         saveQuestion(questionnaireId: "${question.questionnaireId}", question: "${question.question}") {
@@ -61,7 +60,6 @@ const addFeedback = feedback => {
 };
 
 const getQuestions = () => {
-  console.log("getting quesions");
   return new Promise((resolve, reject) => {
     runGraphqlOperation(`query MyQuery {
        getQuestions {
@@ -73,7 +71,6 @@ const getQuestions = () => {
        }
      }`)
       .then(result => {
-        console.log(result);
         resolve(result.data.getQuestions.questions);
       })
       .catch(e => {

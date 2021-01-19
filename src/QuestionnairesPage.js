@@ -11,24 +11,27 @@ import { toast } from "react-toastify";
 const QuestionnairesPage = props => {
   const [questionnaireList, setQuestionnairesList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(true);
 
   useEffect(() => {
-    let unmounted = false;
     getQuestionnaires()
       .then(response => {
-        if (!unmounted) {
+        if (isMounted) {
           setQuestionnairesList(response);
           setIsLoading(false);
         }
       })
       .catch(e => {
-        if (!unmounted) {
+        if (isMounted) {
           toast.error(
             `Failed to get feedback questionnaires. Check your internet connection`
           );
         }
       });
-    return () => (unmounted = true);
+    return () => {
+      console.log("unmounting");
+      setIsMounted(false);
+    };
   }, []);
 
   const handleAddingQuestionnaire = newQuestionnaireName => {
@@ -38,7 +41,10 @@ const QuestionnairesPage = props => {
     };
     addQuestionnaire(questionnaire)
       .then(result => {
-        setQuestionnairesList([...questionnaireList, result]);
+        console.log("setting question");
+        if (isMounted) {
+          setQuestionnairesList([...questionnaireList, result]);
+        }
       })
       .catch(e => {
         toast.error(
@@ -50,7 +56,12 @@ const QuestionnairesPage = props => {
   const handleDelete = id => {
     removeQuestionnaire(id)
       .then(result => {
-        setQuestionnairesList(questionnaireList.filter(q => q.id !== id));
+        console.log("delete question");
+        if (isMounted) {
+          setQuestionnairesList(questionnaireList.filter(q => q.id !== id));
+          console.log("set quesionainreresjfe");
+        }
+        console.log("deleted question");
       })
       .catch(e => {
         toast.error(

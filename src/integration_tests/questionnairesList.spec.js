@@ -5,6 +5,7 @@ import {
   act,
   screen,
   fireEvent,
+  within,
   waitForElementToBeRemoved
 } from "@testing-library/react";
 import { login } from "../authentication";
@@ -48,8 +49,14 @@ describe("App", () => {
     const app = render(<App />);
     expect(await app.findByText(/Loading.../)).toBeInTheDocument();
     expect(await app.findByText(questionText)).toBeInTheDocument();
-    fireEvent.click(await app.getByRole("delete-questionnaire"));
-    expect(await app.findByText(/No questionnaires yet/)).toBeInTheDocument();
+    const row = await app.getByText(questionText).closest("tr");
+    const utils = within(row);
+    fireEvent.click(await utils.getByRole("delete-questionnaire"));
+    var regex = "/" + questionText + "/";
+
+    waitForElementToBeRemoved(() => app.findByText(regex)).catch(err =>
+      console.log(err)
+    );
   });
 
   it("editing a questionnaire", async () => {
@@ -58,7 +65,9 @@ describe("App", () => {
     const app = render(<App />);
     expect(await app.findByText(/Loading.../)).toBeInTheDocument();
     expect(await app.findByText(questionText)).toBeInTheDocument();
-    fireEvent.click(await app.findByRole("edit-questionnaire"));
+    const row = await app.getByText(questionText).closest("tr");
+    const utils = within(row);
+    fireEvent.click(await utils.findByRole("edit-questionnaire"));
     await waitForElementToBeRemoved(() => screen.getByText(/Loading.../i));
     expect(await app.findByText(/No questions yet/)).toBeInTheDocument();
   });
