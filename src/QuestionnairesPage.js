@@ -29,7 +29,6 @@ const QuestionnairesPage = props => {
         }
       });
     return () => {
-      console.log("unmounting");
       setIsMounted(false);
     };
   }, []);
@@ -41,7 +40,6 @@ const QuestionnairesPage = props => {
     };
     addQuestionnaire(questionnaire)
       .then(result => {
-        console.log("setting question");
         if (isMounted) {
           setQuestionnairesList([...questionnaireList, result]);
         }
@@ -56,12 +54,9 @@ const QuestionnairesPage = props => {
   const handleDelete = id => {
     removeQuestionnaire(id)
       .then(result => {
-        console.log("delete question");
         if (isMounted) {
           setQuestionnairesList(questionnaireList.filter(q => q.id !== id));
-          console.log("set quesionainreresjfe");
         }
-        console.log("deleted question");
       })
       .catch(e => {
         toast.error(

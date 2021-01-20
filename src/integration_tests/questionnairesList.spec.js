@@ -52,11 +52,7 @@ describe("App", () => {
     const row = await app.getByText(questionText).closest("tr");
     const utils = within(row);
     fireEvent.click(await utils.getByRole("delete-questionnaire"));
-    var regex = "/" + questionText + "/";
-
-    waitForElementToBeRemoved(() => app.findByText(regex)).catch(err =>
-      console.log(err)
-    );
+    await waitForElementToBeRemoved(() => app.queryByText(questionText));
   });
 
   it("editing a questionnaire", async () => {
