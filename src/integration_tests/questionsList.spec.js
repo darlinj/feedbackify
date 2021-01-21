@@ -1,9 +1,11 @@
 import React from "react";
+import faker from "faker";
 import {
   render,
   act,
   cleanup,
   screen,
+  within,
   fireEvent
 } from "@testing-library/react";
 import { login } from "../authentication";
@@ -19,20 +21,25 @@ function sleep(ms) {
 let app = {};
 
 describe("App", () => {
+  const questionnaireText = faker.lorem.words(10);
   afterEach(cleanup);
 
-  beforeEach(async () => {
-    sleep(2000);
+  beforeAll(async () => {
     await clearDatabase();
+  });
+
+  beforeEach(async () => {
     await login("pinky@example.com", "Passw0rd!");
-    await addQuestionnaire({ name: "Some Title" });
+    await addQuestionnaire({ name: questionnaireText });
   });
 
   it("When there are no questions it shows and empty list", async () => {
     app = render(<App />);
     expect(await app.findByText("Loading...")).toBeInTheDocument();
-    expect(await app.findByText("Some Title")).toBeInTheDocument();
-    fireEvent.click(await app.getByRole("edit-questionnaire"));
+    expect(await app.findByText(questionnaireText)).toBeInTheDocument();
+    const row = await app.getByText(questionnaireText).closest("tr");
+    const utils = within(row);
+    fireEvent.click(await utils.findByRole("edit-questionnaire"));
     expect(await app.findByText(/Loading/)).toBeInTheDocument();
     expect(await app.findByText(/No questions yet/)).toBeInTheDocument();
   });

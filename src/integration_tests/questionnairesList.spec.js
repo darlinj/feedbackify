@@ -20,11 +20,13 @@ function sleep(ms) {
 }
 
 describe("App", () => {
-  afterEach(() => clearDatabase());
+  afterEach(() => cleanup());
+
+  beforeAll(async () => {
+    await clearDatabase();
+  });
 
   beforeEach(async () => {
-    sleep(2000);
-    await clearDatabase();
     await login("pinky@example.com", "Passw0rd!");
   });
 
