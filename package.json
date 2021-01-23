@@ -51,6 +51,7 @@
     "enzyme-adapter-react-16": "^1.15.5",
     "faker": "^4.1.0",
     "find-webpack": "^2.2.0",
+    "prettier": "2.2.1",
     "react-test-renderer": "^16.14.0"
   }
 }

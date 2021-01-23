@@ -9,7 +9,7 @@ import {
 } from "@testing-library/react";
 import { login } from "../authentication";
 import { clearDatabase } from "../../api/tests/DBAdmin";
-import { addQuestionnaire} from "../apiCalls";
+import { addQuestionnaire } from "../apiCalls"
 
 import App from "../App";
 

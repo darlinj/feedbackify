@@ -5,11 +5,11 @@ import {
   screen,
   fireEvent,
   within,
-  waitForElementToBeRemoved
+  waitForElementToBeRemoved,
 } from "@testing-library/react";
 import { login } from "../authentication";
 import { clearDatabase } from "../../api/tests/DBAdmin";
-import { addQuestionnaire} from "../apiCalls";
+import { addQuestionnaire } from "../apiCalls";
 
 import App from "../App";
 import faker from "faker";
@@ -34,7 +34,7 @@ describe("App", () => {
       await app.findByText(/Adding new questionnaire/)
     ).toBeInTheDocument();
     fireEvent.change(app.getByLabelText("Title"), {
-      target: { value: questionText }
+      target: { value: questionText },
     });
     fireEvent.click(await app.findByText("Add questionnaire"));
     expect(await app.findAllByText(questionText)).toHaveLength(1);
