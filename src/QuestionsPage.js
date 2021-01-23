@@ -5,18 +5,18 @@ import TitleBar from "./TitleBar";
 import { addQuestion, retrieveQuestionnaire, removeQuestion } from "./apiCalls";
 import { toast } from "react-toastify";
 
-const QuestionsPage = props => {
+const QuestionsPage = (props) => {
   const [questionList, setQuestionList] = useState([]);
   const [questionnaire, setQuestionnaire] = useState({
     name: "Loading...",
-    questions: { items: [] }
+    questions: { items: [] },
   });
   const questionnaireId = props.match.params.id;
 
   useEffect(() => {
     let mounted = true;
     retrieveQuestionnaire(questionnaireId)
-      .then(response => {
+      .then((response) => {
         if (mounted) {
           if (response === null) {
             toast.error(
@@ -28,33 +28,33 @@ const QuestionsPage = props => {
           }
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
         toast.error(`Failed to get questions. Check your internet connection`);
       });
     return () => (mounted = false);
-  }, []);
+  }, [questionnaireId]);
 
-  const handleAddingQuestion = async newQuestion => {
+  const handleAddingQuestion = async (newQuestion) => {
     const question = {
       questionnaireId: questionnaireId,
-      question: newQuestion
+      question: newQuestion,
     };
     addQuestion(question)
-      .then(result => {
+      .then((result) => {
         setQuestionList([...questionList, result]);
       })
-      .catch(e => {
+      .catch((e) => {
         toast.error(`Failed to save question. Check your internet connection`);
       });
   };
 
-  const handleDelete = id => {
+  const handleDelete = (id) => {
     removeQuestion(id)
-      .then(result => {
-        setQuestionList(questionList.filter(q => q.id !== id));
+      .then((result) => {
+        setQuestionList(questionList.filter((q) => q.id !== id));
       })
-      .catch(e => {
+      .catch((e) => {
         toast.error(
           `Failed to delete question. Check your internet connection`
         );
