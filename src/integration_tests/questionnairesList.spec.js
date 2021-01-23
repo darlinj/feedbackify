@@ -2,7 +2,6 @@ import React from "react";
 import {
   render,
   cleanup,
-  act,
   screen,
   fireEvent,
   within,
@@ -10,14 +9,10 @@ import {
 } from "@testing-library/react";
 import { login } from "../authentication";
 import { clearDatabase } from "../../api/tests/DBAdmin";
-import { addQuestionnaire, getQuestionnaires } from "../apiCalls";
+import { addQuestionnaire} from "../apiCalls";
 
 import App from "../App";
 import faker from "faker";
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 describe("App", () => {
   afterEach(() => cleanup());

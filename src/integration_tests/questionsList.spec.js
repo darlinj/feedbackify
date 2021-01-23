@@ -2,22 +2,16 @@ import React from "react";
 import faker from "faker";
 import {
   render,
-  act,
   cleanup,
-  screen,
   within,
   fireEvent,
   waitForElementToBeRemoved
 } from "@testing-library/react";
 import { login } from "../authentication";
 import { clearDatabase } from "../../api/tests/DBAdmin";
-import { addQuestionnaire, getQuestionnaires } from "../apiCalls";
+import { addQuestionnaire} from "../apiCalls";
 
 import App from "../App";
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 let app = {};
 
