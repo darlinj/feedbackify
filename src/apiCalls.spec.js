@@ -2,12 +2,12 @@ import React from "react";
 import {
   getQuestions,
   getQuestionnaires,
-  retrieveQuestionnaire,
+  getQuestionnaire,
   addQuestionnaire,
   addQuestion,
   addFeedback,
   removeQuestion,
-  removeQuestionnaire
+  removeQuestionnaire,
 } from "./apiCalls";
 import { API, graphqlOperation } from "aws-amplify";
 
@@ -23,7 +23,7 @@ describe("api calls", () => {
     it("gets a list of questions", async () => {
       const questions = [{ some: "question" }, { someOther: "question" }];
       API.graphql.mockResolvedValue({
-        data: { getQuestions: { questions: questions } }
+        data: { getQuestions: { questions: questions } },
       });
       graphqlOperation.mockReturnValue("the list questions query");
       const questionList = await getQuestions();
@@ -38,7 +38,7 @@ describe("api calls", () => {
       API.graphql.mockRejectedValue("some error");
       graphqlOperation.mockReturnValue("the list questions query");
       expect.assertions(1);
-      return getQuestions().catch(errorMessage => {
+      return getQuestions().catch((errorMessage) => {
         expect(errorMessage).toEqual({ error: "some error" });
       });
     });
@@ -48,10 +48,10 @@ describe("api calls", () => {
     it("gets a specific questionaire", async () => {
       const questionnaire = { some: "questionnaire" };
       API.graphql.mockResolvedValue({
-        data: { getQuestionnaire: questionnaire }
+        data: { getQuestionnaire: questionnaire },
       });
       graphqlOperation.mockReturnValue("the get questionnaire query");
-      const aQuestionnaire = await retrieveQuestionnaire(1234);
+      const aQuestionnaire = await getQuestionnaire(1234);
       expect(graphqlOperation.mock.calls.length).toEqual(1);
       expect(graphqlOperation.mock.calls[0][0]).toContain("getQuestionnaire");
       expect(graphqlOperation.mock.calls[0][0]).toContain('id: "1234"');
@@ -67,10 +67,10 @@ describe("api calls", () => {
     it("gets a list of feedback questionnaires", async () => {
       const questionnaires = [
         { some: "feedback questionnaires" },
-        { someOther: "feedback questionnaires as well" }
+        { someOther: "feedback questionnaires as well" },
       ];
       API.graphql.mockResolvedValue({
-        data: { getQuestionnaires: { questionnaires: questionnaires } }
+        data: { getQuestionnaires: { questionnaires: questionnaires } },
       });
       graphqlOperation.mockReturnValue(
         "the list feedback questionnaires query"
@@ -91,7 +91,7 @@ describe("api calls", () => {
         "the list feedback questionnaires query"
       );
       expect.assertions(1);
-      return getQuestions().catch(errorMessage => {
+      return getQuestions().catch((errorMessage) => {
         expect(errorMessage).toEqual({ error: "some error" });
       });
     });
@@ -101,11 +101,11 @@ describe("api calls", () => {
     it("creates a questionnaire", async () => {
       const newQuestionnaire = {
         questionnaireId: "1234",
-        name: "some questionnaire"
+        name: "some questionnaire",
       };
       const addedQuestionnaire = { id: 1234, name: "some feedback" };
       API.graphql.mockResolvedValue({
-        data: { saveQuestionnaire: addedQuestionnaire }
+        data: { saveQuestionnaire: addedQuestionnaire },
       });
       graphqlOperation.mockReturnValue("the add questionnaire mutation");
       const returnedQuestionnaire = await addQuestionnaire(newQuestionnaire);
@@ -126,7 +126,7 @@ describe("api calls", () => {
       graphqlOperation.mockReturnValue("the add feedback mutation");
       expect.assertions(1);
       return addQuestionnaire({ name: "Some Questionnaire" }).catch(
-        errorMessage => {
+        (errorMessage) => {
           expect(errorMessage).toEqual({ error: "some error" });
         }
       );
@@ -137,15 +137,15 @@ describe("api calls", () => {
     it("creates a question", async () => {
       const newQuestion = {
         questionnaireId: "1234",
-        question: "some question"
+        question: "some question",
       };
       const addedQuestion = {
         id: 4321,
         questionnaireId: "1234",
-        question: "some question"
+        question: "some question",
       };
       API.graphql.mockResolvedValue({
-        data: { saveQuestion: addedQuestion }
+        data: { saveQuestion: addedQuestion },
       });
       graphqlOperation.mockReturnValue("the save question mutation");
       const returnedQuestion = await addQuestion(newQuestion);
@@ -167,19 +167,19 @@ describe("api calls", () => {
     it("resolves to the new question", () => {
       const newQuestion = {
         questionnaireId: "1234",
-        question: "some question"
+        question: "some question",
       };
       const addedQuestion = {
         id: 1234,
         questionnaireId: "1234",
-        question: "some question"
+        question: "some question",
       };
       API.graphql.mockResolvedValue({
-        data: { saveQuestion: addedQuestion }
+        data: { saveQuestion: addedQuestion },
       });
       graphqlOperation.mockReturnValue("the add question mutation");
       expect.assertions(1);
-      return addQuestion(newQuestion).then(newQ => {
+      return addQuestion(newQuestion).then((newQ) => {
         expect(newQ).toEqual(addedQuestion);
       });
     });
@@ -190,8 +190,8 @@ describe("api calls", () => {
       expect.assertions(1);
       return addQuestion({
         questionnaireId: "1234",
-        question: "Some question"
-      }).catch(errorMessage => {
+        question: "Some question",
+      }).catch((errorMessage) => {
         expect(errorMessage).toEqual({ error: "some error" });
       });
     });
@@ -201,7 +201,7 @@ describe("api calls", () => {
     it("deletes a question", async () => {
       const deleteQuestion = 1234;
       API.graphql.mockResolvedValue({
-        data: { deleteQuestion: deleteQuestion }
+        data: { deleteQuestion: deleteQuestion },
       });
       graphqlOperation.mockReturnValue("the delete question mutation");
       const deletedID = await removeQuestion(1234);
@@ -219,7 +219,7 @@ describe("api calls", () => {
       API.graphql.mockRejectedValue("some delete error");
       graphqlOperation.mockReturnValue("the delete question mutation");
       expect.assertions(1);
-      return removeQuestion().catch(errorMessage => {
+      return removeQuestion().catch((errorMessage) => {
         expect(errorMessage).toEqual({ error: "some delete error" });
       });
     });
@@ -229,7 +229,7 @@ describe("api calls", () => {
     it("deletes a feedback questionnaire", async () => {
       const deleteQuestionnaireId = 1234;
       API.graphql.mockResolvedValue({
-        data: { deleteQuestionnaire: deleteQuestionnaireId }
+        data: { deleteQuestionnaire: deleteQuestionnaireId },
       });
       graphqlOperation.mockReturnValue(
         "the delete feedback questionnaire mutation"
@@ -253,7 +253,7 @@ describe("api calls", () => {
         "the delete feedback questionnaire mutation"
       );
       expect.assertions(1);
-      return removeQuestionnaire().catch(errorMessage => {
+      return removeQuestionnaire().catch((errorMessage) => {
         expect(errorMessage).toEqual({ error: "some delete error" });
       });
     });

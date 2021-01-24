@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import QuestionsList from "./QuestionsList";
 import AddQuestionForm from "./AddQuestionForm";
 import TitleBar from "./TitleBar";
-import { addQuestion, retrieveQuestionnaire, removeQuestion } from "./apiCalls";
+import { addQuestion, getQuestionnaire, removeQuestion } from "./apiCalls";
 import { toast } from "react-toastify";
 
 const QuestionsPage = (props) => {
@@ -15,7 +15,7 @@ const QuestionsPage = (props) => {
 
   useEffect(() => {
     let mounted = true;
-    retrieveQuestionnaire(questionnaireId)
+    getQuestionnaire(questionnaireId)
       .then((response) => {
         if (mounted) {
           if (response === null) {

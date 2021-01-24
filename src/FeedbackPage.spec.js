@@ -3,7 +3,7 @@ import { mount, shallow } from "enzyme";
 import { act } from "react-dom/test-utils";
 import FeedbackPage from "./FeedbackPage";
 import FeedbackForm from "./FeedbackForm";
-import { retrieveQuestionnaire, addFeedback } from "./apiCalls";
+import { getQuestionnaire, addFeedback } from "./apiCalls";
 import { toast } from "react-toastify";
 
 jest.mock("./apiCalls");
@@ -11,21 +11,21 @@ jest.mock("react-toastify");
 
 describe("Providing feedback", () => {
   beforeEach(() => {
-    retrieveQuestionnaire.mockResolvedValue({
+    getQuestionnaire.mockResolvedValue({
       name: "Some Questionnaire",
       questions: {
         items: [
           { id: 1234, question: "This is a question" },
-          { id: 4321, question: "This is another question" }
-        ]
-      }
+          { id: 4321, question: "This is another question" },
+        ],
+      },
     });
     addFeedback.mockResolvedValue(true);
     toast.error.mockImplementation(() => true);
   });
 
   afterEach(() => {
-    retrieveQuestionnaire.mockClear();
+    getQuestionnaire.mockClear();
     addFeedback.mockClear();
     toast.error.mockClear();
   });
@@ -55,15 +55,15 @@ describe("Providing feedback", () => {
       component = mount(<FeedbackPage match={{ params: { id: "999" } }} />);
     });
     component.update();
-    expect(retrieveQuestionnaire.mock.calls.length).toEqual(1);
+    expect(getQuestionnaire.mock.calls.length).toEqual(1);
     expect(component.find("FeedbackForm").prop("questionList")).toEqual([
       { id: 1234, question: "This is a question" },
-      { id: 4321, question: "This is another question" }
+      { id: 4321, question: "This is another question" },
     ]);
   });
 
   it("if it fails to find the questionaire it put up a relevant error", async () => {
-    retrieveQuestionnaire.mockResolvedValue(null);
+    getQuestionnaire.mockResolvedValue(null);
     let component = null;
     await act(async () => {
       component = mount(<FeedbackPage match={{ params: { id: "999" } }} />);
@@ -76,12 +76,12 @@ describe("Providing feedback", () => {
   });
 
   it("raises an error if the connection to the API fails", async () => {
-    retrieveQuestionnaire.mockRejectedValue("some listing error");
+    getQuestionnaire.mockRejectedValue("some listing error");
     let component = null;
     await act(async () => {
       component = mount(<FeedbackPage match={{ params: { id: "999" } }} />);
     });
-    return new Promise(resolve => setImmediate(resolve)).then(() => {
+    return new Promise((resolve) => setImmediate(resolve)).then(() => {
       expect(toast.error.mock.calls.length).toEqual(1);
       expect(toast.error.mock.calls[0][0]).toEqual(
         "Failed to get this questionnaire. Check your internet connection"
@@ -96,18 +96,18 @@ describe("Providing feedback", () => {
     });
     await act(async () => {
       component.find("FeedbackForm").prop("submitFeedback")({
-        "12345": "Some feedback",
-        "54321": "Some other feedback"
+        12345: "Some feedback",
+        54321: "Some other feedback",
       });
     });
     expect(addFeedback.mock.calls.length).toEqual(2);
     expect(addFeedback.mock.calls[0][0]).toEqual({
       questionid: "12345",
-      content: "Some feedback"
+      content: "Some feedback",
     });
     expect(addFeedback.mock.calls[1][0]).toEqual({
       questionid: "54321",
-      content: "Some other feedback"
+      content: "Some other feedback",
     });
     expect(component.find("TitleBar").prop("title")).toEqual(
       "Thanks for your feedback"

@@ -79,7 +79,7 @@ const getQuestions = () => {
   });
 };
 
-const retrieveQuestionnaire = (id) => {
+const getQuestionnaire = (id) => {
   return new Promise((resolve, reject) => {
     runGraphqlOperation(`query MyQuery {
   getQuestionnaire(id: "${id}") {
@@ -158,7 +158,7 @@ export {
   addQuestion,
   addFeedback,
   getQuestionnaires,
-  retrieveQuestionnaire,
+  getQuestionnaire,
   getQuestions,
   removeQuestion,
   removeQuestionnaire,

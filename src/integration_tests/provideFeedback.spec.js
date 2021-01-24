@@ -2,11 +2,7 @@ import { cleanup, fireEvent, render } from "@testing-library/react";
 import faker from "faker";
 import React from "react";
 import { MemoryRouter, Route } from "react-router-dom";
-import {
-  addQuestion,
-  addQuestionnaire,
-  retrieveQuestionnaire,
-} from "../apiCalls";
+import { addQuestion, addQuestionnaire, getQuestionnaire } from "../apiCalls";
 import App from "../App";
 import { login } from "../authentication";
 
@@ -30,7 +26,7 @@ describe("Providing feedback", () => {
       questionnaireId: questionnaire.id,
       question: faker.lorem.words(10),
     });
-    targetQuestionnaire = await retrieveQuestionnaire(questionnaire.id);
+    targetQuestionnaire = await getQuestionnaire(questionnaire.id);
   });
 
   it("Accesses the feedback page", async () => {

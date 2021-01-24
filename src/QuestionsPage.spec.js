@@ -3,7 +3,7 @@ import { mount, shallow } from "enzyme";
 import { act } from "react-dom/test-utils";
 import QuestionsPage from "./QuestionsPage";
 import { API, graphqlOperation } from "aws-amplify";
-import { addQuestion, retrieveQuestionnaire, removeQuestion } from "./apiCalls";
+import { addQuestion, getQuestionnaire, removeQuestion } from "./apiCalls";
 import QuestionsList from "./QuestionsList";
 import { toast } from "react-toastify";
 
@@ -12,20 +12,20 @@ jest.mock("react-toastify");
 
 describe("Adding questions to the list", () => {
   beforeEach(() => {
-    retrieveQuestionnaire.mockResolvedValue({
+    getQuestionnaire.mockResolvedValue({
       name: "Some Questionnaire",
       questions: {
         items: [
           { id: 1234, question: "This is a question" },
-          { id: 4321, question: "This is another question" }
-        ]
-      }
+          { id: 4321, question: "This is another question" },
+        ],
+      },
     });
     toast.error.mockImplementation(() => true);
   });
 
   afterEach(() => {
-    retrieveQuestionnaire.mockClear();
+    getQuestionnaire.mockClear();
     addQuestion.mockClear();
     removeQuestion.mockClear();
     toast.error.mockClear();
@@ -57,15 +57,15 @@ describe("Adding questions to the list", () => {
       component = mount(<QuestionsPage match={{ params: { id: "999" } }} />);
     });
     component.update();
-    expect(retrieveQuestionnaire.mock.calls.length).toEqual(1);
+    expect(getQuestionnaire.mock.calls.length).toEqual(1);
     expect(component.find("QuestionsList").prop("questionList")).toEqual([
       { id: 1234, question: "This is a question" },
-      { id: 4321, question: "This is another question" }
+      { id: 4321, question: "This is another question" },
     ]);
   });
 
   it("if it fails to find the questionaire it put up a relevant error", async () => {
-    retrieveQuestionnaire.mockResolvedValue(null);
+    getQuestionnaire.mockResolvedValue(null);
     let component = null;
     await act(async () => {
       component = mount(<QuestionsPage match={{ params: { id: "999" } }} />);
@@ -78,12 +78,12 @@ describe("Adding questions to the list", () => {
   });
 
   it("raises an error if the connection to the API fails", async () => {
-    retrieveQuestionnaire.mockRejectedValue("some listing error");
+    getQuestionnaire.mockRejectedValue("some listing error");
     let component = null;
     await act(async () => {
       component = mount(<QuestionsPage match={{ params: { id: "999" } }} />);
     });
-    return new Promise(resolve => setImmediate(resolve)).then(() => {
+    return new Promise((resolve) => setImmediate(resolve)).then(() => {
       expect(toast.error.mock.calls.length).toEqual(1);
       expect(toast.error.mock.calls[0][0]).toEqual(
         "Failed to get questions. Check your internet connection"
@@ -104,7 +104,7 @@ describe("Adding questions to the list", () => {
     expect(addQuestion.mock.calls.length).toEqual(1);
     expect(addQuestion.mock.calls[0][0]).toEqual({
       questionnaireId: "999",
-      question: "some question"
+      question: "some question",
     });
   });
 
@@ -116,7 +116,7 @@ describe("Adding questions to the list", () => {
     component.find("AddQuestionForm").prop("handleAddingQuestion")(
       "some question"
     );
-    return new Promise(resolve => setImmediate(resolve)).then(() => {
+    return new Promise((resolve) => setImmediate(resolve)).then(() => {
       expect(toast.error.mock.calls.length).toEqual(1);
       expect(toast.error.mock.calls[0][0]).toEqual(
         "Failed to save question. Check your internet connection"
@@ -138,7 +138,7 @@ describe("Adding questions to the list", () => {
     expect(removeQuestion.mock.calls.length).toEqual(1);
     expect(removeQuestion.mock.calls[0][0]).toEqual(1234);
     expect(component.find("QuestionsList").prop("questionList")).toEqual([
-      { id: 4321, question: "This is another question" }
+      { id: 4321, question: "This is another question" },
     ]);
   });
 
@@ -148,7 +148,7 @@ describe("Adding questions to the list", () => {
       <QuestionsPage match={{ params: { id: "999" } }} />
     );
     component.find("QuestionsList").prop("handleDelete")(1234);
-    return new Promise(resolve => setImmediate(resolve)).then(() => {
+    return new Promise((resolve) => setImmediate(resolve)).then(() => {
       expect(toast.error.mock.calls.length).toEqual(1);
       expect(toast.error.mock.calls[0][0]).toEqual(
         "Failed to delete question. Check your internet connection"

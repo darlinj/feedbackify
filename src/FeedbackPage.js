@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { retrieveQuestionnaire, addFeedback } from "./apiCalls";
+import { getQuestionnaire, addFeedback } from "./apiCalls";
 import FeedbackForm from "./FeedbackForm";
 import TitleBar from "./TitleBar";
 import { toast } from "react-toastify";
@@ -13,7 +13,7 @@ const FeedbackPage = (props) => {
   });
 
   useEffect(() => {
-    retrieveQuestionnaire(questionnaireId)
+    getQuestionnaire(questionnaireId)
       .then((response) => {
         if (response === null) {
           toast.error("We couldn't find that questionnaire.  Was it deleted?");
