@@ -62,7 +62,7 @@ describe("App", () => {
     expect(await app.findByText(questionText)).toBeInTheDocument();
     const row = await app.getByText(questionText).closest("tr");
     const utils = within(row);
-    fireEvent.click(await utils.getByRole("delete-questionnaire"));
+    fireEvent.click(await utils.getByTestId("delete-questionnaire"));
     await waitForElementToBeRemoved(() => app.queryByText(questionText));
   });
 
@@ -80,7 +80,7 @@ describe("App", () => {
     expect(await app.findByText(questionText)).toBeInTheDocument();
     const row = await app.getByText(questionText).closest("tr");
     const utils = within(row);
-    fireEvent.click(await utils.findByRole("edit-questionnaire"));
+    fireEvent.click(await utils.findByTestId("edit-questionnaire"));
     await waitForElementToBeRemoved(() => screen.getByText(/Loading.../i));
     expect(await app.findByText(/No questions yet/)).toBeInTheDocument();
   });

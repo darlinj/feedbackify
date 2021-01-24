@@ -44,7 +44,7 @@ const QuestionnairesList = (props) => {
                 </td>
                 <td>
                   <Link
-                    role="edit-questionnaire"
+                    data-testid="edit-questionnaire"
                     to={`/questionnaire/${questionnaireObject.id}`}
                     alt="Edit"
                   >
@@ -55,7 +55,7 @@ const QuestionnairesList = (props) => {
                     className="btn"
                     onClick={(e) => handleDelete(questionnaireObject.id, e)}
                     value={questionnaireObject.id}
-                    role="delete-questionnaire"
+                    data-testid="delete-questionnaire"
                     style={{
                       paddingTop: "1px",
                       paddingBottom: "1px",
