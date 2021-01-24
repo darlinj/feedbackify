@@ -36,7 +36,7 @@ function App() {
         currentUser={currentUser}
         isLoading={isLoading}
       />
-      <div role="page-body">
+      <div>
         <Routes
           currentUser={currentUser}
           setCurrentUser={setCurrentUser}

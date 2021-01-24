@@ -69,7 +69,7 @@ describe("App", () => {
     expect(await withinTable.findByText(questionText)).toBeInTheDocument();
     const row = await withinTable.getByText(questionText).closest("tr");
     const withinRow = within(row);
-    fireEvent.click(await withinRow.findByRole("delete-question"));
+    fireEvent.click(await withinRow.findByTestId("delete-question"));
     await waitForElementToBeRemoved(() => app.queryByText(questionText));
   });
 });

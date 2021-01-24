@@ -4,61 +4,61 @@ import QuestionnairesList from "./QuestionnairesList";
 import {
   getQuestionnaires,
   addQuestionnaire,
-  removeQuestionnaire
+  removeQuestionnaire,
 } from "./apiCalls";
 import { toast } from "react-toastify";
 
-const QuestionnairesPage = props => {
+const QuestionnairesPage = (props) => {
   const [questionnaireList, setQuestionnairesList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isMounted, setIsMounted] = useState(true);
+  const [mounted, setMounted] = useState(true);
 
   useEffect(() => {
     getQuestionnaires()
-      .then(response => {
-        if (isMounted) {
+      .then((response) => {
+        if (mounted) {
           setQuestionnairesList(response);
           setIsLoading(false);
         }
       })
-      .catch(e => {
-        if (isMounted) {
+      .catch((e) => {
+        if (mounted) {
           toast.error(
             `Failed to get feedback questionnaires. Check your internet connection`
           );
         }
       });
     return () => {
-      setIsMounted(false);
+      setMounted(false);
     };
-  }, []);
+  }, [mounted]);
 
-  const handleAddingQuestionnaire = newQuestionnaireName => {
+  const handleAddingQuestionnaire = (newQuestionnaireName) => {
     const questionnaire = {
       userid: 1234,
-      name: newQuestionnaireName
+      name: newQuestionnaireName,
     };
     addQuestionnaire(questionnaire)
-      .then(result => {
-        if (isMounted) {
+      .then((result) => {
+        if (mounted) {
           setQuestionnairesList([...questionnaireList, result]);
         }
       })
-      .catch(e => {
+      .catch((e) => {
         toast.error(
           `Failed to save questionnaire. Check your internet connection`
         );
       });
   };
 
-  const handleDelete = id => {
+  const handleDelete = (id) => {
     removeQuestionnaire(id)
-      .then(result => {
-        if (isMounted) {
-          setQuestionnairesList(questionnaireList.filter(q => q.id !== id));
+      .then((result) => {
+        if (mounted) {
+          setQuestionnairesList(questionnaireList.filter((q) => q.id !== id));
         }
       })
-      .catch(e => {
+      .catch((e) => {
         toast.error(
           `Failed to delete feedback questionnaire. Check your internet connection`
         );

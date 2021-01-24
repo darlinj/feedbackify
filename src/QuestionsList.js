@@ -2,7 +2,7 @@ import React from "react";
 import { Table } from "react-bootstrap";
 import { FaMinusSquare } from "react-icons/fa";
 
-const QuestionsList = params => {
+const QuestionsList = (params) => {
   const handleDelete = (id, event) => {
     event.preventDefault();
     params.handleDelete(id);
@@ -27,13 +27,13 @@ const QuestionsList = params => {
                   <button
                     id={questionObject.id}
                     className="btn"
-                    onClick={e => handleDelete(questionObject.id, e)}
+                    onClick={(e) => handleDelete(questionObject.id, e)}
                     value={questionObject.id}
-                    role="delete-question"
+                    data-testid="delete-question"
                     style={{
                       float: "right",
                       paddingTop: "1px",
-                      paddingBottom: "1px"
+                      paddingBottom: "1px",
                     }}
                   >
                     <FaMinusSquare style={{ color: "red" }} />
