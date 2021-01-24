@@ -1,16 +1,14 @@
-import React from "react";
+import { cleanup, fireEvent, render } from "@testing-library/react";
 import faker from "faker";
-import { render, cleanup } from "@testing-library/react";
-import { login } from "../authentication";
-import { MemoryRouter } from "react-router-dom";
+import React from "react";
+import { MemoryRouter, Route } from "react-router-dom";
 import {
-  addQuestionnaire,
   addQuestion,
+  addQuestionnaire,
   retrieveQuestionnaire,
 } from "../apiCalls";
-import { Route } from "react-router-dom";
-
 import App from "../App";
+import { login } from "../authentication";
 
 let targetQuestionnaire = {};
 
@@ -46,6 +44,29 @@ describe("Providing feedback", () => {
     expect(await app.findByText(/Loading/)).toBeInTheDocument();
     expect(
       await app.findByText(targetQuestionnaire.questions.items[0].question)
+    ).toBeInTheDocument();
+  });
+
+  it("Filling in the feedback form", async () => {
+    const app = render(
+      <MemoryRouter initialEntries={[`/feedback/${targetQuestionnaire.id}`]}>
+        <Route path="/feedback/:questionnaireId">
+          <App />
+        </Route>
+      </MemoryRouter>
+    );
+    expect(
+      await app.findByText(targetQuestionnaire.questions.items[0].question)
+    ).toBeInTheDocument();
+    fireEvent.change(
+      app.getByLabelText(targetQuestionnaire.questions.items[0].question),
+      {
+        target: { value: faker.lorem.words(10) },
+      }
+    );
+    fireEvent.click(await app.findByText("Submit"));
+    expect(
+      await app.findByText("Thanks for your feedback")
     ).toBeInTheDocument();
   });
 });
