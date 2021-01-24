@@ -10,6 +10,8 @@ import {
 import { login } from "../authentication";
 import { clearDatabase } from "../../api/tests/DBAdmin";
 import { addQuestionnaire } from "../apiCalls";
+import { MemoryRouter } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 import App from "../App";
 import faker from "faker";
@@ -27,7 +29,13 @@ describe("App", () => {
 
   it("Adding a questionnaire", async () => {
     const questionText = faker.lorem.words(10);
-    const app = render(<App />);
+    const app = render(
+      <MemoryRouter initialEntries={["/"]}>
+        <Route>
+          <App />
+        </Route>
+      </MemoryRouter>
+    );
     expect(await app.findByText("Add new questionnaire")).toBeInTheDocument();
     fireEvent.click(await app.findByText("Add new questionnaire"));
     expect(
@@ -43,7 +51,13 @@ describe("App", () => {
   it("delete a questionnaire", async () => {
     const questionText = faker.lorem.words(10);
     await addQuestionnaire({ name: questionText });
-    const app = render(<App />);
+    const app = render(
+      <MemoryRouter initialEntries={["/"]}>
+        <Route>
+          <App />
+        </Route>
+      </MemoryRouter>
+    );
     expect(await app.findByText(/Loading.../)).toBeInTheDocument();
     expect(await app.findByText(questionText)).toBeInTheDocument();
     const row = await app.getByText(questionText).closest("tr");
@@ -55,7 +69,13 @@ describe("App", () => {
   it("editing a questionnaire", async () => {
     const questionText = faker.lorem.words(10);
     await addQuestionnaire({ name: questionText });
-    const app = render(<App />);
+    const app = render(
+      <MemoryRouter initialEntries={["/"]}>
+        <Route>
+          <App />
+        </Route>
+      </MemoryRouter>
+    );
     expect(await app.findByText(/Loading.../)).toBeInTheDocument();
     expect(await app.findByText(questionText)).toBeInTheDocument();
     const row = await app.getByText(questionText).closest("tr");

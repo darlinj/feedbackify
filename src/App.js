@@ -4,7 +4,6 @@ import { Container } from "react-bootstrap";
 import Amplify from "aws-amplify";
 import awsConfig from "./aws-exports";
 import { getCurrentUser } from "./authentication";
-import { BrowserRouter as Router } from "react-router-dom";
 import Routes from "./Routes.js";
 import { ToastContainer } from "react-toastify";
 
@@ -20,33 +19,31 @@ function App() {
 
   useEffect(() => {
     getCurrentUser()
-      .then(user => {
+      .then((user) => {
         setCurrentUser(user);
       })
-      .catch(error => {
+      .catch((error) => {
         setCurrentUser(undefined);
       });
     setIsLoading(false);
   }, []);
 
   return (
-    <Router>
-      <Container fluid={true} className="App">
-        <ToastContainer />
-        <Navigator
-          title="Feedbackify"
+    <Container fluid={true} className="App">
+      <ToastContainer />
+      <Navigator
+        title="Feedbackify"
+        currentUser={currentUser}
+        isLoading={isLoading}
+      />
+      <div role="page-body">
+        <Routes
           currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
           isLoading={isLoading}
         />
-        <div role="page-body">
-          <Routes
-            currentUser={currentUser}
-            setCurrentUser={setCurrentUser}
-            isLoading={isLoading}
-          />
-        </div>
-      </Container>
-    </Router>
+      </div>
+    </Container>
   );
 }
 

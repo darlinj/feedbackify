@@ -1,11 +1,11 @@
 import { API, graphqlOperation } from "aws-amplify";
 
-const runGraphqlOperation = query_string => {
+const runGraphqlOperation = (query_string) => {
   const query = graphqlOperation(query_string);
   return API.graphql(query);
 };
 
-const addQuestion = question => {
+const addQuestion = (question) => {
   return new Promise((resolve, reject) => {
     runGraphqlOperation(`mutation MyMutation {
         saveQuestion(questionnaireId: "${question.questionnaireId}", question: "${question.question}") {
@@ -14,16 +14,16 @@ const addQuestion = question => {
           question
         }
       }`)
-      .then(result => {
+      .then((result) => {
         resolve(result.data.saveQuestion);
       })
-      .catch(e => {
+      .catch((e) => {
         reject({ error: e });
       });
   });
 };
 
-const addQuestionnaire = newQuestionnaire => {
+const addQuestionnaire = (newQuestionnaire) => {
   return new Promise((resolve, reject) => {
     runGraphqlOperation(`mutation MyMutation {
     saveQuestionnaire(name: "${newQuestionnaire.name}") {
@@ -31,16 +31,16 @@ const addQuestionnaire = newQuestionnaire => {
          name
        }
      }`)
-      .then(result => {
+      .then((result) => {
         resolve(result.data.saveQuestionnaire);
       })
-      .catch(e => {
+      .catch((e) => {
         reject({ error: e });
       });
   });
 };
 
-const addFeedback = feedback => {
+const addFeedback = (feedback) => {
   return new Promise((resolve, reject) => {
     runGraphqlOperation(`mutation MyMutation {
         saveQuestion(questionnaireId: "1234", question: "some question") {
@@ -49,10 +49,10 @@ const addFeedback = feedback => {
           question
         }
       }`)
-      .then(result => {
+      .then((result) => {
         resolve(result.data.createFeedback);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
         reject({ error: e });
       });
@@ -70,19 +70,20 @@ const getQuestions = () => {
          }
        }
      }`)
-      .then(result => {
+      .then((result) => {
         resolve(result.data.getQuestions.questions);
       })
-      .catch(e => {
+      .catch((e) => {
         reject({ error: e });
       });
   });
 };
 
-const retrieveQuestionnaire = id => {
+const retrieveQuestionnaire = (id) => {
   return new Promise((resolve, reject) => {
     runGraphqlOperation(`query MyQuery {
   getQuestionnaire(id: "${id}") {
+    id
     questions {
       items {
         id
@@ -91,10 +92,10 @@ const retrieveQuestionnaire = id => {
     }
   }
 }`)
-      .then(result => {
+      .then((result) => {
         resolve(result.data.getQuestionnaire);
       })
-      .catch(e => {
+      .catch((e) => {
         reject({ error: e });
       });
   });
@@ -110,42 +111,42 @@ const getQuestionnaires = () => {
         }
       }
     }`)
-      .then(result => {
+      .then((result) => {
         resolve(result.data.getQuestionnaires.questionnaires);
       })
-      .catch(e => {
+      .catch((e) => {
         reject({ error: e });
       });
   });
 };
 
-const removeQuestion = id => {
+const removeQuestion = (id) => {
   return new Promise((resolve, reject) => {
     runGraphqlOperation(`mutation MyMutation {
        deleteQuestion(id: "${id}") {
          id
        }
      }`)
-      .then(result => {
+      .then((result) => {
         resolve(result.data.deleteQuestion);
       })
-      .catch(e => {
+      .catch((e) => {
         reject({ error: e });
       });
   });
 };
 
-const removeQuestionnaire = id => {
+const removeQuestionnaire = (id) => {
   return new Promise((resolve, reject) => {
     runGraphqlOperation(`mutation MyMutation {
       deleteQuestionnaire(id: "${id}") {
         id
       }
     }`)
-      .then(result => {
+      .then((result) => {
         resolve(result.data.deleteQuestionnaire);
       })
-      .catch(e => {
+      .catch((e) => {
         reject({ error: e });
       });
   });
@@ -159,5 +160,5 @@ export {
   retrieveQuestionnaire,
   getQuestions,
   removeQuestion,
-  removeQuestionnaire
+  removeQuestionnaire,
 };
