@@ -29,7 +29,6 @@ const QuestionsPage = (props) => {
         }
       })
       .catch((e) => {
-        console.log(e);
         toast.error(`Failed to get questions. Check your internet connection`);
       });
     return () => (mounted = false);
@@ -62,7 +61,7 @@ const QuestionsPage = (props) => {
   };
 
   return (
-    <div className="questions-form">
+    <div className="questions-form" data-testid="feedback-page">
       <TitleBar title={questionnaire.name} />
       <QuestionsList questionList={questionList} handleDelete={handleDelete} />
       <AddQuestionForm handleAddingQuestion={handleAddingQuestion} />

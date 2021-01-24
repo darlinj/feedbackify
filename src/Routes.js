@@ -6,9 +6,10 @@ import HomePage from "./HomePage";
 import NotFoundPage from "./NotFoundPage";
 import ProtectedRoute from "./ProtectedRoute";
 import FeedbackPage from "./FeedbackPage";
+import FeedbackViewingPage from "./FeedbackViewingPage";
 import { Switch, Route } from "react-router-dom";
 
-const Routes = params => {
+const Routes = (params) => {
   return (
     <Switch>
       <Route path="/login">
@@ -17,6 +18,11 @@ const Routes = params => {
       <Route path="/signup">
         <Signup {...params} />
       </Route>
+      <ProtectedRoute
+        {...params}
+        path="/questionnaire_feedback/:id"
+        component={FeedbackViewingPage}
+      />
       <ProtectedRoute
         {...params}
         component={QuestionsPage}
