@@ -1,6 +1,5 @@
 import React from "react";
-import { mount, shallow } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { mount } from "enzyme";
 import QuestionnairesList from "./QuestionnairesList";
 import { MemoryRouter } from "react-router-dom";
 import moment from "moment";
@@ -12,34 +11,32 @@ describe("Shows questionnaire list", () => {
         <QuestionnairesList isLoading={true} />
       </MemoryRouter>
     );
-    expect(component.find("div[role='loading-banner']").text()).toContain(
-      "Loading..."
-    );
+    expect(
+      component.find("div[data-test-id='loading-banner']").text()
+    ).toContain("Loading...");
   });
 
   it("Shows the questionnaire list", async () => {
-    const currerntDate = moment()
-      .utc()
-      .format();
+    const currerntDate = moment().utc().format();
     const questionnaires = [
       {
         id: 1234,
         name: "this is some questionnaire",
         createdAt: currerntDate,
-        updatedAt: currerntDate
+        updatedAt: currerntDate,
       },
       {
         id: 1235,
         name: "this is another questionnaire",
         createdAt: currerntDate,
-        updatedAt: currerntDate
+        updatedAt: currerntDate,
       },
       {
         id: 1236,
         name: "this is a third questionnaire",
         createdAt: currerntDate,
-        updatedAt: currerntDate
-      }
+        updatedAt: currerntDate,
+      },
     ];
     const component = mount(
       <MemoryRouter initialEntries={["/"]}>
@@ -54,23 +51,20 @@ describe("Shows questionnaire list", () => {
       moment(currerntDate).format("h:mm Do MMM YYYY")
     );
     expect(component.find("Link").length).toEqual(3);
-    expect(
-      component
-        .find("Link")
-        .first()
-        .prop("to")
-    ).toEqual("/questionnaire/1234");
+    expect(component.find("Link").first().prop("to")).toEqual(
+      "/questionnaire/1234"
+    );
   });
 
   it("calls the delete function if the delete button is pressed", () => {
     let foo = 0;
-    const handleDelete = questionnaireId => {
+    const handleDelete = (questionnaireId) => {
       foo = questionnaireId;
     };
     const questionnaires = [
       { id: 1234, name: "this is some questionnaire" },
       { id: 999, name: "delete this questionnaire" },
-      { id: 1236, name: "this is a third questionnaire" }
+      { id: 1236, name: "this is a third questionnaire" },
     ];
     const component = mount(
       <MemoryRouter initialEntries={["/"]}>
@@ -82,7 +76,7 @@ describe("Shows questionnaire list", () => {
     );
     component
       .find("button[questionnaireid=999]")
-      .forEach(n => console.log(n.html()));
+      .forEach((n) => console.log(n.html()));
     component.find("button[value=999]").simulate("click");
     expect(foo).toEqual(999);
   });

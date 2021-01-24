@@ -98,7 +98,7 @@ const QuestionnairesList = (props) => {
 
   const questionnaireBody = () => {
     if (props.isLoading) {
-      return <div role="loading-banner">Loading...</div>;
+      return <div data-test-id="loading-banner">Loading...</div>;
     } else {
       return questionnairesTable();
     }
