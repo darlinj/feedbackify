@@ -84,6 +84,7 @@ const retrieveQuestionnaire = (id) => {
     runGraphqlOperation(`query MyQuery {
   getQuestionnaire(id: "${id}") {
     id
+    name
     questions {
       items {
         id

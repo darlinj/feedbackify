@@ -4,7 +4,7 @@ import { FaMinusSquare, FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
-const QuestionnairesList = props => {
+const QuestionnairesList = (props) => {
   const handleDelete = (id, event) => {
     event.preventDefault();
     props.handleDelete(id);
@@ -27,7 +27,7 @@ const QuestionnairesList = props => {
                 <td>{questionnaireObject.name}</td>
                 <td>
                   <a
-                    href={`http://${window.location.href}feedback/${questionnaireObject.id}`}
+                    href={`${window.location.href}feedback/${questionnaireObject.id}`}
                   >
                     Link
                   </a>
@@ -53,12 +53,12 @@ const QuestionnairesList = props => {
                   <button
                     id={questionnaireObject.id}
                     className="btn"
-                    onClick={e => handleDelete(questionnaireObject.id, e)}
+                    onClick={(e) => handleDelete(questionnaireObject.id, e)}
                     value={questionnaireObject.id}
                     role="delete-questionnaire"
                     style={{
                       paddingTop: "1px",
-                      paddingBottom: "1px"
+                      paddingBottom: "1px",
                     }}
                   >
                     <FaMinusSquare style={{ color: "red" }} />
