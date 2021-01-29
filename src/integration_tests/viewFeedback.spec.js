@@ -56,9 +56,17 @@ describe("viewing feedback", () => {
         </Route>
       </MemoryRouter>
     );
-    const questionRow = within(
-      await app.findByText(targetQuestionnaire.questions.items[0].question)
-    ).closest("tr");
+    //    const questionRow = within(
+    //      await app.findByText(targetQuestionnaire.questions.items[0].question)
+    //    .closest("tr"));
+
+    expect(await app.findByText(targetQuestionnaire.name)).toBeInTheDocument();
+
+    const row = await app
+      .getByText(targetQuestionnaire.questions.items[0].question)
+      .closest("tr");
+    const questionRow = within(row);
+
     expect(
       await questionRow.findByText(
         targetQuestionnaire.questions.items[0].question.feedback.items[0]
