@@ -7,7 +7,7 @@ Parameters:
     Description: Name of the API - used to generate unique names for resources
     MinLength: 3
     MaxLength: 20
-    AllowedPattern: '^[a-zA-Z][a-zA-Z0-9_]*$'
+    AllowedPattern: "^[a-zA-Z][a-zA-Z0-9_]*$"
 
 Resources:
   DynamoDBRole:
@@ -46,9 +46,10 @@ Resources:
               - dynamodb:Scan
               - dynamodb:BatchGetItem
               - dynamodb:BatchWriteItem
-            Resource: 
-              - !Join [ "", [ !GetAtt QuestionnairesTable.Arn, "*" ] ]
-              - !Join [ "", [ !GetAtt QuestionsTable.Arn, "*" ] ]
+            Resource:
+              - !Join ["", [!GetAtt QuestionnairesTable.Arn, "*"]]
+              - !Join ["", [!GetAtt QuestionsTable.Arn, "*"]]
+              - !Join ["", [!GetAtt FeedbackTable.Arn, "*"]]
 
   QuestionnairesTable:
     Type: "AWS::DynamoDB::Table"
@@ -70,7 +71,7 @@ Resources:
         WriteCapacityUnits: 5
       GlobalSecondaryIndexes:
         - IndexName: "UserId-index"
-          KeySchema: 
+          KeySchema:
             - AttributeName: "UserId"
               KeyType: "HASH"
           Projection:
@@ -100,7 +101,7 @@ Resources:
         WriteCapacityUnits: 5
       GlobalSecondaryIndexes:
         - IndexName: "UserId-index"
-          KeySchema: 
+          KeySchema:
             - AttributeName: "UserId"
               KeyType: "HASH"
           Projection:
@@ -109,8 +110,38 @@ Resources:
             ReadCapacityUnits: 5
             WriteCapacityUnits: 5
         - IndexName: "QuestionnaireIdGSI"
-          KeySchema: 
+          KeySchema:
             - AttributeName: "questionnaireId"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+  FeedbackTable:
+    Type: "AWS::DynamoDB::Table"
+    Description: "Data store for AWS AppSync Feedback"
+    Properties:
+      TableName: !Sub ${NamePrefix}-feedback-table
+      AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "S"
+        - AttributeName: "UserId"
+          AttributeType: "S"
+        - AttributeName: "questionId"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "id"
+          KeyType: "HASH"
+        - AttributeName: "UserId"
+          KeyType: "RANGE"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      GlobalSecondaryIndexes:
+        - IndexName: "QuestionIdGSI"
+          KeySchema:
+            - AttributeName: "questionId"
               KeyType: "HASH"
           Projection:
             ProjectionType: "ALL"
@@ -120,17 +151,13 @@ Resources:
 Outputs:
   DBRoleARN:
     Description: The ARN of the role that can connect to the table
-    Value: 
-      !GetAtt DynamoDBRole.Arn
+    Value: !GetAtt DynamoDBRole.Arn
   QuestionnaireTableID:
     Description: The ID of the questionnaires table
-    Value: 
-      !Ref QuestionnairesTable
+    Value: !Ref QuestionnairesTable
   QuestionTableID:
     Description: The ID of the questions table
-    Value: 
-      !Ref QuestionsTable
-  QuestionTableID:
-    Description: The ID of the question table
-    Value: 
-      !Ref QuestionsTable
+    Value: !Ref QuestionsTable
+  FeedbackTableID:
+    Description: The ID of the feedback table
+    Value: !Ref FeedbackTable

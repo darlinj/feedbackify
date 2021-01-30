@@ -43,14 +43,14 @@ const addQuestionnaire = (newQuestionnaire) => {
 const addFeedback = (feedback) => {
   return new Promise((resolve, reject) => {
     runGraphqlOperation(`mutation MyMutation {
-        saveQuestion(questionnaireId: "1234", question: "some question") {
+        saveFeedback(questionId: "${feedback.questionId}", feedback: "${feedback.feedback}") {
           id
-          questionnaireId
-          question
+          questionId
+          feedback
         }
       }`)
       .then((result) => {
-        resolve(result.data.createFeedback);
+        resolve(result.data.saveFeedback);
       })
       .catch((e) => {
         console.log(e);
@@ -90,6 +90,24 @@ const getQuestion = (id) => {
      }`)
       .then((result) => {
         resolve(result.data.getQuestion);
+      })
+      .catch((e) => {
+        reject({ error: e });
+      });
+  });
+};
+
+const getFeedback = (id) => {
+  return new Promise((resolve, reject) => {
+    runGraphqlOperation(`query MyQuery {
+       getFeedback (id: "${id}") {
+           id
+           feedback
+           questionId
+       }
+     }`)
+      .then((result) => {
+        resolve(result.data.getFeedback);
       })
       .catch((e) => {
         reject({ error: e });
@@ -179,6 +197,7 @@ export {
   getQuestionnaire,
   getQuestions,
   getQuestion,
+  getFeedback,
   removeQuestion,
   removeQuestionnaire,
 };

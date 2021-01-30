@@ -1,4 +1,3 @@
-
 ---
 Description: Set up Cognito pool
 
@@ -7,7 +6,7 @@ Parameters:
     Type: String
     Description: prefix for naming all components
     MinLength: 3
-    AllowedPattern: '^[a-zA-Z][a-zA-Z0-9_]*$'
+    AllowedPattern: "^[a-zA-Z][a-zA-Z0-9_]*$"
   UserPoolId:
     Type: String
     MinLength: 3
@@ -18,6 +17,9 @@ Parameters:
     Type: String
     MinLength: 3
   QuestionTableName:
+    Type: String
+    MinLength: 3
+  FeedbackTableName:
     Type: String
     MinLength: 3
 
@@ -48,6 +50,11 @@ Resources:
         type Questionnaires {
           questionnaires: [Questionnaire!]!
         }
+        type Feedback {
+          id: ID!
+          questionId: ID!
+          feedback: String
+        }
         type Question {
           id: ID!
           questionnaireId: ID!
@@ -59,11 +66,13 @@ Resources:
         type Query {
           getQuestions: Questions!
           getQuestion(id: ID!): Question
+          getFeedback(id: ID!): Feedback
           getQuestionnaires: Questionnaires!
           getQuestionnaire(id: ID!): Questionnaire
         }
         type Mutation {
           saveQuestion(questionnaireId: ID!, question: String!): Question
+          saveFeedback(questionId: ID!, feedback: String!): Feedback
           saveQuestionnaire(name: String!): Questionnaire
           deleteQuestion(id: ID!): Question
           deleteQuestionnaire(id: ID!): Questionnaire
@@ -96,6 +105,17 @@ Resources:
         TableName: !Ref QuestionTableName
         AwsRegion: !Sub ${AWS::Region}
 
+  AppSyncFeedbackTableDataSource:
+    Type: "AWS::AppSync::DataSource"
+    Properties:
+      ApiId: !GetAtt AppSyncApi.ApiId
+      Name: !Sub ${NamePrefix}_feedback
+      Description: "The Feedback Table AppSync Data Source"
+      Type: AMAZON_DYNAMODB
+      ServiceRoleArn: !Ref ServiceRoleArn
+      DynamoDBConfig:
+        TableName: !Ref FeedbackTableName
+        AwsRegion: !Sub ${AWS::Region}
 
   AppSyncAllQuestionnairesQueryResolver:
     Type: "AWS::AppSync::Resolver"
@@ -256,6 +276,29 @@ Resources:
         }
       ResponseMappingTemplate: "$util.toJson($ctx.result)"
 
+  AppSyncSaveFeedbackMutationResolver:
+    Type: "AWS::AppSync::Resolver"
+    DependsOn: AppSyncSchema
+    Properties:
+      ApiId: !GetAtt AppSyncApi.ApiId
+      TypeName: Mutation
+      FieldName: saveFeedback
+      DataSourceName: !GetAtt AppSyncFeedbackTableDataSource.Name
+      RequestMappingTemplate: |
+        {
+          "version": "2017-02-28",
+          "operation": "PutItem",
+          "key": {
+            "id": $util.dynamodb.toDynamoDBJson($util.autoId()),
+            "UserId": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
+          },
+          "attributeValues": {
+            "questionId": $util.dynamodb.toDynamoDBJson($ctx.args.questionId),
+            "feedback": $util.dynamodb.toDynamoDBJson($ctx.args.feedback)
+          }
+        }
+      ResponseMappingTemplate: "$util.toJson($ctx.result)"
+
   AppSyncGetQuestionQueryResolver:
     Type: "AWS::AppSync::Resolver"
     DependsOn: AppSyncSchema
@@ -264,6 +307,25 @@ Resources:
       TypeName: Query
       FieldName: getQuestion
       DataSourceName: !GetAtt AppSyncQuestionsTableDataSource.Name
+      RequestMappingTemplate: |
+        {
+          "version": "2017-02-28",
+          "operation": "GetItem",
+          "key": {
+            "id": $util.dynamodb.toDynamoDBJson($ctx.args.id),
+            "UserId": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
+          }
+        }
+      ResponseMappingTemplate: "$util.toJson($ctx.result)"
+
+  AppSyncGetFeedbackQueryResolver:
+    Type: "AWS::AppSync::Resolver"
+    DependsOn: AppSyncSchema
+    Properties:
+      ApiId: !GetAtt AppSyncApi.ApiId
+      TypeName: Query
+      FieldName: getFeedback
+      DataSourceName: !GetAtt AppSyncFeedbackTableDataSource.Name
       RequestMappingTemplate: |
         {
           "version": "2017-02-28",
