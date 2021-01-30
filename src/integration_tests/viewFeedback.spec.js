@@ -33,15 +33,15 @@ describe("viewing feedback", () => {
     });
     await addFeedback({
       questionId: question1.id,
-      feedbackText: faker.lorem.words(10),
+      feedback: faker.lorem.words(10),
     });
     await addFeedback({
       questionId: question1.id,
-      feedbackText: faker.lorem.words(10),
+      feedback: faker.lorem.words(10),
     });
     await addFeedback({
       questionId: question2.id,
-      feedbackText: faker.lorem.words(10),
+      feedback: faker.lorem.words(10),
     });
     targetQuestionnaire = await getQuestionnaire(questionnaire.id);
   });
@@ -64,9 +64,12 @@ describe("viewing feedback", () => {
       .closest("tr");
     const questionRow = within(row);
 
+    console.log(
+      targetQuestionnaire.questions.items[0].feedback.items[0].feedback
+    );
     expect(
-      await questionRow.findByText(
-        targetQuestionnaire.questions.items[0].feedback.items[0].feedbackText
+      await app.findByText(
+        targetQuestionnaire.questions.items[0].feedback.items[0].feedback
       )
     ).toBeInTheDocument();
   });
