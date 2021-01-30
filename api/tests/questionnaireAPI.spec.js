@@ -1,11 +1,11 @@
 import Amplify, { Auth } from "aws-amplify";
 import { clearDatabase, addQuestionnaireForAnotherUser } from "./DBAdmin";
 import {
-  saveQuestionnaire,
+  addQuestionnaire,
   getQuestionnaire,
-  deleteQuestionnaire,
-  getQuestionnaires
-} from "../../src/rawApiCalls.js";
+  removeQuestionnaire,
+  getQuestionnaires,
+} from "../../src/apiCalls.js";
 import awsConfig from "../../src/aws-exports";
 
 Amplify.configure(awsConfig);
@@ -27,25 +27,21 @@ const login = async () => {
 
 describe("The Questionnaire API", () => {
   it("Returns an empty array if there are no records in the DB", async () => {
-    await getQuestionnaires().then(result => {
-      expect(result.data.getQuestionnaires.questionnaires.length).toEqual(0);
+    await getQuestionnaires().then((result) => {
+      expect(result.length).toEqual(0);
     });
   });
 
   it("Adds a questionnaire and then checks it is there", async () => {
     let questionnaireId = 0;
     const questionnaire = { name: "Some name" };
-    await saveQuestionnaire(questionnaire).then(result => {
-      questionnaireId = result.data.saveQuestionnaire.id;
+    await addQuestionnaire(questionnaire).then((result) => {
+      questionnaireId = result.id;
     });
 
-    await getQuestionnaires().then(result => {
-      expect(result.data.getQuestionnaires.questionnaires[0].name).toEqual(
-        "Some name"
-      );
-      expect(
-        result.data.getQuestionnaires.questionnaires[0].id.length
-      ).toBeGreaterThan(10);
+    await getQuestionnaires().then((result) => {
+      expect(result[0].name).toEqual("Some name");
+      expect(result[0].id.length).toBeGreaterThan(10);
     });
   });
 
@@ -55,60 +51,50 @@ describe("The Questionnaire API", () => {
 
     let questionnaireId = 0;
     const questionnaire = { name: "Some name" };
-    await saveQuestionnaire(questionnaire).then(result => {
-      questionnaireId = result.data.saveQuestionnaire.id;
+    await addQuestionnaire(questionnaire).then((result) => {
+      questionnaireId = result.id;
     });
 
-    await getQuestionnaires().then(result => {
-      expect(result.data.getQuestionnaires.questionnaires.length).toEqual(1);
+    await getQuestionnaires().then((result) => {
+      expect(result.length).toEqual(1);
     });
   });
 
   it("Can get an individual Questionnaire by ID", async () => {
     let questionnaireId = 0;
     const questionnaire = { name: "Some name" };
-    await saveQuestionnaire(questionnaire).then(result => {
-      questionnaireId = result.data.saveQuestionnaire.id;
+    await addQuestionnaire(questionnaire).then((result) => {
+      questionnaireId = result.id;
     });
 
-    await getQuestionnaire(questionnaireId).then(result => {
-      expect(result.data).toEqual({
-        getQuestionnaire: {
-          id: questionnaireId,
-          name: "Some name"
-        }
-      });
+    await getQuestionnaire(questionnaireId).then((result) => {
+      expect(result.id).toEqual(questionnaireId);
+      expect(result.name).toEqual("Some name");
     });
   });
 
   it("Can delete an individual Questionnaire by ID", async () => {
     let questionnaireId = 0;
     const questionnaire = { name: "Some name" };
-    await saveQuestionnaire(questionnaire).then(result => {
-      questionnaireId = result.data.saveQuestionnaire.id;
+    await addQuestionnaire(questionnaire).then((result) => {
+      questionnaireId = result.id;
     });
 
-    await getQuestionnaire(questionnaireId).then(result => {
-      expect(result.data).toEqual({
-        getQuestionnaire: {
-          id: questionnaireId,
-          name: "Some name"
-        }
-      });
+    await getQuestionnaire(questionnaireId).then((result) => {
+      expect(result.id).toEqual(questionnaireId);
+      expect(result.name).toEqual("Some name");
     });
 
-    await deleteQuestionnaire(questionnaireId);
+    await removeQuestionnaire(questionnaireId);
 
-    await getQuestionnaire(questionnaireId).then(result => {
-      expect(result.data).toEqual({
-        getQuestionnaire: null
-      });
+    await getQuestionnaire(questionnaireId).then((result) => {
+      expect(result).toEqual(null);
     });
   });
 
   it("deleting a Questionnaire that doesn't exist", async () => {
-    await deleteQuestionnaire("9999").then(result => {
-      expect(result.data).toEqual({ deleteQuestionnaire: null });
+    await removeQuestionnaire("9999").then((result) => {
+      expect(result).toEqual(null);
     });
   });
 });

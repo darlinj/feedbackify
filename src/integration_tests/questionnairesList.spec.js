@@ -16,11 +16,16 @@ import { Route } from "react-router-dom";
 import App from "../App";
 import faker from "faker";
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 describe("App", () => {
   afterEach(() => cleanup());
 
   beforeAll(async () => {
     await clearDatabase();
+    sleep(1000);
   });
 
   beforeEach(async () => {

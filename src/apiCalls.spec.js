@@ -1,11 +1,11 @@
 import React from "react";
 import {
   getQuestions,
+  getQuestion,
   getQuestionnaires,
   getQuestionnaire,
   addQuestionnaire,
   addQuestion,
-  addFeedback,
   removeQuestion,
   removeQuestionnaire,
 } from "./apiCalls";
@@ -17,6 +17,31 @@ describe("api calls", () => {
   afterEach(() => {
     API.graphql.mockClear();
     graphqlOperation.mockClear();
+  });
+
+  describe("the getQuestion operation", () => {
+    it("gets a question by id", async () => {
+      const question = { some: "question" };
+      API.graphql.mockResolvedValue({
+        data: { getQuestion: question },
+      });
+      graphqlOperation.mockReturnValue("the get question query");
+      const returnedQuestion = await getQuestion(123);
+      expect(graphqlOperation.mock.calls.length).toEqual(1);
+      expect(graphqlOperation.mock.calls[0][0]).toMatch(/getQuestion/);
+      expect(API.graphql.mock.calls.length).toEqual(1);
+      expect(API.graphql.mock.calls[0][0]).toEqual("the get question query");
+      expect(returnedQuestion).toEqual(question);
+    });
+
+    it("propogates the errors", async () => {
+      API.graphql.mockRejectedValue("some error");
+      graphqlOperation.mockReturnValue("the list questions query");
+      expect.assertions(1);
+      return getQuestions().catch((errorMessage) => {
+        expect(errorMessage).toEqual({ error: "some error" });
+      });
+    });
   });
 
   describe("the getQuestions operation", () => {

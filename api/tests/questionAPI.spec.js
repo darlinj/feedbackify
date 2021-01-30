@@ -1,11 +1,11 @@
 import Amplify, { Auth } from "aws-amplify";
 import { clearDatabase, addQuestionForAnotherUser } from "./DBAdmin";
 import {
-  saveQuestion,
+  addQuestion,
   getQuestion,
-  deleteQuestion,
-  getQuestions
-} from "../../src/rawApiCalls.js";
+  removeQuestion,
+  getQuestions,
+} from "../../src/apiCalls.js";
 import awsConfig from "../../src/aws-exports";
 
 Amplify.configure(awsConfig);
@@ -24,29 +24,19 @@ const login = async () => {
 
 describe("The Question API", () => {
   it("Returns an empty array if there are no records in the DB", async () => {
-    await getQuestions().then(result => {
-      expect(result.data).toEqual({
-        getQuestions: {
-          questions: []
-        }
-      });
+    await getQuestions().then((result) => {
+      expect(result).toEqual([]);
     });
   });
 
   it("Adds a question and then checks it is there", async () => {
     const question = { questionnaireId: "12345", question: "Some question" };
-    await saveQuestion(question);
+    await addQuestion(question);
 
-    await getQuestions().then(result => {
-      expect(result.data.getQuestions.questions[0].question).toEqual(
-        "Some question"
-      );
-      expect(result.data.getQuestions.questions[0].questionnaireId).toEqual(
-        "12345"
-      );
-      expect(result.data.getQuestions.questions[0].id.length).toBeGreaterThan(
-        10
-      );
+    await getQuestions().then((result) => {
+      expect(result[0].question).toEqual("Some question");
+      expect(result[0].questionnaireId).toEqual("12345");
+      expect(result[0].id.length).toBeGreaterThan(10);
     });
   });
 
@@ -55,30 +45,26 @@ describe("The Question API", () => {
     await addQuestionForAnotherUser(tableName);
 
     const question = { questionnaireId: "12345", question: "Some question" };
-    await saveQuestion(question);
+    await addQuestion(question);
 
-    await getQuestions().then(result => {
-      expect(result.data.getQuestions.questions.length).toEqual(1);
-      expect(result.data.getQuestions.questions[0].question).toEqual(
-        "Some question"
-      );
+    await getQuestions().then((result) => {
+      expect(result.length).toEqual(1);
+      expect(result[0].question).toEqual("Some question");
     });
   });
 
   it("Can get an individual Question by ID", async () => {
     let questionId = 0;
     const question = { questionnaireId: "12345", question: "Some question" };
-    await saveQuestion(question).then(result => {
-      questionId = result.data.saveQuestion.id;
+    await addQuestion(question).then((result) => {
+      questionId = result.id;
     });
 
-    await getQuestion(questionId).then(result => {
-      expect(result.data).toEqual({
-        getQuestion: {
-          id: questionId,
-          question: "Some question",
-          questionnaireId: "12345"
-        }
+    await getQuestion(questionId).then((result) => {
+      expect(result).toEqual({
+        id: questionId,
+        question: "Some question",
+        questionnaireId: "12345",
       });
     });
   });
@@ -86,26 +72,18 @@ describe("The Question API", () => {
   it("Can delete an individual Question by ID", async () => {
     let questionId = 0;
     const question = { questionnaireId: "12345", question: "Some question" };
-    await saveQuestion(question).then(result => {
-      questionId = result.data.saveQuestion.id;
+    await addQuestion(question).then((result) => {
+      questionId = result.id;
     });
 
-    await getQuestion(questionId).then(result => {
-      expect(result.data.getQuestion.question).toEqual("Some question");
+    await getQuestion(questionId).then((result) => {
+      expect(result.question).toEqual("Some question");
     });
 
-    await deleteQuestion(questionId);
+    await removeQuestion(questionId);
 
-    await getQuestion(questionId).then(result => {
-      expect(result.data).toEqual({
-        getQuestion: null
-      });
+    await getQuestion(questionId).then((result) => {
+      expect(result).toEqual(null);
     });
   });
-
-  //  it("deleting a Question that doesn't exist", async () => {
-  //    await deleteQuestion("9999").then(result => {
-  //      expect(result.data).toEqual({ deleteQuestion: null });
-  //    });
-  //  });
 });

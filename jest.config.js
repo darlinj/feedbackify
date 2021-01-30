@@ -31,7 +31,7 @@ module.exports = {
   // ],
 
   // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: "v8",
+  //coverageProvider: "v8",
 
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
@@ -197,8 +197,8 @@ module.exports = {
       "jest-junit",
       {
         outputDirectory: "testReports",
-        outputName: "report.xml"
-      }
-    ]
-  ]
+        outputName: "report.xml",
+      },
+    ],
+  ],
 };

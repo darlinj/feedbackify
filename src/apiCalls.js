@@ -79,6 +79,24 @@ const getQuestions = () => {
   });
 };
 
+const getQuestion = (id) => {
+  return new Promise((resolve, reject) => {
+    runGraphqlOperation(`query MyQuery {
+       getQuestion (id: "${id}") {
+           id
+           question
+           questionnaireId
+       }
+     }`)
+      .then((result) => {
+        resolve(result.data.getQuestion);
+      })
+      .catch((e) => {
+        reject({ error: e });
+      });
+  });
+};
+
 const getQuestionnaire = (id) => {
   return new Promise((resolve, reject) => {
     runGraphqlOperation(`query MyQuery {
@@ -160,6 +178,7 @@ export {
   getQuestionnaires,
   getQuestionnaire,
   getQuestions,
+  getQuestion,
   removeQuestion,
   removeQuestionnaire,
 };
