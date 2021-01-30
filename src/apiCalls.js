@@ -125,6 +125,12 @@ const getQuestionnaire = (id) => {
       items {
         id
         question
+        feedback {
+          items {
+            id
+            feedback
+          }
+        }
       }
     }
   }
@@ -133,6 +139,7 @@ const getQuestionnaire = (id) => {
         resolve(result.data.getQuestionnaire);
       })
       .catch((e) => {
+        console.log(e);
         reject({ error: e });
       });
   });

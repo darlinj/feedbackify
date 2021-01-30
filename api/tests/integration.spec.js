@@ -1,6 +1,7 @@
 import Amplify, { Auth } from "aws-amplify";
 import { clearDatabase } from "./DBAdmin";
 import {
+  addFeedback,
   addQuestion,
   addQuestionnaire,
   getQuestionnaire,
@@ -27,6 +28,7 @@ describe("The integrated API", () => {
 
   it("Adds a questionnaire and a question and then retrieves both", async () => {
     let questionnaireId = 0;
+    let questionId = 0;
     const questionnaire = { name: "Some name" };
     await addQuestionnaire(questionnaire).then((result) => {
       questionnaireId = result.id;
@@ -36,7 +38,15 @@ describe("The integrated API", () => {
       questionnaireId: questionnaireId,
       question: "Some question",
     };
-    await addQuestion(question);
+    await addQuestion(question).then((result) => {
+      questionId = result.id;
+    });
+
+    const feedback = {
+      questionId: questionId,
+      feedback: "Some feedback",
+    };
+    await addFeedback(feedback);
 
     await getQuestionnaire(questionnaireId).then((questionnaire) => {
       expect(questionnaire.name).toEqual("Some name");
@@ -44,6 +54,9 @@ describe("The integrated API", () => {
       expect(questionnaire.questions.items[0].question).toEqual(
         "Some question"
       );
+      expect(
+        questionnaire.questions.items[0].feedback.items[0].feedback
+      ).toEqual("Some feedback");
     });
   });
 });

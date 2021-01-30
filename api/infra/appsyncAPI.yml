@@ -47,6 +47,9 @@ Resources:
         type QuestionConnection {
           items: [Question]
         }
+        type FeedbackConnection {
+          items: [Feedback]
+        }
         type Questionnaires {
           questionnaires: [Questionnaire!]!
         }
@@ -59,6 +62,7 @@ Resources:
           id: ID!
           questionnaireId: ID!
           question: String
+          feedback: FeedbackConnection
         }
         type Questions {
           questions: [Question!]!
@@ -243,6 +247,33 @@ Resources:
               "expression": "questionnaireId = :questionnaireId",
               "expressionValues": {
                   ":questionnaireId": {
+                      "S": "$context.source.id"
+                  }
+              }
+           }
+        }
+      ResponseMappingTemplate: |
+        {
+          "items": $util.toJson($context.result.items)
+        }
+
+  AppSyncFeedbackConnectionQueryResolver:
+    Type: "AWS::AppSync::Resolver"
+    DependsOn: AppSyncSchema
+    Properties:
+      ApiId: !GetAtt AppSyncApi.ApiId
+      TypeName: Question
+      FieldName: feedback
+      DataSourceName: !GetAtt AppSyncFeedbackTableDataSource.Name
+      RequestMappingTemplate: |
+        {
+          "version": "2017-02-28",
+          "operation": "Query",
+          "index": "QuestionIdGSI",
+          "query": {
+              "expression": "questionId = :questionId",
+              "expressionValues": {
+                  ":questionId": {
                       "S": "$context.source.id"
                   }
               }

@@ -32,3 +32,4 @@ cypress/screenshots/*
 setEnv
 testReports
 junit.xml
+deploy
