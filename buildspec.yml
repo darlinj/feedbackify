@@ -7,7 +7,7 @@ phases:
       - ./api/tests/createCognitoUser.sh testuser
   build:
     commands:
-      - npm test api -- --watchAll=false
+      - jest api/tests/ --runInBand
       - npm run test:ci
 
 reports:

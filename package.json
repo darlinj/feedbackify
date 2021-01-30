@@ -28,6 +28,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
     "test:ci": "react-scripts test --env=jest-environment-jsdom-sixteen --reporters=default --reporters=jest-junit --watchAll=false --runInBand",
+    "test:api": "jest api/tests/ --runInBand",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

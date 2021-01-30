@@ -9,14 +9,6 @@ import awsConfig from "../../src/aws-exports";
 
 Amplify.configure(awsConfig);
 
-beforeAll(async () => {
-  await login();
-});
-
-beforeEach(async () => {
-  await clearDatabase();
-});
-
 const login = async () => {
   await Auth.signIn(
     process.env.REACT_APP_TEST_USERNAME,
@@ -25,11 +17,18 @@ const login = async () => {
 };
 
 describe("The integrated API", () => {
+  beforeAll(async () => {
+    await login();
+  });
+
+  beforeEach(async () => {
+    await clearDatabase();
+  });
+
   it("Adds a questionnaire and a question and then retrieves both", async () => {
     let questionnaireId = 0;
     const questionnaire = { name: "Some name" };
     await addQuestionnaire(questionnaire).then((result) => {
-      console.log("Added questionnaire:", result);
       questionnaireId = result.id;
     });
 
