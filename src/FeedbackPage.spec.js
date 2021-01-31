@@ -2,7 +2,6 @@ import React from "react";
 import { mount, shallow } from "enzyme";
 import { act } from "react-dom/test-utils";
 import FeedbackPage from "./FeedbackPage";
-import FeedbackForm from "./FeedbackForm";
 import { getQuestionnaire, addFeedback } from "./apiCalls";
 import { toast } from "react-toastify";
 
@@ -102,12 +101,12 @@ describe("Providing feedback", () => {
     });
     expect(addFeedback.mock.calls.length).toEqual(2);
     expect(addFeedback.mock.calls[0][0]).toEqual({
-      questionid: "12345",
-      content: "Some feedback",
+      questionId: "12345",
+      feedback: "Some feedback",
     });
     expect(addFeedback.mock.calls[1][0]).toEqual({
-      questionid: "54321",
-      content: "Some other feedback",
+      questionId: "54321",
+      feedback: "Some other feedback",
     });
     expect(component.find("TitleBar").prop("title")).toEqual(
       "Thanks for your feedback"

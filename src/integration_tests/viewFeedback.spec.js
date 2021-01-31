@@ -59,14 +59,10 @@ describe("viewing feedback", () => {
 
     expect(await app.findByText(targetQuestionnaire.name)).toBeInTheDocument();
 
-    const row = await app
-      .getByText(targetQuestionnaire.questions.items[0].question)
-      .closest("tr");
-    const questionRow = within(row);
+    expect(
+      await app.findByText(targetQuestionnaire.questions.items[0].question)
+    ).toBeInTheDocument();
 
-    console.log(
-      targetQuestionnaire.questions.items[0].feedback.items[0].feedback
-    );
     expect(
       await app.findByText(
         targetQuestionnaire.questions.items[0].feedback.items[0].feedback

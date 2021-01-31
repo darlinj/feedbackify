@@ -44,6 +44,7 @@ describe("Providing feedback", () => {
   });
 
   it("Filling in the feedback form", async () => {
+    const feedbackText = faker.lorem.words(10);
     const app = render(
       <MemoryRouter initialEntries={[`/feedback/${targetQuestionnaire.id}`]}>
         <Route path="/feedback/:questionnaireId">
@@ -57,12 +58,20 @@ describe("Providing feedback", () => {
     fireEvent.change(
       app.getByLabelText(targetQuestionnaire.questions.items[0].question),
       {
-        target: { value: faker.lorem.words(10) },
+        target: { value: feedbackText },
       }
     );
     fireEvent.click(await app.findByText("Submit"));
     expect(
       await app.findByText("Thanks for your feedback")
     ).toBeInTheDocument();
+
+    const questionnaireWithFeedback = await getQuestionnaire(
+      targetQuestionnaire.id
+    );
+
+    expect(
+      questionnaireWithFeedback.questions.items[0].feedback.items[0].feedback
+    ).toEqual(feedbackText);
   });
 });

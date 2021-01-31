@@ -32,8 +32,8 @@ const FeedbackPage = (props) => {
   const submitFeedback = (feedback) => {
     Object.keys(feedback).forEach((questionId) => {
       addFeedback({
-        questionid: questionId,
-        content: feedback[questionId],
+        questionId: questionId,
+        feedback: feedback[questionId],
       });
     });
     setfeedbackSubmitted(true);
