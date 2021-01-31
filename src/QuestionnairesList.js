@@ -26,18 +26,10 @@ const QuestionnairesList = (props) => {
               <tr className="questionnaire-item" key={index}>
                 <td>{questionnaireObject.name}</td>
                 <td>
-                  <Link
-                    to={`/questionnaire_feedback/${questionnaireObject.id}`}
-                    alt="View feedback"
-                  >
-                    View feedback
-                  </Link>
-                </td>
-                <td>
                   <a
                     href={`${window.location.href}feedback/${questionnaireObject.id}`}
                   >
-                    Link
+                    Feedback link
                   </a>
                 </td>
                 <td>
@@ -50,7 +42,7 @@ const QuestionnairesList = (props) => {
                     "hh:mm Do MMM YYYY"
                   )}
                 </td>
-                <td>
+                <td style={{ display: "flex" }}>
                   <Link
                     data-testid="edit-questionnaire"
                     to={`/questionnaire/${questionnaireObject.id}`}
@@ -71,6 +63,14 @@ const QuestionnairesList = (props) => {
                   >
                     <FaMinusSquare style={{ color: "red" }} />
                   </button>
+                </td>
+                <td>
+                  <Link
+                    to={`/questionnaire_feedback/${questionnaireObject.id}`}
+                    alt="View feedback"
+                  >
+                    View feedback
+                  </Link>
                 </td>
               </tr>
             );
@@ -93,9 +93,10 @@ const QuestionnairesList = (props) => {
         <thead>
           <tr>
             <th>Title</th>
-            <th>Send this link</th>
+            <th></th>
             <th>Created at</th>
             <th>Updated at</th>
+            <th></th>
             <th></th>
           </tr>
         </thead>

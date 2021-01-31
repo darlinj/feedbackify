@@ -58,7 +58,7 @@ describe("Shows questionnaire list", () => {
       .getByText("this is some questionnaire")
       .closest("tr");
     expect(
-      within(firstQuestionnaireRow).getByText("Link").closest("a")
+      within(firstQuestionnaireRow).getByText("Feedback link").closest("a")
     ).toHaveAttribute("href", "http://localhost/feedback/1234");
   });
 
