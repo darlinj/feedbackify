@@ -1,4 +1,4 @@
-import { cleanup, within, render } from "@testing-library/react";
+import { cleanup, within, render, fireEvent } from "@testing-library/react";
 import faker from "faker";
 import React from "react";
 import { MemoryRouter, Route } from "react-router-dom";
@@ -44,6 +44,21 @@ describe("viewing feedback", () => {
       feedback: faker.lorem.words(10),
     });
     targetQuestionnaire = await getQuestionnaire(questionnaire.id);
+  });
+
+  it("has a link on the questionnaire for the feedback", async () => {
+    const app = render(
+      <MemoryRouter initialEntries={["/"]}>
+        <Route>
+          <App />
+        </Route>
+      </MemoryRouter>
+    );
+    expect(await app.findByText(targetQuestionnaire.name)).toBeInTheDocument();
+    const row = await app.getByText(targetQuestionnaire.name).closest("tr");
+    const withinRow = within(row);
+    fireEvent.click(await withinRow.findByText("View feedback"));
+    expect(await app.findByText("Feedback for:")).toBeInTheDocument();
   });
 
   it("Accesses the feedback viewing page", async () => {

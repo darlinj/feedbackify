@@ -33,7 +33,7 @@ const FeedbackViewingPage = (props) => {
   }, [questionnaireId]);
   return (
     <div data-testid="feedback-view-page">
-      Feedback for : <h1>{questionnaire.name}</h1>
+      Feedback for: <h1>{questionnaire.name}</h1>
       <FeedbackViewingList questions={questionnaire.questions.items} />
     </div>
   );

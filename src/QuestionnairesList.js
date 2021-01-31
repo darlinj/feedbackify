@@ -26,6 +26,14 @@ const QuestionnairesList = (props) => {
               <tr className="questionnaire-item" key={index}>
                 <td>{questionnaireObject.name}</td>
                 <td>
+                  <Link
+                    to={`/questionnaire_feedback/${questionnaireObject.id}`}
+                    alt="View feedback"
+                  >
+                    View feedback
+                  </Link>
+                </td>
+                <td>
                   <a
                     href={`${window.location.href}feedback/${questionnaireObject.id}`}
                   >
