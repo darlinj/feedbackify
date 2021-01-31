@@ -1,19 +1,20 @@
 import React from "react";
-import { mount } from "enzyme";
 import QuestionnairesList from "./QuestionnairesList";
 import { MemoryRouter } from "react-router-dom";
 import moment from "moment";
+import { render, cleanup, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 describe("Shows questionnaire list", () => {
-  it("Shows loading when loading", () => {
-    const component = mount(
+  afterEach(() => cleanup());
+
+  it("Shows loading when loading", async () => {
+    const component = render(
       <MemoryRouter initialEntries={["/"]}>
         <QuestionnairesList isLoading={true} />
       </MemoryRouter>
     );
-    expect(
-      component.find("div[data-test-id='loading-banner']").text()
-    ).toContain("Loading...");
+    expect(await component.findByText("Loading...")).toBeInTheDocument();
   });
 
   it("Shows the questionnaire list", async () => {
@@ -38,22 +39,27 @@ describe("Shows questionnaire list", () => {
         updatedAt: currerntDate,
       },
     ];
-    const component = mount(
+    const component = render(
       <MemoryRouter initialEntries={["/"]}>
         <QuestionnairesList questionnaireList={questionnaires} />
       </MemoryRouter>
     );
-    expect(component.find("tr.questionnaire-item").length).toEqual(3);
-    expect(component.find("table.questionnaires").text()).toContain(
-      "this is another questionnaire"
-    );
-    expect(component.find("table.questionnaires").text()).toContain(
-      moment(currerntDate).format("h:mm Do MMM YYYY")
-    );
-    expect(component.find("Link").length).toEqual(3);
-    expect(component.find("Link").first().prop("to")).toEqual(
-      "/questionnaire/1234"
-    );
+    expect(
+      component.getByText("this is some questionnaire")
+    ).toBeInTheDocument();
+    expect(
+      component.getByText("this is another questionnaire")
+    ).toBeInTheDocument();
+    expect(
+      component.getAllByText(moment(currerntDate).format("hh:mm Do MMM YYYY"))
+        .length
+    ).toBeGreaterThan(1);
+    const firstQuestionnaireRow = component
+      .getByText("this is some questionnaire")
+      .closest("tr");
+    expect(
+      within(firstQuestionnaireRow).getByText("Link").closest("a")
+    ).toHaveAttribute("href", "http://localhost/feedback/1234");
   });
 
   it("calls the delete function if the delete button is pressed", () => {
@@ -66,7 +72,7 @@ describe("Shows questionnaire list", () => {
       { id: 999, name: "delete this questionnaire" },
       { id: 1236, name: "this is a third questionnaire" },
     ];
-    const component = mount(
+    const component = render(
       <MemoryRouter initialEntries={["/"]}>
         <QuestionnairesList
           questionnaireList={questionnaires}
@@ -74,10 +80,12 @@ describe("Shows questionnaire list", () => {
         />
       </MemoryRouter>
     );
-    component
-      .find("button[questionnaireid=999]")
-      .forEach((n) => console.log(n.html()));
-    component.find("button[value=999]").simulate("click");
-    expect(foo).toEqual(999);
+    const firstQuestionnaireRow = component
+      .getByText("this is some questionnaire")
+      .closest("tr");
+    userEvent.click(
+      within(firstQuestionnaireRow).getByTestId("delete-questionnaire")
+    );
+    expect(foo).toEqual(1234);
   });
 });
