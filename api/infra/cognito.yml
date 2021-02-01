@@ -7,7 +7,7 @@ Parameters:
     Description: Name of the API - used to generate unique names for resources
     MinLength: 3
     MaxLength: 20
-    AllowedPattern: '^[a-zA-Z][a-zA-Z0-9_]*$'
+    AllowedPattern: "^[a-zA-Z][a-zA-Z0-9_]*$"
 
 Resources:
   SNSRole:
@@ -44,15 +44,19 @@ Resources:
     Properties:
       UserPoolName: !Sub ${NamePrefix}-user-pool
       AutoVerifiedAttributes:
-        - phone_number
-      MfaConfiguration: "OFF"
-      UsernameAttributes: 
         - email
-      UsernameConfiguration: 
+      UsernameAttributes:
+        - email
+      UsernameConfiguration:
         CaseSensitive: false
-      SmsConfiguration:
-        ExternalId: !Sub ${NamePrefix}-external
-        SnsCallerArn: !GetAtt SNSRole.Arn
+      VerificationMessageTemplate:
+        DefaultEmailOption: CONFIRM_WITH_LINK
+      EmailVerificationSubject: "Your verification link"
+      EmailVerificationMessage: "Please click the link below to verify your email address. {##Verify Email##} also {####}"
+      EmailConfiguration:
+        EmailSendingAccount: DEVELOPER
+        ReplyToEmailAddress: "someaddress@example.com"
+        SourceArn: "arn:aws:ses:eu-west-1:562925407179:identity/joe.darling@bt.com"
       Schema:
         - Name: name
           AttributeDataType: String
@@ -60,11 +64,7 @@ Resources:
           Required: false
         - Name: email
           AttributeDataType: String
-          Mutable: true
-          Required: false
-        - Name: phone_number
-          AttributeDataType: String
-          Mutable: true
+          Mutable: false
           Required: false
 
   UserPoolClient:
@@ -72,13 +72,31 @@ Resources:
     Description: "App Client used by AWS AppSync"
     Properties:
       ClientName: !Sub ${NamePrefix}-appsync-client
-      GenerateSecret: false
       UserPoolId: !Ref UserPool
+      AllowedOAuthFlowsUserPoolClient: true
+      CallbackURLs:
+        - http://localhost:3000
+      AllowedOAuthFlows:
+        - code
+        - implicit
+      AllowedOAuthScopes:
+        - phone
+        - email
+        - openid
+        - profile
+      SupportedIdentityProviders:
+        - COGNITO
       ExplicitAuthFlows:
         - ALLOW_USER_PASSWORD_AUTH
         - ALLOW_USER_SRP_AUTH
         - ALLOW_REFRESH_TOKEN_AUTH
         - ALLOW_CUSTOM_AUTH
+
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      Domain: "somedomain"
+      UserPoolId: !Ref UserPool
 
 Outputs:
   UserPoolId:
