@@ -49,10 +49,6 @@ Resources:
         - email
       UsernameConfiguration:
         CaseSensitive: false
-      VerificationMessageTemplate:
-        DefaultEmailOption: CONFIRM_WITH_LINK
-      EmailVerificationSubject: "Your verification link"
-      EmailVerificationMessage: "Please click the link below to verify your email address. {##Verify Email##} also {####}"
       EmailConfiguration:
         EmailSendingAccount: DEVELOPER
         ReplyToEmailAddress: "someaddress@example.com"
