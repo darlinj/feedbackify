@@ -21,6 +21,17 @@ describe("routing", () => {
     expect(wrapper.find(Routes).dive().find(HomePage).length).toEqual(1);
   });
 
+  it("shows the user confirmation page if it is requested", () => {
+    const history = createMemoryHistory();
+    history.push("/confirm?code=12345:username=someuser");
+    render(
+      <Router history={history}>
+        <Routes currentUser={{ some: "user" }} />
+      </Router>
+    );
+    expect(screen.getByTestId("user-verification")).toBeInTheDocument();
+  });
+
   it("shows the welcome page if the use is not logged in", () => {
     const wrapper = shallow(
       <MemoryRouter initialEntries={["/"]}>

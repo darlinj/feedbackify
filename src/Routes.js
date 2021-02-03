@@ -1,6 +1,7 @@
 import React from "react";
 import QuestionsPage from "./QuestionsPage";
 import Signup from "./Signup";
+import ConfirmUser from "./ConfirmUser";
 import LoginForm from "./LoginForm";
 import HomePage from "./HomePage";
 import NotFoundPage from "./NotFoundPage";
@@ -17,6 +18,9 @@ const Routes = (params) => {
       </Route>
       <Route path="/signup">
         <Signup {...params} />
+      </Route>
+      <Route path="/confirm">
+        <ConfirmUser {...params} />
       </Route>
       <ProtectedRoute
         {...params}
