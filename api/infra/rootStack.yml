@@ -2,6 +2,10 @@
 Description: AWS AppSync Questionnaires API
 
 Parameters:
+  SiteURL:
+    Type: String
+    Description: URL of the website
+
   APIName:
     Type: String
     Description: Name of the API - used to generate unique names for resources
@@ -15,6 +19,8 @@ Resources:
     Properties:
       TemplateURL: "./cognito.yml"
       Parameters:
+        SiteURL:
+          Ref: SiteURL
         NamePrefix:
           Ref: APIName
   DynamoDbTable:

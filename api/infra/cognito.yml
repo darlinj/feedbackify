@@ -8,6 +8,9 @@ Parameters:
     MinLength: 3
     MaxLength: 20
     AllowedPattern: "^[a-zA-Z][a-zA-Z0-9_]*$"
+  SiteURL:
+    Type: String
+    Description: URL of the website
 
 Resources:
   ChangeMessageLambdaRole:
@@ -34,6 +37,9 @@ Resources:
       Runtime: nodejs12.x
       Role: !GetAtt ChangeMessageLambdaRole.Arn
       Handler: index.handler
+      Environment:
+        Variables:
+          SiteURL: !Ref SiteURL
       Code:
         ZipFile: |
           exports.handler = (event, context, callback) => {
@@ -42,10 +48,10 @@ Resources:
                 const { userName, region } = event
                 const { clientId } = event.callerContext
                 const { email } = event.request.userAttributes
-                const url = 'https://example.com/api/dev/user/confirm'
+                const url = `${process.env.SiteURL}/confirm`
                 const link = `<a href="${url}?code=${codeParameter}&username=${userName}&clientId=${clientId}&region=${region}&email=${email}" target="_blank">here</a>`
-                event.response.emailSubject = "Your verification link"; // event.request.codeParameter
-                event.response.emailMessage = `Thank you for signing up. Click ${link} to verify your email.`;
+                event.response.emailSubject = "Welcome to Feedbackify. Please verify your email"; 
+                event.response.emailMessage = `Thank you for signing up. Please click ${link} to verify your email.`;
             }
             console.log(event)
             callback(null, event);
