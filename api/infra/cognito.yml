@@ -10,6 +10,46 @@ Parameters:
     AllowedPattern: "^[a-zA-Z][a-zA-Z0-9_]*$"
 
 Resources:
+  ChangeMessageLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${NamePrefix}-custom-message-lambda-role
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+  UserPoolLambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      Principal: cognito-idp.amazonaws.com
+      FunctionName: !Sub ${NamePrefix}-custom-message-lambda
+      SourceArn: !GetAtt UserPool.Arn
+  CustomMessageLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub ${NamePrefix}-custom-message-lambda
+      Runtime: nodejs12.x
+      Role: !GetAtt ChangeMessageLambdaRole.Arn
+      Handler: index.handler
+      Code:
+        ZipFile: |
+          exports.handler = (event, context, callback) => {
+            if(event.triggerSource === "CustomMessage_SignUp") {
+                const { codeParameter } = event.request
+                const { userName, region } = event
+                const { clientId } = event.callerContext
+                const { email } = event.request.userAttributes
+                const url = 'https://example.com/api/dev/user/confirm'
+                const link = `<a href="${url}?code=${codeParameter}&username=${userName}&clientId=${clientId}&region=${region}&email=${email}" target="_blank">here</a>`
+                event.response.emailSubject = "Your verification link"; // event.request.codeParameter
+                event.response.emailMessage = `Thank you for signing up. Click ${link} to verify your email.`;
+            }
+            console.log(event)
+            callback(null, event);
+          };
   SNSRole:
     Type: AWS::IAM::Role
     Description: "An IAM Role to allow Cognito to send SNS messages"
@@ -53,6 +93,8 @@ Resources:
         EmailSendingAccount: DEVELOPER
         ReplyToEmailAddress: "someaddress@example.com"
         SourceArn: "arn:aws:ses:eu-west-1:562925407179:identity/joe.darling@bt.com"
+      LambdaConfig:
+        CustomMessage: !GetAtt CustomMessageLambda.Arn
       Schema:
         - Name: name
           AttributeDataType: String
