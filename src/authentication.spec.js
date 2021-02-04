@@ -21,19 +21,6 @@ describe("The login component", () => {
     expect(Auth.signIn.mock.calls[0][1]).toEqual("Pa55w0rd");
   });
 
-  it("returns the user if login is successful", async () => {
-    expect(await login("email.address@something.com", "Pa55w0rd")).toEqual({
-      user: "data"
-    });
-  });
-
-  it("returns a user with status of logged out if authentication fails", async () => {
-    Auth.signIn.mockRejectedValue({ user: "data" });
-    expect(await login("email.address@something.com", "Pa55w0rd")).toEqual({
-      isLoggedIn: false
-    });
-  });
-
   it("registers the user", async () => {
     const username = "fred@bedrock.com";
     const email = "fred@bedrock.com";
@@ -44,8 +31,8 @@ describe("The login component", () => {
       password,
       attributes: {
         email,
-        name
-      }
+        name,
+      },
     };
     const [result, message] = await signup(email, name, password);
     expect(Auth.signUp.mock.calls.length).toEqual(1);
@@ -64,8 +51,8 @@ describe("The login component", () => {
       username,
       password,
       attributes: {
-        email
-      }
+        email,
+      },
     };
     const [result, message] = await signup(email, name, password);
     expect(result).toEqual(false);
