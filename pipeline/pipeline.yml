@@ -81,8 +81,8 @@ Resources:
                   - "logs:CreateLogStream"
                   - "logs:PutLogEvents"
                 Resource:
-                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/REPLACE_ME"
-                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/REPLACE_ME"
+                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/${ProjectName}-package-cloudformation"
+                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/${ProjectName}-package-cloudformation:*"
         - PolicyName: CodeBuildArtifactsBucket
           PolicyDocument:
             Version: "2012-10-17"
@@ -93,7 +93,7 @@ Resources:
                   - "s3:GetObjectVersion"
                   - "s3:PutObject"
                 Resource:
-                  - !GetAtt PipelineDeployBucket.Arn
+                  - !Sub "${PipelineDeployBucket.Arn}/*"
         - PolicyName: CodeBuildParameterStore
           PolicyDocument:
             Version: "2012-10-17"
@@ -126,7 +126,7 @@ Resources:
       ServiceRole: !GetAtt CodeBuildServiceRole.Arn
       Source:
         Type: CODEPIPELINE
-        BuildSpec: simpleApp/buildspec.yaml
+        BuildSpec: api/infra/buildspec.yml
       Tags:
         - Key: "Stack"
           Value: !Ref AWS::StackName
