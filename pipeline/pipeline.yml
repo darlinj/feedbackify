@@ -1,0 +1,217 @@
+---
+Description: Sets up a pipeline for an appsync backed react app
+
+Parameters:
+  ProjectName:
+    Type: String
+    Description: Name of the project so it can prefix all the resources
+  GithubUser:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: Github user
+    Default: /service/github/user
+  GithubRepo:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: Github repo
+    Default: /service/github/repo
+  GithubToken:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: Github token
+    NoEcho: true
+    Default: /service/github/token
+
+Resources:
+  PipelineRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: !Sub ${ProjectName}-pipeline-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "codepipeline.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: /
+      Policies:
+        - PolicyName: S3Access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                  - "s3:GetObjectVersion"
+                  - "s3:PutObject"
+                Resource:
+                  - !Sub "arn:aws:s3:::${PipelineDeployBucket}/*"
+        - PolicyName: CodeDeployAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "codebuild:StartBuild"
+                  - "codebuild:BatchGetBuilds"
+                Resource:
+                  - !GetAtt PackageCloudformation.Arn
+  CodeBuildServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${ProjectName}-codebuild-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action:
+              - "sts:AssumeRole"
+            Effect: Allow
+            Principal:
+              Service:
+                - codebuild.amazonaws.com
+      Path: /
+      Policies:
+        - PolicyName: CodeBuildLogs
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource:
+                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/REPLACE_ME"
+                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/REPLACE_ME"
+        - PolicyName: CodeBuildArtifactsBucket
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                  - "s3:GetObjectVersion"
+                  - "s3:PutObject"
+                Resource:
+                  - !GetAtt PipelineDeployBucket.Arn
+        - PolicyName: CodeBuildParameterStore
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "ssm:GetParameters"
+                Resource: "*"
+
+  PipelineDeployBucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Sub ${ProjectName}-deploy-bucket
+  PackageCloudformation:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub ${ProjectName}-package-cloudformation
+      Description: Package the cloudformation and upload to S3
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0 #aws/codebuild/python:3.6.5 # More info on Images: https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-available.html
+        EnvironmentVariables:
+          - Name: DEPLOYMENT_BUCKET
+            Value: !Ref PipelineDeployBucket
+      Cache:
+        Type: S3
+        Location: !Sub ${PipelineDeployBucket}/codebuild-cache
+      ServiceRole: !GetAtt CodeBuildServiceRole.Arn
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: simpleApp/buildspec.yaml
+      Tags:
+        - Key: "Stack"
+          Value: !Ref AWS::StackName
+        - Key: "Project"
+          Value: !Ref ProjectName
+  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      RoleArn: !GetAtt PipelineRole.Arn
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: SourceCodeRepo
+              ActionTypeId:
+                Category: Source
+                Owner: ThirdParty
+                Provider: GitHub
+                Version: "1"
+              Configuration:
+                Owner: !Ref GithubUser
+                Repo: !Ref GithubRepo
+                Branch: master
+                OAuthToken: !Ref GithubToken
+              OutputArtifacts:
+                - Name: SourceCodeAsZip
+              RunOrder: 1
+        - Name: Build
+          Actions:
+            - Name: CodeBuild
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: "1"
+              Configuration:
+                ProjectName: !Ref PackageCloudformation
+              InputArtifacts:
+                - Name: SourceCodeAsZip
+              OutputArtifacts:
+                - Name: BuildArtifactAsZip
+      #      -
+      #        Name: Beta
+      #        Actions:
+      #          -
+      #            Name: BetaAction
+      #            InputArtifacts:
+      #              -
+      #                Name: SourceOutput
+      #            ActionTypeId:
+      #              Category: Deploy
+      #              Owner: AWS
+      #              Version: 1
+      #              Provider: CodeDeploy
+      #            Configuration:
+      #              ApplicationName:
+      #                Ref: ApplicationName
+      #              DeploymentGroupName:
+      #                Ref: DeploymentGroupName
+      #            RunOrder: 1
+      #      -
+      #        Name: Release
+      #        Actions:
+      #          -
+      #            Name: ReleaseAction
+      #            InputArtifacts:
+      #              -
+      #                Name: SourceOutput
+      #            ActionTypeId:
+      #              Category: Deploy
+      #              Owner: AWS
+      #              Version: 1
+      #              Provider: CodeDeploy
+      #            Configuration:
+      #              ApplicationName:
+      #                Ref: ApplicationName
+      #              DeploymentGroupName:
+      #                Ref: DeploymentGroupName
+      #            RunOrder: 1
+      ArtifactStore:
+        Type: S3
+        Location:
+          Ref: PipelineDeployBucket
+      Tags:
+        - Key: Project
+          Value:
+            Ref: ProjectName
+        - Key: Owner
+          Value: "Joe Darling"
