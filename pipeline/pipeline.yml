@@ -56,6 +56,49 @@ Resources:
                   - "codebuild:BatchGetBuilds"
                 Resource:
                   - !GetAtt PackageCloudformation.Arn
+        - PolicyName: CloudformationAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "cloudformation:*"
+                Resource: "*"
+        - PolicyName: IAMAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "iam:*"
+                Resource:
+                  - !GetAtt CloudformationRole.Arn
+  CloudformationRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: !Sub ${ProjectName}-cloudformation-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "cloudformation.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: /
+      Policies:
+        - PolicyName: S3Access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                  - "s3:GetObjectVersion"
+                  - "s3:PutObject"
+                Resource:
+                  - !Sub "arn:aws:s3:::${PipelineDeployBucket}/*"
   CodeBuildServiceRole:
     Type: AWS::IAM::Role
     Properties:
@@ -165,11 +208,11 @@ Resources:
                 Branch: master
                 OAuthToken: !Ref GithubToken
               OutputArtifacts:
-                - Name: SourceCodeAsZip
+                - Name: SourceCode
               RunOrder: 1
         - Name: Build
           Actions:
-            - Name: CodeBuild
+            - Name: PackageCloudformation
               ActionTypeId:
                 Category: Build
                 Owner: AWS
@@ -178,47 +221,26 @@ Resources:
               Configuration:
                 ProjectName: !Ref PackageCloudformation
               InputArtifacts:
-                - Name: SourceCodeAsZip
+                - Name: SourceCode
               OutputArtifacts:
-                - Name: BuildArtifactAsZip
-      #      -
-      #        Name: Beta
-      #        Actions:
-      #          -
-      #            Name: BetaAction
-      #            InputArtifacts:
-      #              -
-      #                Name: SourceOutput
-      #            ActionTypeId:
-      #              Category: Deploy
-      #              Owner: AWS
-      #              Version: 1
-      #              Provider: CodeDeploy
-      #            Configuration:
-      #              ApplicationName:
-      #                Ref: ApplicationName
-      #              DeploymentGroupName:
-      #                Ref: DeploymentGroupName
-      #            RunOrder: 1
-      #      -
-      #        Name: Release
-      #        Actions:
-      #          -
-      #            Name: ReleaseAction
-      #            InputArtifacts:
-      #              -
-      #                Name: SourceOutput
-      #            ActionTypeId:
-      #              Category: Deploy
-      #              Owner: AWS
-      #              Version: 1
-      #              Provider: CodeDeploy
-      #            Configuration:
-      #              ApplicationName:
-      #                Ref: ApplicationName
-      #              DeploymentGroupName:
-      #                Ref: DeploymentGroupName
-      #            RunOrder: 1
+                - Name: packagedCloudformationTemplates
+              RunOrder: 1
+            - Name: ExecuteCloudformation
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: "1"
+              Configuration:
+                ActionMode: CREATE_UPDATE
+                StackName: !Sub ${ProjectName}-cloudformation-stack
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                RoleArn: !GetAtt CloudformationRole.Arn
+                TemplatePath: packagedCloudformationTemplates::packagedTemplate.yml
+                ParameterOverrides: '{ "APIName": "feedbackMakeThisTheSameAsTheProject" , "SiteURL": "http://example.com"}'
+              InputArtifacts:
+                - Name: packagedCloudformationTemplates
+              RunOrder: 2
       ArtifactStore:
         Type: S3
         Location:
