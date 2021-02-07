@@ -132,6 +132,20 @@ Resources:
           Value: !Ref AWS::StackName
         - Key: "Project"
           Value: !Ref ProjectName
+  Webhook:
+    Type: "AWS::CodePipeline::Webhook"
+    Properties:
+      AuthenticationConfiguration:
+        SecretToken: !Ref GithubToken
+      Filters:
+        - JsonPath: "$.ref"
+          MatchEquals: refs/heads/master
+      Authentication: GITHUB_HMAC
+      TargetPipeline: !Ref Pipeline
+      TargetAction: SourceCodeRepo
+      Name: MyWebhook
+      TargetPipelineVersion: !GetAtt Pipeline.Version
+      RegisterWithThirdParty: "true"
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
