@@ -135,12 +135,6 @@ Resources:
         - ALLOW_REFRESH_TOKEN_AUTH
         - ALLOW_CUSTOM_AUTH
 
-  UserPoolDomain:
-    Type: AWS::Cognito::UserPoolDomain
-    Properties:
-      Domain: !Sub ${NamePrefix}-user-pool-domain
-      UserPoolId: !Ref UserPool
-
 Outputs:
   UserPoolId:
     Description: The Pool ID of the Cognito User Pool

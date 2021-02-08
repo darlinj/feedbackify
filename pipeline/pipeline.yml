@@ -99,6 +99,19 @@ Resources:
                   - "s3:PutObject"
                 Resource:
                   - !Sub "arn:aws:s3:::${PipelineDeployBucket}/*"
+        - PolicyName: DynamoDBAccessss
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "iam:*"
+                  - "sns:*"
+                  - "lambda:*"
+                  - "appsync:*"
+                  - "dynamodb:*"
+                  - "cognito-idp:*"
+                Resource: "*"
   CodeBuildServiceRole:
     Type: AWS::IAM::Role
     Properties:
@@ -175,6 +188,32 @@ Resources:
           Value: !Ref AWS::StackName
         - Key: "Project"
           Value: !Ref ProjectName
+  IntegrationTests:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub ${ProjectName}-integration-tests
+      Description: Run integration tests for front end and backend
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
+        EnvironmentVariables:
+          - Name: REACT_APP_AWS_REGION
+            Value: !Ref AWS::Region
+      Cache:
+        Type: S3
+        Location: !Sub ${PipelineDeployBucket}/codebuild-integration-test-cache
+      ServiceRole: !GetAtt CodeBuildServiceRole.Arn
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: buildspec.yml
+      Tags:
+        - Key: "Stack"
+          Value: !Ref AWS::StackName
+        - Key: "Project"
+          Value: !Ref ProjectName
   Webhook:
     Type: "AWS::CodePipeline::Webhook"
     Properties:
@@ -241,6 +280,19 @@ Resources:
               InputArtifacts:
                 - Name: packagedCloudformationTemplates
               RunOrder: 2
+        - Name: Test
+          Actions:
+            - Name: IntegrationTests
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: "1"
+              Configuration:
+                ProjectName: !Ref IntegrationTests
+              InputArtifacts:
+                - Name: SourceCode
+              RunOrder: 1
       ArtifactStore:
         Type: S3
         Location:
