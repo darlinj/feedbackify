@@ -5,50 +5,51 @@ const dynamoDB = new AWS.DynamoDB({
   apiVersion: "2012-08-10",
   sslEnabled: false,
   paramValidation: false,
-  convertResponseTypes: false
+  convertResponseTypes: false,
 });
 
-export const addQuestionnaireForAnotherUser = async tableName => {
+export const addQuestionnaireForAnotherUser = async (tableName) => {
   const params = {
     TableName: tableName,
     Item: {
       id: {
-        S: "OtherUserID123"
+        S: "OtherUserID123",
       },
       UserId: {
-        S: "1234567890"
+        S: "1234567890",
       },
       content: {
-        S: "Some content belonging to another user"
-      }
-    }
+        S: "Some content belonging to another user",
+      },
+    },
   };
-  return dynamoDB.putItem(params, function(err, data) {
+  return dynamoDB.putItem(params, function (err, data) {
     if (err) {
       console.error(
         "Unable to add item. Error JSON:",
-        JSON.stringify(err, null, 2)
+        JSON.stringify(err, null, 2),
+        params
       );
     }
   });
 };
 
-export const addQuestionForAnotherUser = async tableName => {
+export const addQuestionForAnotherUser = async (tableName) => {
   const params = {
     TableName: tableName,
     Item: {
       id: {
-        S: "OtherUserID123"
+        S: "OtherUserID123",
       },
       UserId: {
-        S: "1234567890"
+        S: "1234567890",
       },
       question: {
-        S: "Some question belonging to another user"
-      }
-    }
+        S: "Some question belonging to another user",
+      },
+    },
   };
-  return dynamoDB.putItem(params, function(err, data) {
+  return dynamoDB.putItem(params, function (err, data) {
     if (err) {
       console.error(
         "Unable to add item. Error JSON:",
@@ -63,21 +64,21 @@ export const clearDatabase = async () => {
   await clearTable(`${process.env.REACT_APP_API_NAME}-questions-table`);
 };
 
-export const clearTable = async tableName => {
+export const clearTable = async (tableName) => {
   const params = {
-    TableName: tableName
+    TableName: tableName,
   };
   const items = await dynamoDB.scan(params).promise();
-  await items.Items.forEach(async item => {
+  await items.Items.forEach(async (item) => {
     const deleteParams = {
       TableName: tableName,
       ConsistentRead: true,
       Key: {
         id: item.id,
-        UserId: item.UserId
-      }
+        UserId: item.UserId,
+      },
     };
-    await dynamoDB.deleteItem(deleteParams, function(err, data) {
+    await dynamoDB.deleteItem(deleteParams, function (err, data) {
       if (err) {
         console.error(
           "Unable to delete item. Error JSON:",
