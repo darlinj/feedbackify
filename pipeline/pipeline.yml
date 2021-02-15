@@ -219,7 +219,7 @@ Resources:
           - Name: REACT_APP_TEST_USER_PASSWORD
             Value: "Passw0rd!"
           - Name: REACT_APP_API_NAME
-            Value: "FeedbackifyAPI"
+            Value: !Sub ${ProjectName}Integration
           - Name: REACT_APP_AWS_REGION
             Value: !Ref AWS::Region
       Cache:
@@ -297,7 +297,7 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 RoleArn: !GetAtt CloudformationRole.Arn
                 TemplatePath: packagedCloudformationTemplates::packagedTemplate.yml
-                ParameterOverrides: !Sub '{ "APIName": "${ProjectName}-integration" , "SiteURL": "http://example.com"}'
+                ParameterOverrides: !Sub '{ "APIName": "${ProjectName}Integration" , "SiteURL": "http://example.com"}'
               InputArtifacts:
                 - Name: packagedCloudformationTemplates
               Namespace: APIDeploymentOutput
