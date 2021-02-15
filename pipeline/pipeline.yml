@@ -56,13 +56,14 @@ Resources:
                   - "codebuild:BatchGetBuilds"
                 Resource:
                   - !GetAtt PackageCloudformation.Arn
-        - PolicyName: CloudformationAccess
+        - PolicyName: CloudformationAndBuildAccess
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
               - Effect: Allow
                 Action:
                   - "cloudformation:*"
+                  - "codebuild:*"
                 Resource: "*"
         - PolicyName: IAMAccess
           PolicyDocument:
@@ -99,7 +100,7 @@ Resources:
                   - "s3:PutObject"
                 Resource:
                   - !Sub "arn:aws:s3:::${PipelineDeployBucket}/*"
-        - PolicyName: DynamoDBAccessss
+        - PolicyName: VariousAccessToBuildServices
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
@@ -137,8 +138,8 @@ Resources:
                   - "logs:CreateLogStream"
                   - "logs:PutLogEvents"
                 Resource:
-                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/${ProjectName}-package-cloudformation"
-                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/${ProjectName}-package-cloudformation:*"
+                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/${ProjectName}*"
+                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/${ProjectName}*:*"
         - PolicyName: CodeBuildArtifactsBucket
           PolicyDocument:
             Version: "2012-10-17"
@@ -157,7 +158,20 @@ Resources:
               - Effect: Allow
                 Action: "ssm:GetParameters"
                 Resource: "*"
-
+        - PolicyName: CognitoAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "cognito-idp:AdminSetUserPassword"
+                Resource: "*"
+        - PolicyName: DynamoDbAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "dynamodb:*"
+                Resource: "*"
   PipelineDeployBucket:
     Type: "AWS::S3::Bucket"
     Properties:
@@ -200,6 +214,12 @@ Resources:
         ComputeType: BUILD_GENERAL1_SMALL
         Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
         EnvironmentVariables:
+          - Name: REACT_APP_TEST_USERNAME
+            Value: "pinky@example.com"
+          - Name: REACT_APP_TEST_USER_PASSWORD
+            Value: "Passw0rd!"
+          - Name: REACT_APP_API_NAME
+            Value: "FeedbackifyAPI"
           - Name: REACT_APP_AWS_REGION
             Value: !Ref AWS::Region
       Cache:
@@ -279,6 +299,7 @@ Resources:
                 ParameterOverrides: '{ "APIName": "feedbackMakeThisTheSameAsTheProject" , "SiteURL": "http://example.com"}'
               InputArtifacts:
                 - Name: packagedCloudformationTemplates
+              Namespace: APIDeploymentOutput
               RunOrder: 2
         - Name: Test
           Actions:
@@ -290,6 +311,10 @@ Resources:
                 Version: "1"
               Configuration:
                 ProjectName: !Ref IntegrationTests
+                EnvironmentVariables: '[{"name":"REACT_APP_APIEndpoint","value":"#{APIDeploymentOutput.GraphQLApiEndpoint}","type":"PLAINTEXT"},
+                {"name":"REACT_APP_USER_POOL_ID","value":"#{APIDeploymentOutput.CognitoUserPoolId}","type":"PLAINTEXT"},
+                {"name":"REACT_APP_CLIENT_ID","value":"#{APIDeploymentOutput.CognitoUserPoolClientId}","type":"PLAINTEXT"}
+                ]'
               InputArtifacts:
                 - Name: SourceCode
               RunOrder: 1
