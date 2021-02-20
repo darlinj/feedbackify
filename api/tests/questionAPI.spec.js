@@ -22,6 +22,12 @@ const login = async () => {
   );
 };
 
+const sleep = (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};
+
 describe("The Question API", () => {
   it("Returns an empty array if there are no records in the DB", async () => {
     await getQuestions().then((result) => {
@@ -79,6 +85,7 @@ describe("The Question API", () => {
       questionId = result.id;
     });
 
+    await sleep(1000);
     await getQuestion(questionId).then((result) => {
       expect(result.question).toEqual("Some question");
     });
