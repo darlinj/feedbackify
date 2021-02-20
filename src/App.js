@@ -18,7 +18,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log(awsConfig);
     getCurrentUser()
       .then((user) => {
         setCurrentUser(user);
