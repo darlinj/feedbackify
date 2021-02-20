@@ -172,7 +172,7 @@ Resources:
               - Effect: Allow
                 Action: 
                   - "dynamodb:*"
-                  - "cloudbuild:*"
+                  - "codebuild:*"
                 Resource: "*"
   PipelineDeployBucket:
     Type: "AWS::S3::Bucket"
