@@ -6,8 +6,6 @@ const ConfirmUser = (props) => {
   const [isVerifying, setIsVerifying] = useState(true);
   const [confirmationResult, setConfirmationResult] = useState({});
   const query = new URLSearchParams(useLocation().search);
-  console.log(query.get("code"));
-  console.log(query.get("username"));
 
   useEffect(() => {
     Auth.confirmSignUp(query.get("username"), query.get("code")).then(

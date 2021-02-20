@@ -165,12 +165,14 @@ Resources:
               - Effect: Allow
                 Action: "cognito-idp:AdminSetUserPassword"
                 Resource: "*"
-        - PolicyName: DynamoDbAccess
+        - PolicyName: OtherAccess
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
               - Effect: Allow
-                Action: "dynamodb:*"
+                Action: 
+                  - "dynamodb:*"
+                  - "cloudbuild:*"
                 Resource: "*"
   PipelineDeployBucket:
     Type: "AWS::S3::Bucket"
