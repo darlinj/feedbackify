@@ -30,13 +30,16 @@ describe("The Question API", () => {
   });
 
   it("Adds a question and then checks it is there", async () => {
+    let questionId = 0;
     const question = { questionnaireId: "12345", question: "Some question" };
-    await addQuestion(question);
+    await addQuestion(question).then((result) => {
+      questionId = result.id;
+    });
 
-    await getQuestions().then((result) => {
-      expect(result[0].question).toEqual("Some question");
-      expect(result[0].questionnaireId).toEqual("12345");
-      expect(result[0].id.length).toBeGreaterThan(10);
+    await getQuestion(questionId).then((result) => {
+      expect(result.question).toEqual("Some question");
+      expect(result.questionnaireId).toEqual("12345");
+      expect(result.id.length).toBeGreaterThan(10);
     });
   });
 
