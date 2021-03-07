@@ -4,8 +4,6 @@ const runGraphqlOperation = (
   query_string,
   authMode = "AMAZON_COGNITO_USER_POOLS"
 ) => {
-  const query = graphqlOperation(query_string);
-  console.log(query);
   return API.graphql({
     query: query_string,
     variables: {},
