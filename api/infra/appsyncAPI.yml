@@ -29,22 +29,29 @@ Resources:
     Description: "The GraphQL API for the Questionnaires App"
     Properties:
       AuthenticationType: "AMAZON_COGNITO_USER_POOLS"
+      AdditionalAuthenticationProviders:
+        - AuthenticationType: API_KEY
       Name: !Sub ${NamePrefix}
       UserPoolConfig:
         UserPoolId: !Ref UserPoolId
         AwsRegion: !Sub ${AWS::Region}
         DefaultAction: "ALLOW"
+  ApiKey:
+    Type: AWS::AppSync::ApiKey
+    Properties:
+      ApiId: !GetAtt AppSyncApi.ApiId
+      Description: "API access for non cognito authenticated users"
   AppSyncSchema:
     Type: "AWS::AppSync::GraphQLSchema"
     Properties:
       ApiId: !GetAtt AppSyncApi.ApiId
       Definition: |
-        type Questionnaire {
+        type Questionnaire @aws_api_key @aws_cognito_user_pools {
           id: ID!
           name: String
           questions: QuestionConnection
         }
-        type QuestionConnection {
+        type QuestionConnection @aws_api_key @aws_cognito_user_pools {
           items: [Question]
         }
         type FeedbackConnection {
@@ -58,7 +65,7 @@ Resources:
           questionId: ID!
           feedback: String
         }
-        type Question {
+        type Question @aws_api_key @aws_cognito_user_pools {
           id: ID!
           questionnaireId: ID!
           question: String
@@ -73,6 +80,7 @@ Resources:
           getFeedback(id: ID!): Feedback
           getQuestionnaires: Questionnaires!
           getQuestionnaire(id: ID!): Questionnaire
+          getQuestionnairePublic(id: ID!): Questionnaire @aws_api_key
         }
         type Mutation {
           saveQuestion(questionnaireId: ID!, question: String!): Question
@@ -163,6 +171,28 @@ Resources:
           }
         }
       ResponseMappingTemplate: "$util.toJson($ctx.result)"
+
+  AppSyncGetQuestionnairePublicQueryResolver:
+    Type: "AWS::AppSync::Resolver"
+    DependsOn: AppSyncSchema
+    Properties:
+      ApiId: !GetAtt AppSyncApi.ApiId
+      TypeName: Query
+      FieldName: getQuestionnairePublic
+      DataSourceName: !GetAtt AppSyncQuestionnairesTableDataSource.Name
+      RequestMappingTemplate: |
+        {
+          "version": "2017-02-28",
+          "operation" : "Query",
+          "index" : "id-index",
+          "query" : {
+             "expression": "id = :id",
+             "expressionValues" : {
+                ":id" : $util.dynamodb.toDynamoDBJson($ctx.args.id)
+              }
+           }
+        }
+      ResponseMappingTemplate: "$util.toJson($ctx.result.items[0])"
 
   AppSyncSaveQuestionnaireMutationResolver:
     Type: "AWS::AppSync::Resolver"

@@ -69,7 +69,7 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       GlobalSecondaryIndexes:
-        - IndexName: "QuestionnaireId-index"
+        - IndexName: "id-index"
           KeySchema:
             - AttributeName: "id"
               KeyType: "HASH"

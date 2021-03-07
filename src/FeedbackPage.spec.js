@@ -2,7 +2,7 @@ import React from "react";
 import { mount, shallow } from "enzyme";
 import { act } from "react-dom/test-utils";
 import FeedbackPage from "./FeedbackPage";
-import { getQuestionnaire, addFeedback } from "./apiCalls";
+import { getQuestionnairePublic, addFeedback } from "./apiCalls";
 import { toast } from "react-toastify";
 
 jest.mock("./apiCalls");
@@ -10,7 +10,7 @@ jest.mock("react-toastify");
 
 describe("Providing feedback", () => {
   beforeEach(() => {
-    getQuestionnaire.mockResolvedValue({
+    getQuestionnairePublic.mockResolvedValue({
       name: "Some Questionnaire",
       questions: {
         items: [
@@ -24,7 +24,7 @@ describe("Providing feedback", () => {
   });
 
   afterEach(() => {
-    getQuestionnaire.mockClear();
+    getQuestionnairePublic.mockClear();
     addFeedback.mockClear();
     toast.error.mockClear();
   });
@@ -54,7 +54,7 @@ describe("Providing feedback", () => {
       component = mount(<FeedbackPage match={{ params: { id: "999" } }} />);
     });
     component.update();
-    expect(getQuestionnaire.mock.calls.length).toEqual(1);
+    expect(getQuestionnairePublic.mock.calls.length).toEqual(1);
     expect(component.find("FeedbackForm").prop("questionList")).toEqual([
       { id: 1234, question: "This is a question" },
       { id: 4321, question: "This is another question" },
@@ -62,7 +62,7 @@ describe("Providing feedback", () => {
   });
 
   it("if it fails to find the questionaire it put up a relevant error", async () => {
-    getQuestionnaire.mockResolvedValue(null);
+    getQuestionnairePublic.mockResolvedValue(null);
     let component = null;
     await act(async () => {
       component = mount(<FeedbackPage match={{ params: { id: "999" } }} />);
@@ -75,7 +75,7 @@ describe("Providing feedback", () => {
   });
 
   it("raises an error if the connection to the API fails", async () => {
-    getQuestionnaire.mockRejectedValue("some listing error");
+    getQuestionnairePublic.mockRejectedValue("some listing error");
     let component = null;
     await act(async () => {
       component = mount(<FeedbackPage match={{ params: { id: "999" } }} />);

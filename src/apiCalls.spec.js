@@ -10,6 +10,7 @@ import {
   addFeedback,
   removeQuestion,
   removeQuestionnaire,
+  getQuestionnairePublic,
 } from "./apiCalls";
 import { API, graphqlOperation } from "aws-amplify";
 
@@ -68,6 +69,27 @@ describe("api calls", () => {
       return getQuestions().catch((errorMessage) => {
         expect(errorMessage).toEqual({ error: "some error" });
       });
+    });
+  });
+
+  describe("the public getQuestionnaire operation", () => {
+    it("gets a specific questionaire", async () => {
+      const questionnaire = { some: "questionnaire" };
+      API.graphql.mockResolvedValue({
+        data: { getQuestionnairePublic: questionnaire },
+      });
+      graphqlOperation.mockReturnValue("the get questionnaire query");
+      const aQuestionnaire = await getQuestionnairePublic(1234);
+      expect(graphqlOperation.mock.calls.length).toEqual(1);
+      expect(graphqlOperation.mock.calls[0][0]).toContain(
+        "getQuestionnairePublic"
+      );
+      expect(graphqlOperation.mock.calls[0][0]).toContain('id: "1234"');
+      expect(API.graphql.mock.calls.length).toEqual(1);
+      expect(API.graphql.mock.calls[0][0]).toEqual(
+        "the get questionnaire query"
+      );
+      expect(aQuestionnaire).toEqual(questionnaire);
     });
   });
 

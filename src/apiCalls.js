@@ -1,8 +1,16 @@
 import { API, graphqlOperation } from "aws-amplify";
 
-const runGraphqlOperation = (query_string) => {
+const runGraphqlOperation = (
+  query_string,
+  authMode = "AMAZON_COGNITO_USER_POOLS"
+) => {
   const query = graphqlOperation(query_string);
-  return API.graphql(query);
+  console.log(query);
+  return API.graphql({
+    query: query_string,
+    variables: {},
+    authMode: authMode,
+  });
 };
 
 const addQuestion = (question) => {
@@ -115,6 +123,33 @@ const getFeedback = (id) => {
   });
 };
 
+const getQuestionnairePublic = (id) => {
+  return new Promise((resolve, reject) => {
+    runGraphqlOperation(
+      `query MyQuery { 
+  getQuestionnairePublic(id: "${id}") {
+    id
+    name
+    questions {
+      items {
+        id
+        question
+      }
+    }
+  }
+}`,
+      "API_KEY"
+    )
+      .then((result) => {
+        resolve(result.data.getQuestionnairePublic);
+      })
+      .catch((e) => {
+        console.log(e);
+        reject({ error: e });
+      });
+  });
+};
+
 const getQuestionnaire = (id) => {
   return new Promise((resolve, reject) => {
     runGraphqlOperation(`query MyQuery {
@@ -202,6 +237,7 @@ export {
   addFeedback,
   getQuestionnaires,
   getQuestionnaire,
+  getQuestionnairePublic,
   getQuestions,
   getQuestion,
   getFeedback,
