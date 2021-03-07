@@ -192,7 +192,12 @@ Resources:
               }
            }
         }
-      ResponseMappingTemplate: "$util.toJson($ctx.result.items[0])"
+      ResponseMappingTemplate: "
+        #if( $ctx.result.items.isEmpty() )
+	        $util.toJson(null)
+        #else
+          $util.toJson($ctx.result.items[0])
+        #end"
 
   AppSyncSaveQuestionnaireMutationResolver:
     Type: "AWS::AppSync::Resolver"
