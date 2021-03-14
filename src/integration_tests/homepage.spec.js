@@ -34,6 +34,8 @@ describe("App", () => {
       target: { value: "Passw0rd!" },
     });
     fireEvent.click(app.getByText("Login"));
-    expect(await app.findByText(/log out/)).toBeInTheDocument();
+    expect(
+      await app.findByText(/log out/, {}, { timeout: 4000 })
+    ).toBeInTheDocument();
   });
 });
