@@ -82,6 +82,12 @@ Outputs:
       Fn::GetAtt:
         - AppsyncAPI
         - Outputs.GraphQLApiEndpoint
+  GraphQLApiKey:
+    Description: The API key to the public GraphQL Endpoint
+    Value:
+      Fn::GetAtt:
+        - AppsyncAPI
+        - Outputs.ApiKey
   GraphQLApiId:
     Description: The API ID of the GraphQL API
     Value:

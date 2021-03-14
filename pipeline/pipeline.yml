@@ -316,6 +316,7 @@ Resources:
                 ProjectName: !Ref IntegrationTests
                 EnvironmentVariables: '[{"name":"REACT_APP_APIEndpoint","value":"#{APIDeploymentOutput.GraphQLApiEndpoint}","type":"PLAINTEXT"},
                 {"name":"REACT_APP_USER_POOL_ID","value":"#{APIDeploymentOutput.CognitoUserPoolId}","type":"PLAINTEXT"},
+                {"name":"REACT_APP_API_KEY","value":"#{APIDeploymentOutput.GraphQLApiKey}","type":"PLAINTEXT"},
                 {"name":"REACT_APP_CLIENT_ID","value":"#{APIDeploymentOutput.CognitoUserPoolClientId}","type":"PLAINTEXT"}
                 ]'
               InputArtifacts:

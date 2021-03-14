@@ -27,7 +27,7 @@ function App() {
       });
     setIsLoading(false);
   }, []);
-
+  console.log("Render app");
   return (
     <Container fluid={true} className="App">
       <ToastContainer />

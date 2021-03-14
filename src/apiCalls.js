@@ -1,4 +1,4 @@
-import { API, graphqlOperation } from "aws-amplify";
+import { API } from "aws-amplify";
 
 const runGraphqlOperation = (
   query_string,
@@ -48,13 +48,16 @@ const addQuestionnaire = (newQuestionnaire) => {
 
 const addFeedback = (feedback) => {
   return new Promise((resolve, reject) => {
-    runGraphqlOperation(`mutation MyMutation {
+    runGraphqlOperation(
+      `mutation MyMutation {
         saveFeedback(questionId: "${feedback.questionId}", feedback: "${feedback.feedback}") {
           id
           questionId
           feedback
         }
-      }`)
+      }`,
+      "API_KEY"
+    )
       .then((result) => {
         resolve(result.data.saveFeedback);
       })
