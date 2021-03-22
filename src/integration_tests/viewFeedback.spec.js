@@ -54,7 +54,9 @@ describe("viewing feedback", () => {
         </Route>
       </MemoryRouter>
     );
-    expect(await app.findByText(targetQuestionnaire.name)).toBeInTheDocument();
+    expect(
+      await app.findByText(targetQuestionnaire.name, {}, { timeout: 4000 })
+    ).toBeInTheDocument();
     const row = await app.getByText(targetQuestionnaire.name).closest("tr");
     const withinRow = within(row);
     fireEvent.click(await withinRow.findByText("View feedback"));

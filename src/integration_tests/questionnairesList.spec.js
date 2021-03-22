@@ -50,7 +50,9 @@ describe("App", () => {
       target: { value: questionText },
     });
     fireEvent.click(await app.findByText("Add questionnaire"));
-    expect(await app.findAllByText(questionText)).toHaveLength(1);
+    expect(
+      await app.findAllByText(questionText, {}, { timeout: 4000 })
+    ).toHaveLength(1);
   });
 
   it("delete a questionnaire", async () => {

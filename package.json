@@ -27,7 +27,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen  --testPathIgnorePatterns=src/integration_tests/*",
-    "test:integration": "react-scripts test --env=jest-environment-jsdom-sixteen  --testPathPattern=src/integration_tests/homepage* --watchAll=false",
+    "test:integration": "react-scripts test --env=jest-environment-jsdom-sixteen  --testPathPattern=src/integration_tests/* --watchAll=false",
     "test:ci": "react-scripts test --env=jest-environment-jsdom-sixteen --reporters=default --reporters=jest-junit --watchAll=false --runInBand",
     "test:api": "jest api/tests/ --runInBand",
     "eject": "react-scripts eject"
