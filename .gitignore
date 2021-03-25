@@ -33,3 +33,4 @@ setEnv
 testReports
 junit.xml
 deploy
+./src/aws-exports.js

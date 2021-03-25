@@ -24,7 +24,9 @@
     "react-toastify": "^6.2.0"
   },
   "scripts": {
+    "prestart": "envsubst < ./src/aws-exports.template > ./src/aws-exports.js",
     "start": "react-scripts start",
+    "prebuild": "envsubst < ./src/aws-exports.template > ./src/aws-exports.js",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen  --testPathIgnorePatterns=src/integration_tests/*",
     "test:integration": "react-scripts test --env=jest-environment-jsdom-sixteen  --testPathPattern=src/integration_tests/* --watchAll=false",

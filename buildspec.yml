@@ -11,6 +11,7 @@ phases:
       - env
       - jest api/tests/ --runInBand
       - npm run test:ci
+      - npm run build
 
 reports:
   jest_reports:
