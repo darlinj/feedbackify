@@ -6,7 +6,6 @@ Parameters:
     Type: String
     Description: prefix for naming all components
     MinLength: 3
-    AllowedPattern: "^[a-zA-Z][a-zA-Z0-9_]*$"
   UserPoolId:
     Type: String
     MinLength: 3
@@ -98,7 +97,11 @@ Resources:
     Type: "AWS::AppSync::DataSource"
     Properties:
       ApiId: !GetAtt AppSyncApi.ApiId
-      Name: !Sub ${NamePrefix}_questionnaires
+      Name: !Join  
+          - "_" 
+          - !Split 
+            - "-"
+            - !Sub ${NamePrefix}_questionnaires
       Description: "The Questionnaires Table AppSync Data Source"
       Type: AMAZON_DYNAMODB
       ServiceRoleArn: !Ref ServiceRoleArn
@@ -110,7 +113,11 @@ Resources:
     Type: "AWS::AppSync::DataSource"
     Properties:
       ApiId: !GetAtt AppSyncApi.ApiId
-      Name: !Sub ${NamePrefix}_questions
+      Name: !Join  
+          - "_" 
+          - !Split 
+            - "-"
+            - !Sub ${NamePrefix}_questions
       Description: "The Questions Table AppSync Data Source"
       Type: AMAZON_DYNAMODB
       ServiceRoleArn: !Ref ServiceRoleArn
@@ -122,7 +129,11 @@ Resources:
     Type: "AWS::AppSync::DataSource"
     Properties:
       ApiId: !GetAtt AppSyncApi.ApiId
-      Name: !Sub ${NamePrefix}_feedback
+      Name: !Join  
+          - "_" 
+          - !Split 
+            - "-"
+            - !Sub ${NamePrefix}_feedback
       Description: "The Feedback Table AppSync Data Source"
       Type: AMAZON_DYNAMODB
       ServiceRoleArn: !Ref ServiceRoleArn

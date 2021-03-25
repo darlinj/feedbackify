@@ -5,12 +5,13 @@ Parameters:
   SiteURL:
     Type: String
     Description: URL of the website
+    Default: "http://something.com"
 
   APIName:
     Type: String
     Description: Name of the API - used to generate unique names for resources
     MinLength: 3
-    AllowedPattern: "^[a-zA-Z][a-zA-Z0-9_]*$"
+    AllowedPattern: "^[a-z][a-z0-9_-]*$"
 
 Resources:
   CognitoPool:
@@ -56,6 +57,31 @@ Resources:
           Fn::GetAtt:
             - DynamoDbTable
             - Outputs.DBRoleARN
+  Website:
+    Type: "AWS::CloudFormation::Stack"
+    Properties:
+      TemplateURL: "./Website.yml"
+      Parameters:
+        NamePrefix:
+          Ref: APIName
+        SiteURL:
+          Ref: SiteURL
+        UserPoolId:
+          Fn::GetAtt:
+            - CognitoPool
+            - Outputs.UserPoolId
+        UserPoolClientId:
+          Fn::GetAtt:
+            - CognitoPool
+            - Outputs.UserPoolClientId
+        GraphQLApiEndpoint:
+          Fn::GetAtt:
+            - AppsyncAPI
+            - Outputs.GraphQLApiEndpoint
+        ApiKey:
+          Fn::GetAtt:
+            - AppsyncAPI
+            - Outputs.ApiKey
 
 Outputs:
   CognitoUserPoolId:

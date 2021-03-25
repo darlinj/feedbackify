@@ -1,0 +1,96 @@
+---
+Description: Set up hosting for the website
+
+Parameters:
+  NamePrefix:
+    Type: String
+    Description: Name of the API - used to generate unique names for resources
+    MinLength: 3
+  SiteURL:
+    Type: String
+    Description: URL of the website
+  UserPoolId:
+    Type: String
+    Description: Cognito User pool id
+  UserPoolClientId:
+    Type: String
+    Description: Cognito User pool client id
+  GraphQLApiEndpoint:
+    Type: String
+    Description: API endpoint
+  ApiKey:
+    Type: String
+    Description: API for public API
+  DefaultRootObject:
+    Description: "The default path for the index document."
+    Type: String
+    Default: "index.html"
+  ErrorPagePath:
+    Description: "The path of the error page for the website (e.g. /error.html). Must be a root-relative path."
+    Type: String
+    Default: "/404.html"
+
+Resources:
+  ContentOriginBucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Sub ${NamePrefix}-content-origin-bucket
+  CloudFrontOriginAccessIdentity:
+    Type: "AWS::CloudFront::CloudFrontOriginAccessIdentity"
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Ref ContentOriginBucket
+  ReadPolicy:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+      Bucket: !Ref ContentOriginBucket
+      PolicyDocument:
+        Statement:
+          - Action: "s3:GetObject"
+            Effect: Allow
+            Resource: !Sub "arn:aws:s3:::${ContentOriginBucket}/*"
+            Principal:
+              CanonicalUser: !GetAtt CloudFrontOriginAccessIdentity.S3CanonicalUserId
+  CloudFrontDistribution:
+    Type: "AWS::CloudFront::Distribution"
+    Properties:
+      DistributionConfig:
+        CustomErrorResponses:
+          - ErrorCode: 403 # not found
+            ResponseCode: 404
+            ResponsePagePath: !Ref ErrorPagePath
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          Compress: true
+          DefaultTTL: 3600 # in seconds
+          ForwardedValues:
+            Cookies:
+              Forward: none
+            QueryString: false
+          MaxTTL: 86400 # in seconds
+          MinTTL: 60 # in seconds
+          TargetOriginId: s3origin
+          ViewerProtocolPolicy: "allow-all"
+        DefaultRootObject: !Ref DefaultRootObject
+        Enabled: true
+        HttpVersion: http2
+        Origins:
+          - DomainName: !GetAtt "ContentOriginBucket.DomainName"
+            Id: s3origin
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
+        PriceClass: "PriceClass_All"
+Outputs:
+  DistributionId:
+    Description: "CloudFront Distribution ID"
+    Value: !Ref CloudFrontDistribution
+  Domain:
+    Description: "Cloudfront Domain"
+    Value: !GetAtt CloudFrontDistribution.DomainName

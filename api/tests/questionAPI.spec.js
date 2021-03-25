@@ -50,7 +50,7 @@ describe("The Question API", () => {
   });
 
   it("Can't see items that don't belong to this user", async () => {
-    const tableName = `${process.env.REACT_APP_API_NAME}-questions-table`;
+    const tableName = `${process.env.REACT_APP_PROJECT_NAME}-${process.env.REACT_APP_ENV}-questions-table`;
     await addQuestionForAnotherUser(tableName);
 
     const question = { questionnaireId: "12345", question: "Some question" };

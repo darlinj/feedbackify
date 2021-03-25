@@ -33,11 +33,8 @@ describe("The Questionnaire API", () => {
   });
 
   it("Adds a questionnaire and then checks it is there", async () => {
-    let questionnaireId = 0;
     const questionnaire = { name: "Some name" };
-    await addQuestionnaire(questionnaire).then((result) => {
-      questionnaireId = result.id;
-    });
+    await addQuestionnaire(questionnaire);
 
     await getQuestionnaires().then((result) => {
       expect(result[0].name).toEqual("Some name");
@@ -46,14 +43,11 @@ describe("The Questionnaire API", () => {
   });
 
   it("Can't see items that don't belong to this user", async () => {
-    const tableName = `${process.env.REACT_APP_API_NAME}-questionnaires-table`;
+    const tableName = `${process.env.REACT_APP_PROJECT_NAME}-${process.env.REACT_APP_ENV}-questionnaires-table`;
     await addQuestionnaireForAnotherUser(tableName);
 
-    let questionnaireId = 0;
     const questionnaire = { name: "Some name" };
-    await addQuestionnaire(questionnaire).then((result) => {
-      questionnaireId = result.id;
-    });
+    await addQuestionnaire(questionnaire);
 
     await getQuestionnaires().then((result) => {
       expect(result.length).toEqual(1);
