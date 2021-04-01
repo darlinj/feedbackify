@@ -101,6 +101,7 @@ Resources:
                 Action:
                   - "iam:*"
                   - "s3:*"
+                  - "cloudfront:*"
                   - "sns:*"
                   - "lambda:*"
                   - "appsync:*"
