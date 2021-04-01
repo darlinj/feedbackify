@@ -8,6 +8,7 @@ Parameters:
   IntegrationEnv:
     Type: String
     Description: Name of the Integration environment
+    Default: integration
   GithubUser:
     Type: AWS::SSM::Parameter::Value<String>
     Description: Github user
@@ -101,6 +102,7 @@ Resources:
                   - "s3:GetObject"
                   - "s3:GetObjectVersion"
                   - "s3:PutObject"
+                  - "s3:CreateBucket"
                 Resource:
                   - !Sub "arn:aws:s3:::${PipelineDeployBucket}/*"
         - PolicyName: VariousAccessToBuildServices
@@ -300,11 +302,11 @@ Resources:
                 Version: "1"
               Configuration:
                 ActionMode: CREATE_UPDATE
-                StackName: !Sub ${ProjectName}-cloudformation-stack
+                StackName: !Sub ${ProjectName}-${IntegrationEnv}-stack
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 RoleArn: !GetAtt CloudformationRole.Arn
                 TemplatePath: packagedCloudformationTemplates::packagedTemplate.yml
-                ParameterOverrides: !Sub '{ "APIName": "${ProjectName}-${IntegrationEnv}" , "SiteURL": "http://example.com"}'
+                ParameterOverrides: !Sub '{ "ProjectName": "${ProjectName}", "Environment": "${IntegrationEnv}" , "SiteURL": "http://example.com"}'
               InputArtifacts:
                 - Name: packagedCloudformationTemplates
               Namespace: APIDeploymentOutput
