@@ -28,6 +28,7 @@
     "start": "react-scripts start",
     "prebuild": "envsubst < ./src/aws-exports.template > ./src/aws-exports.js",
     "build": "react-scripts build",
+    "prettest": "envsubst < ./src/aws-exports.template > ./src/aws-exports.js",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen  --testPathIgnorePatterns=src/integration_tests/*",
     "test:integration": "react-scripts test --env=jest-environment-jsdom-sixteen  --testPathPattern=src/integration_tests/* --watchAll=false",
     "test:ci": "react-scripts test --env=jest-environment-jsdom-sixteen --reporters=default --reporters=jest-junit --watchAll=false --runInBand",
