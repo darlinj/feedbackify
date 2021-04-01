@@ -63,7 +63,7 @@ Resources:
   Website:
     Type: "AWS::CloudFormation::Stack"
     Properties:
-      TemplateURL: "./Website.yml"
+      TemplateURL: "./website.yml"
       Parameters:
         NamePrefix: !Sub ${ProjectName}-${Environment}
         SiteURL:
