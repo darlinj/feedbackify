@@ -7,9 +7,15 @@ Parameters:
     Description: URL of the website
     Default: "http://something.com"
 
-  APIName:
+  ProjectName:
     Type: String
-    Description: Name of the API - used to generate unique names for resources
+    Description: Name of the project - used to generate unique names for resources
+    MinLength: 3
+    AllowedPattern: "^[a-z][a-z0-9_-]*$"
+
+  Environment:
+    Type: String
+    Description: Environment we are deploying in
     MinLength: 3
     AllowedPattern: "^[a-z][a-z0-9_-]*$"
 
@@ -21,22 +27,19 @@ Resources:
       Parameters:
         SiteURL:
           Ref: SiteURL
-        NamePrefix:
-          Ref: APIName
+        NamePrefix: !Sub ${ProjectName}-${Environment}
   DynamoDbTable:
     Type: "AWS::CloudFormation::Stack"
     Properties:
       TemplateURL: "./dynamoDB.yml"
       Parameters:
-        NamePrefix:
-          Ref: APIName
+        NamePrefix: !Sub ${ProjectName}-${Environment}
   AppsyncAPI:
     Type: "AWS::CloudFormation::Stack"
     Properties:
       TemplateURL: "./appsyncAPI.yml"
       Parameters:
-        NamePrefix:
-          Ref: APIName
+        NamePrefix: !Sub ${ProjectName}-${Environment}
         UserPoolId:
           Fn::GetAtt:
             - CognitoPool
@@ -62,8 +65,7 @@ Resources:
     Properties:
       TemplateURL: "./Website.yml"
       Parameters:
-        NamePrefix:
-          Ref: APIName
+        NamePrefix: !Sub ${ProjectName}-${Environment}
         SiteURL:
           Ref: SiteURL
         UserPoolId:
