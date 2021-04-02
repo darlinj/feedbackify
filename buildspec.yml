@@ -9,7 +9,7 @@ phases:
   build:
     commands:
       - env
-      - npm run test:prettest
+      - npm run pretest
       - npm run test:api
       - npm run test:ci
       - ./deployFrontend.sh
