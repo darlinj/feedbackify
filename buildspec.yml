@@ -10,7 +10,7 @@ phases:
     commands:
       - npm run pretest
       - npm run test:api
-      #- npm run test:ci
+      - npm run test:ci
       - ./deployFrontend.sh
 
 reports:

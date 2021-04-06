@@ -144,9 +144,13 @@ Resources:
                   - "s3:GetObject"
                   - "s3:GetObjectVersion"
                   - "s3:PutObject"
-                  - "s3:ListBucket"
                 Resource:
                   - !Sub "arn:aws:s3:::feedbackify*/*"
+              - Effect: Allow
+                Action:
+                  - "s3:ListBucket"
+                Resource:
+                  - !Sub "arn:aws:s3:::feedbackify*"
         - PolicyName: CodeBuildParameterStore
           PolicyDocument:
             Version: "2012-10-17"
