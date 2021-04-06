@@ -8,10 +8,9 @@ phases:
       - ./api/tests/createCognitoUser.sh testuser
   build:
     commands:
-      - env
       - npm run pretest
       - npm run test:api
-      - npm run test:ci
+      #- npm run test:ci
       - ./deployFrontend.sh
 
 reports:

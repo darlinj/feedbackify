@@ -144,8 +144,9 @@ Resources:
                   - "s3:GetObject"
                   - "s3:GetObjectVersion"
                   - "s3:PutObject"
+                  - "s3:ListBucket"
                 Resource:
-                  - !Sub "${PipelineDeployBucket.Arn}/*"
+                  - !Sub "arn:aws:s3:::feedbackify*/*"
         - PolicyName: CodeBuildParameterStore
           PolicyDocument:
             Version: "2012-10-17"
@@ -172,7 +173,7 @@ Resources:
   PipelineDeployBucket:
     Type: "AWS::S3::Bucket"
     Properties:
-      BucketName: !Sub ${ProjectName}-deploy-bucket
+      BucketName: !Sub ${ProjectName}-{IntegrationEnv}-deploy-bucket
   PackageCloudformation:
     Type: AWS::CodeBuild::Project
     Properties:
@@ -221,6 +222,8 @@ Resources:
             Value: !Ref ProjectName
           - Name: REACT_APP_AWS_REGION
             Value: !Ref AWS::Region
+          - Name: ORIGIN_BUCKETNAME
+            Value: !Sub ${ProjectName}-${IntegrationEnv}-content-origin-bucket
       Cache:
         Type: S3
         Location: !Sub ${PipelineDeployBucket}/codebuild-integration-test-cache
