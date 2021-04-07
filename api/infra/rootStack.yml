@@ -122,3 +122,9 @@ Outputs:
       Fn::GetAtt:
         - AppsyncAPI
         - Outputs.GraphQLApiId
+  WebsiteDomain:
+    Description: The API ID of the GraphQL API
+    Value:
+      Fn::GetAtt:
+        - Website
+        - Outputs.Domain
