@@ -1,9 +1,5 @@
 export TEST_USERNAME=pinky
 export TEST_USER_PASSWORD=Passw0rd!
-export APIEndpoint=<API ENDPOINT>
-export USER_POOL_ID=<YOUR COGNITO USER POOL>
-export CLIENT_ID=<YOUR COGNITO CLIENT ID>
-
 
 # This stuff allows you to assume a different role that could have MFA requirements and sets the AWS environment to the temp credentials
 CREDS=$(aws sts assume-role --role-arn <YOUR PRIVILEDGED ROLE> --role-session-name some-session --profile <PROFILE NAME>)

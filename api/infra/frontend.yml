@@ -1,0 +1,54 @@
+---
+Description: Reactify front end
+
+Parameters:
+  SiteURL:
+    Type: String
+    Description: URL of the website
+    Default: "http://something.com"
+  ProjectName:
+    Type: String
+    Description: Name of the project - used to generate unique names for resources
+    MinLength: 3
+    AllowedPattern: "^[a-z][a-z0-9_-]*$"
+  Environment:
+    Type: String
+    Description: Environment we are deploying in
+  UserPoolId:
+    Type: String
+    Description: ID of the backend user pool
+  UserPoolClientId:
+    Type: String
+    Description: Client ID of the backend user pool
+  GraphQLApiEndpoint:
+    Type: String
+    Description: GraphQL endpoint
+  ApiKey:
+    Type: String
+    Description: API key for anonymous access
+
+Resources:
+  Website:
+    Type: "AWS::CloudFormation::Stack"
+    Properties:
+      TemplateURL: "./website.yml"
+      Parameters:
+        NamePrefix: !Sub ${ProjectName}-${Environment}
+        SiteURL:
+          Ref: SiteURL
+        UserPoolId:
+          Ref: UserPoolId
+        UserPoolClientId:
+          Ref: UserPoolClientId
+        GraphQLApiEndpoint:
+          Ref: GraphQLApiEndpoint
+        ApiKey:
+          Ref: ApiKey
+
+Outputs:
+  WebsiteDomain:
+    Description: The API ID of the GraphQL API
+    Value:
+      Fn::GetAtt:
+        - Website
+        - Outputs.Domain

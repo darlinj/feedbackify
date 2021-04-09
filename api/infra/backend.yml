@@ -60,30 +60,6 @@ Resources:
           Fn::GetAtt:
             - DynamoDbTable
             - Outputs.DBRoleARN
-  Website:
-    Type: "AWS::CloudFormation::Stack"
-    Properties:
-      TemplateURL: "./website.yml"
-      Parameters:
-        NamePrefix: !Sub ${ProjectName}-${Environment}
-        SiteURL:
-          Ref: SiteURL
-        UserPoolId:
-          Fn::GetAtt:
-            - CognitoPool
-            - Outputs.UserPoolId
-        UserPoolClientId:
-          Fn::GetAtt:
-            - CognitoPool
-            - Outputs.UserPoolClientId
-        GraphQLApiEndpoint:
-          Fn::GetAtt:
-            - AppsyncAPI
-            - Outputs.GraphQLApiEndpoint
-        ApiKey:
-          Fn::GetAtt:
-            - AppsyncAPI
-            - Outputs.ApiKey
 
 Outputs:
   CognitoUserPoolId:
@@ -122,9 +98,3 @@ Outputs:
       Fn::GetAtt:
         - AppsyncAPI
         - Outputs.GraphQLApiId
-  WebsiteDomain:
-    Description: The API ID of the GraphQL API
-    Value:
-      Fn::GetAtt:
-        - Website
-        - Outputs.Domain

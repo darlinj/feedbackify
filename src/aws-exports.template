@@ -1,6 +1,6 @@
 const awsConfig = {
   aws_project_region: "eu-west-1",
-  aws_appsync_graphqlEndpoint: "${REACT_APP_APIEndpoint}",
+  aws_appsync_graphqlEndpoint: "${REACT_APP_API_ENDPOINT}",
   aws_appsync_region: "eu-west-1",
   aws_appsync_authenticationType: "AMAZON_COGNITO_USER_POOLS",
   aws_appsync_apiKey: "${REACT_APP_API_KEY}",
