@@ -1,5 +1,5 @@
 ---
-Description: AWS AppSync Questionnaires API
+Description: Questionnaires API
 
 Parameters:
   SiteURL:
