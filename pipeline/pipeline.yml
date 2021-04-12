@@ -81,7 +81,7 @@ Resources:
   CloudformationRole:
     Type: "AWS::IAM::Role"
     Properties:
-      RoleName: !Sub ${ProjectName}-cloudformation-role
+      RoleName: !Sub ${ProjectName}-${IntegrationEnv}-role
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -181,7 +181,7 @@ Resources:
   PackageCloudformation:
     Type: AWS::CodeBuild::Project
     Properties:
-      Name: !Sub ${ProjectName}-package-cloudformation
+      Name: !Sub ${ProjectName}-${IntegrationEnv}-cloudformation
       Description: Package the cloudformation and upload to S3
       Artifacts:
         Type: CODEPIPELINE
