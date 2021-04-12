@@ -13,7 +13,7 @@ aws cloudformation deploy \
 --parameter-overrides ProjectName=${REACT_APP_PROJECT_NAME} Environment=dev SiteURL=${REACT_APP_SITE_URL} UserPoolId=${REACT_APP_CLIENT_ID} UserPoolClientId=${REACT_APP_USER_POOL_ID} GraphQLApiEndpoint=${REACT_APP_API_ENDPOINT} ApiKey=${REACT_APP_API_KEY} \
 --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND 
 
-aws cloudformation describe-stacks --stack-name ${REACT_APP_PROJECT_NAME}-dev --query 'Stacks[0].Outputs[][OutputKey,OutputValue]'
+aws cloudformation describe-stacks --stack-name ${REACT_APP_PROJECT_NAME}-dev-frontend --query 'Stacks[0].Outputs[][OutputKey,OutputValue]'
 
 
 
