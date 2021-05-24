@@ -5,7 +5,7 @@ Parameters:
   SiteURL:
     Type: String
     Description: URL of the website
-    Default: "http://something.com"
+    Default: http://localhost:3000
 
   ProjectName:
     Type: String
@@ -18,6 +18,9 @@ Parameters:
     Description: Environment we are deploying in
     MinLength: 3
     AllowedPattern: "^[a-z][a-z0-9_-]*$"
+
+Conditions:
+  IsProduction: !Equals [!Ref Environment, production]
 
 Resources:
   CognitoPool:
@@ -60,7 +63,37 @@ Resources:
           Fn::GetAtt:
             - DynamoDbTable
             - Outputs.DBRoleARN
+  Website:
+    Type: "AWS::CloudFormation::Stack"
+    Condition: IsProduction
+    Properties:
+      TemplateURL: "./website.yml"
+      Parameters:
+        NamePrefix: !Sub ${ProjectName}-${Environment}
+        UserPoolId:
+          Fn::GetAtt:
+            - CognitoPool
+            - Outputs.UserPoolId
+        UserPoolClientId:
+          Fn::GetAtt:
+            - CognitoPool
+            - Outputs.UserPoolClientId
+        GraphQLApiEndpoint:
+          Fn::GetAtt:
+            - AppsyncAPI
+            - Outputs.GraphQLApiEndpoint
+        ApiKey:
+          Fn::GetAtt:
+            - AppsyncAPI
+            - Outputs.ApiKey
 
+Outputs:
+  WebsiteDomain:
+    Description: The API ID of the GraphQL API
+    Value:
+      Fn::GetAtt:
+        - Website
+        - Outputs.Domain
 Outputs:
   CognitoUserPoolId:
     Description: The pool id of the cognito user pool

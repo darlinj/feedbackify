@@ -6,9 +6,6 @@ Parameters:
     Type: String
     Description: Name of the API - used to generate unique names for resources
     MinLength: 3
-  SiteURL:
-    Type: String
-    Description: URL of the website
   UserPoolId:
     Type: String
     Description: Cognito User pool id

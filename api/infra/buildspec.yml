@@ -4,8 +4,7 @@ phases:
   build:
     commands:
       - CLOUDFORMATION_SRC_DIR="$CODEBUILD_SRC_DIR/api/infra"
-      - aws cloudformation package --template-file "$CLOUDFORMATION_SRC_DIR/backend.yml" --s3-bucket "$DEPLOYMENT_BUCKET" --s3-prefix "packagedCloudformationAssets/$CODEBUILD_BUILD_ID" --output-template-file "$CLOUDFORMATION_SRC_DIR/packagedBackendTemplate.yml"
-      - aws cloudformation package --template-file "$CLOUDFORMATION_SRC_DIR/frontend.yml" --s3-bucket "$DEPLOYMENT_BUCKET" --s3-prefix "packagedCloudformationAssets/$CODEBUILD_BUILD_ID" --output-template-file "$CLOUDFORMATION_SRC_DIR/packagedFrontendTemplate.yml"
+      - aws cloudformation package --template-file "$CLOUDFORMATION_SRC_DIR/deploy.yml" --s3-bucket "$DEPLOYMENT_BUCKET" --s3-prefix "packagedCloudformationAssets/$CODEBUILD_BUILD_ID" --output-template-file "$CLOUDFORMATION_SRC_DIR/packagedTemplate.yml"
 
 artifacts:
   base-directory: $CLOUDFORMATION_SRC_DIR

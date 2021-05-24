@@ -291,7 +291,7 @@ Resources:
               OutputArtifacts:
                 - Name: packagedCloudformationTemplates
               RunOrder: 1
-            - Name: ExecuteBackendCloudformation
+            - Name: ExecuteCloudformation
               ActionTypeId:
                 Category: Deploy
                 Owner: AWS
@@ -299,32 +299,15 @@ Resources:
                 Version: "1"
               Configuration:
                 ActionMode: CREATE_UPDATE
-                StackName: !Sub ${ProjectName}-${IntegrationEnv}-backend-stack
+                StackName: !Sub ${ProjectName}-${IntegrationEnv}-stack
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 RoleArn: !GetAtt CloudformationRole.Arn
-                TemplatePath: packagedCloudformationTemplates::packagedBackendTemplate.yml
+                TemplatePath: packagedCloudformationTemplates::packagedTemplate.yml
                 ParameterOverrides: !Sub '{ "ProjectName": "${ProjectName}", "Environment": "${IntegrationEnv}" , "SiteURL": "http://example.com"}'
               InputArtifacts:
                 - Name: packagedCloudformationTemplates
               Namespace: APIDeploymentOutput
               RunOrder: 2
-            - Name: ExecuteFrontendCloudformation
-              ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Provider: CloudFormation
-                Version: "1"
-              Configuration:
-                ActionMode: CREATE_UPDATE
-                StackName: !Sub ${ProjectName}-${IntegrationEnv}-frontend-stack
-                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-                RoleArn: !GetAtt CloudformationRole.Arn
-                TemplatePath: packagedCloudformationTemplates::packagedFrontendTemplate.yml
-                ParameterOverrides: !Sub '{ "ProjectName": "${ProjectName}", "Environment": "${IntegrationEnv}" , "SiteURL": "http://example.com"}, "UserPoolId": "#{APIDeploymentOutput.CognitoUserPoolId}", "UserPoolClientId": "#{APIDeploymentOutput.CognitoUserPoolClientId}", "GraphQLApiEndpoint": "#{APIDeploymentOutput.GraphQLApiEndpoint}", "ApiKey": "#{APIDeploymentOutput.GraphQLApiKey}"'
-              InputArtifacts:
-                - Name: packagedCloudformationTemplates
-              Namespace: FrontendDeploymentOutput
-              RunOrder: 3
         - Name: Test
           Actions:
             - Name: IntegrationTests
