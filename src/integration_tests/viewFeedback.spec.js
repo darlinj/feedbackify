@@ -11,18 +11,22 @@ import {
 import App from "../App";
 import { login } from "../authentication";
 
-let targetQuestionnaire = {};
-
 describe("viewing feedback", () => {
+  let targetQuestionnaire = {};
   afterEach(cleanup);
 
   beforeEach(async () => {
     await login("pinky@example.com", "Passw0rd!");
     delete window.location;
     window.location = new URL("http://localhost/");
-    const questionnaire = await addQuestionnaire({
-      name: faker.lorem.words(10),
-    });
+    let questionnaire = {};
+    try {
+      questionnaire = await addQuestionnaire({
+        name: faker.lorem.words(10),
+      });
+    } catch (e) {
+      console.log("ERROR", e);
+    }
     const question1 = await addQuestion({
       questionnaireId: questionnaire.id,
       question: faker.lorem.words(10),

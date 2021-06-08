@@ -40,7 +40,7 @@ describe("api calls", () => {
       API.graphql.mockRejectedValue("some error");
       expect.assertions(1);
       return getQuestions().catch((errorMessage) => {
-        expect(errorMessage).toEqual({ error: "some error" });
+        expect(errorMessage).toEqual("some error");
       });
     });
   });
@@ -61,7 +61,7 @@ describe("api calls", () => {
       API.graphql.mockRejectedValue("some error");
       expect.assertions(1);
       return getQuestions().catch((errorMessage) => {
-        expect(errorMessage).toEqual({ error: "some error" });
+        expect(errorMessage).toEqual("some error");
       });
     });
   });
@@ -115,7 +115,7 @@ describe("api calls", () => {
       API.graphql.mockRejectedValue("some error");
       expect.assertions(1);
       return getQuestions().catch((errorMessage) => {
-        expect(errorMessage).toEqual({ error: "some error" });
+        expect(errorMessage).toEqual("some error");
       });
     });
   });
@@ -137,7 +137,7 @@ describe("api calls", () => {
       API.graphql.mockRejectedValue("some error");
       expect.assertions(1);
       return getFeedback().catch((errorMessage) => {
-        expect(errorMessage).toEqual({ error: "some error" });
+        expect(errorMessage).toEqual("some error");
       });
     });
   });
@@ -165,7 +165,7 @@ describe("api calls", () => {
       expect.assertions(1);
       return addQuestionnaire({ name: "Some Questionnaire" }).catch(
         (errorMessage) => {
-          expect(errorMessage).toEqual({ error: "some error" });
+          expect(errorMessage).toEqual("some error");
         }
       );
     });
@@ -259,7 +259,7 @@ describe("api calls", () => {
         questionId: "1234",
         feedback: "Some feedback",
       }).catch((errorMessage) => {
-        expect(errorMessage).toEqual({ error: "some error" });
+        expect(errorMessage).toEqual("some error");
       });
     });
   });
@@ -281,7 +281,7 @@ describe("api calls", () => {
       API.graphql.mockRejectedValue("some delete error");
       expect.assertions(1);
       return removeQuestion().catch((errorMessage) => {
-        expect(errorMessage).toEqual({ error: "some delete error" });
+        expect(errorMessage).toEqual("some delete error");
       });
     });
   });
@@ -306,7 +306,7 @@ describe("api calls", () => {
       API.graphql.mockRejectedValue("some delete error");
       expect.assertions(1);
       return removeQuestionnaire().catch((errorMessage) => {
-        expect(errorMessage).toEqual({ error: "some delete error" });
+        expect(errorMessage).toEqual("some delete error");
       });
     });
   });

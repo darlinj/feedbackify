@@ -1,76 +1,54 @@
 import { API } from "aws-amplify";
 
-const runGraphqlOperation = (
-  query_string,
-  authMode = "AMAZON_COGNITO_USER_POOLS"
-) => {
-  return API.graphql({
-    query: query_string,
-    variables: {},
-    authMode: authMode,
-  });
-};
-
-const addQuestion = (question) => {
-  return new Promise((resolve, reject) => {
-    runGraphqlOperation(`mutation MyMutation {
+const addQuestion = async (question) => {
+  const query_string = `mutation MyMutation {
         saveQuestion(questionnaireId: "${question.questionnaireId}", question: "${question.question}") {
           id
           questionnaireId
           question
         }
-      }`)
-      .then((result) => {
-        resolve(result.data.saveQuestion);
-      })
-      .catch((e) => {
-        reject({ error: e });
-      });
+      }`;
+  const result = await API.graphql({
+    query: query_string,
+    variables: {},
+    authMode: "AMAZON_COGNITO_USER_POOLS",
   });
+  return result.data.saveQuestion;
 };
 
-const addQuestionnaire = (newQuestionnaire) => {
-  return new Promise((resolve, reject) => {
-    runGraphqlOperation(`mutation MyMutation {
-    saveQuestionnaire(name: "${newQuestionnaire.name}") {
+const addQuestionnaire = async (questionnaire) => {
+  const query_string = `mutation MyMutation {
+    saveQuestionnaire(name: "${questionnaire.name}") {
          id
          name
        }
-     }`)
-      .then((result) => {
-        resolve(result.data.saveQuestionnaire);
-      })
-      .catch((e) => {
-        reject({ error: e });
-      });
+     }`;
+  const result = await API.graphql({
+    query: query_string,
+    variables: {},
+    authMode: "AMAZON_COGNITO_USER_POOLS",
   });
+  return result.data.saveQuestionnaire;
 };
 
-const addFeedback = (feedback) => {
-  return new Promise((resolve, reject) => {
-    runGraphqlOperation(
-      `mutation MyMutation {
+const addFeedback = async (feedback) => {
+  const query_string = `mutation MyMutation {
         saveFeedback(questionId: "${feedback.questionId}", feedback: "${feedback.feedback}") {
           id
           questionId
           feedback
         }
-      }`,
-      "API_KEY"
-    )
-      .then((result) => {
-        resolve(result.data.saveFeedback);
-      })
-      .catch((e) => {
-        console.log(e);
-        reject({ error: e });
-      });
+      }`;
+  const result = await API.graphql({
+    query: query_string,
+    variables: {},
+    authMode: "API_KEY",
   });
+  return result.data.saveFeedback;
 };
 
-const getQuestions = () => {
-  return new Promise((resolve, reject) => {
-    runGraphqlOperation(`query MyQuery {
+const getQuestions = async () => {
+  const query_string = `query MyQuery {
        getQuestions {
          questions {
            id
@@ -78,158 +56,138 @@ const getQuestions = () => {
            question
          }
        }
-     }`)
-      .then((result) => {
-        resolve(result.data.getQuestions.questions);
-      })
-      .catch((e) => {
-        reject({ error: e });
-      });
+     }`;
+  const result = await API.graphql({
+    query: query_string,
+    variables: {},
+    authMode: "AMAZON_COGNITO_USER_POOLS",
   });
+  return result.data.getQuestions.questions;
 };
 
-const getQuestion = (id) => {
-  return new Promise((resolve, reject) => {
-    runGraphqlOperation(`query MyQuery {
+const getQuestion = async (id) => {
+  const query_string = `query MyQuery {
        getQuestion (id: "${id}") {
            id
            question
            questionnaireId
        }
-     }`)
-      .then((result) => {
-        resolve(result.data.getQuestion);
-      })
-      .catch((e) => {
-        reject({ error: e });
-      });
+     }`;
+  const result = await API.graphql({
+    query: query_string,
+    variables: {},
+    authMode: "AMAZON_COGNITO_USER_POOLS",
   });
+  return result.data.getQuestion;
 };
 
-const getFeedback = (id) => {
-  return new Promise((resolve, reject) => {
-    runGraphqlOperation(`query MyQuery {
+const getFeedback = async (id) => {
+  const query_string = `query MyQuery {
        getFeedback (id: "${id}") {
            id
            feedback
            questionId
        }
-     }`)
-      .then((result) => {
-        resolve(result.data.getFeedback);
-      })
-      .catch((e) => {
-        reject({ error: e });
-      });
+     }`;
+  const result = await API.graphql({
+    query: query_string,
+    variables: {},
+    authMode: "AMAZON_COGNITO_USER_POOLS",
   });
+  return result.data.getFeedback;
 };
 
-const getQuestionnairePublic = (id) => {
-  return new Promise((resolve, reject) => {
-    runGraphqlOperation(
-      `query MyQuery { 
-  getQuestionnairePublic(id: "${id}") {
-    id
-    name
-    questions {
-      items {
-        id
-        question
+const getQuestionnairePublic = async (id) => {
+  const query_string = `query MyQuery { 
+    getQuestionnairePublic(id: "${id}") {
+      id
+      name
+      questions {
+        items {
+          id
+          question
+        }
       }
     }
-  }
-}`,
-      "API_KEY"
-    )
-      .then((result) => {
-        resolve(result.data.getQuestionnairePublic);
-      })
-      .catch((e) => {
-        console.log(e);
-        reject({ error: e });
-      });
+  }`;
+  const result = await API.graphql({
+    query: query_string,
+    variables: {},
+    authMode: "API_KEY",
   });
+  return result.data.getQuestionnairePublic;
 };
 
-const getQuestionnaire = (id) => {
-  return new Promise((resolve, reject) => {
-    runGraphqlOperation(`query MyQuery {
-  getQuestionnaire(id: "${id}") {
-    id
-    name
-    questions {
-      items {
-        id
-        question
-        feedback {
-          items {
-            id
-            feedback
+const getQuestionnaire = async (id) => {
+  const query_string = `query MyQuery {
+    getQuestionnaire(id: "${id}") {
+      id
+      name
+      questions {
+        items {
+          id
+          question
+          feedback {
+            items {
+              id
+              feedback
+            }
           }
         }
       }
     }
-  }
-}`)
-      .then((result) => {
-        resolve(result.data.getQuestionnaire);
-      })
-      .catch((e) => {
-        console.log(e);
-        reject({ error: e });
-      });
+  }`;
+  const result = await API.graphql({
+    query: query_string,
+    variables: {},
+    authMode: "AMAZON_COGNITO_USER_POOLS",
   });
+  return result.data.getQuestionnaire;
 };
 
-const getQuestionnaires = () => {
-  return new Promise((resolve, reject) => {
-    runGraphqlOperation(`query MyQuery {
+const getQuestionnaires = async () => {
+  const query_string = `query MyQuery {
       getQuestionnaires {
         questionnaires {
           id
           name
         }
       }
-    }`)
-      .then((result) => {
-        resolve(result.data.getQuestionnaires.questionnaires);
-      })
-      .catch((e) => {
-        reject({ error: e });
-      });
+    }`;
+  const result = await API.graphql({
+    query: query_string,
+    variables: {},
+    authMode: "AMAZON_COGNITO_USER_POOLS",
   });
+  return result.data.getQuestionnaires.questionnaires;
 };
 
-const removeQuestion = (id) => {
-  return new Promise((resolve, reject) => {
-    runGraphqlOperation(`mutation MyMutation {
+const removeQuestion = async (id) => {
+  const query_string = `mutation MyMutation {
        deleteQuestion(id: "${id}") {
          id
        }
-     }`)
-      .then((result) => {
-        resolve(result.data.deleteQuestion);
-      })
-      .catch((e) => {
-        reject({ error: e });
-      });
+     }`;
+  const result = await API.graphql({
+    query: query_string,
+    variables: {},
+    authMode: "AMAZON_COGNITO_USER_POOLS",
   });
+  return result.data.deleteQuestion;
 };
 
-const removeQuestionnaire = (id) => {
-  return new Promise((resolve, reject) => {
-    runGraphqlOperation(`mutation MyMutation {
+const removeQuestionnaire = async (id) => {
+  const query_string = `mutation MyMutation {
       deleteQuestionnaire(id: "${id}") {
         id
       }
-    }`)
-      .then((result) => {
-        resolve(result.data.deleteQuestionnaire);
-      })
-      .catch((e) => {
-        reject({ error: e });
-      });
+    }`;
+  const result = await API.graphql({
+    query: query_string,
+    variables: {},
+    authMode: "AMAZON_COGNITO_USER_POOLS",
   });
+  return result.data.deleteQuestionnaire;
 };
 
 export {
