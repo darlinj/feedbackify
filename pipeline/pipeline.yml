@@ -326,6 +326,25 @@ Resources:
               InputArtifacts:
                 - Name: SourceCode
               RunOrder: 1
+        - Name: Production
+          Actions:
+            - Name: DeployToProductionEnvironment
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: "1"
+              Configuration:
+                ActionMode: CREATE_UPDATE
+                StackName: !Sub ${ProjectName}-${IntegrationEnv}-stack
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                RoleArn: !GetAtt CloudformationRole.Arn
+                TemplatePath: packagedCloudformationTemplates::packagedTemplate.yml
+                ParameterOverrides: !Sub '{ "ProjectName": "${ProjectName}", "Environment": "production" , "SiteURL": "http://example.com"}'
+              InputArtifacts:
+                - Name: packagedCloudformationTemplates
+              Namespace: APIDeploymentOutput
+              RunOrder: 1
       ArtifactStore:
         Type: S3
         Location:
