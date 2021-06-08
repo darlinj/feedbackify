@@ -89,7 +89,8 @@ Resources:
 
 Outputs:
   WebsiteDomain:
-    Description: The API ID of the GraphQL API
+    Description: The website domain name
+    Condition: IsProduction
     Value:
       Fn::GetAtt:
         - Website
