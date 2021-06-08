@@ -11,7 +11,7 @@ phases:
       - npm run pretest
       - npm run test:api
       - npm run test:ci
-      - ./deployFrontend.sh
+      - npm run test:integration
 
 reports:
   jest_reports:

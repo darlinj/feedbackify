@@ -94,7 +94,6 @@ Outputs:
       Fn::GetAtt:
         - Website
         - Outputs.Domain
-Outputs:
   CognitoUserPoolId:
     Description: The pool id of the cognito user pool
     Value:
