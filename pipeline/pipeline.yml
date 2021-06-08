@@ -343,7 +343,7 @@ Resources:
                 ParameterOverrides: !Sub '{ "ProjectName": "${ProjectName}", "Environment": "production" , "SiteURL": "http://example.com"}'
               InputArtifacts:
                 - Name: packagedCloudformationTemplates
-              Namespace: APIDeploymentOutput
+              Namespace: ProductionDeployment
               RunOrder: 1
       ArtifactStore:
         Type: S3
