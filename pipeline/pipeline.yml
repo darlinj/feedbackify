@@ -336,7 +336,7 @@ Resources:
                 Version: "1"
               Configuration:
                 ActionMode: CREATE_UPDATE
-                StackName: !Sub ${ProjectName}-${IntegrationEnv}-stack
+                StackName: !Sub ${ProjectName}-production-stack
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 RoleArn: !GetAtt CloudformationRole.Arn
                 TemplatePath: packagedCloudformationTemplates::packagedTemplate.yml
