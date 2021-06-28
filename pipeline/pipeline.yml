@@ -266,7 +266,7 @@ Resources:
       ServiceRole: !GetAtt CodeBuildServiceRole.Arn
       Source:
         Type: CODEPIPELINE
-        BuildSpec: deployFrontend.yml
+        BuildSpec: frontendBuildspec.yml
       Tags:
         - Key: "Stack"
           Value: !Ref AWS::StackName
