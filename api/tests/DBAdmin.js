@@ -69,6 +69,7 @@ export const clearDatabase = async () => {
 };
 
 export const clearTable = async (tableName) => {
+  console.log(`Clearing the ${tableName} table`);
   const params = {
     TableName: tableName,
   };
