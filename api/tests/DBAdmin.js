@@ -1,5 +1,5 @@
 import AWS from "aws-sdk";
-AWS.config.region = process.env.REACT_APP_PROJECT_NAME;
+AWS.config.region = process.env.REACT_APP_AWS_REGION;
 
 const dynamoDB = new AWS.DynamoDB({
   apiVersion: "2012-08-10",
