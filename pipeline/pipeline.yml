@@ -177,7 +177,7 @@ Resources:
   PipelineDeployBucket:
     Type: "AWS::S3::Bucket"
     Properties:
-      BucketName: !Sub ${ProjectName}-${IntegrationEnv}-deploy-bucket
+      BucketName: !Sub ${ProjectName}-${IntegrationEnv}-deployment-bucket
   PackageCloudformation:
     Type: AWS::CodeBuild::Project
     Properties:
@@ -235,6 +235,38 @@ Resources:
       Source:
         Type: CODEPIPELINE
         BuildSpec: buildspec.yml
+      Tags:
+        - Key: "Stack"
+          Value: !Ref AWS::StackName
+        - Key: "Project"
+          Value: !Ref ProjectName
+  DeployFrontend:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub ${ProjectName}-deploy-frontend
+      Description: Deploy front end javascript to the S3 bucket
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
+        EnvironmentVariables:
+          - Name: REACT_APP_ENV
+            Value: production
+          - Name: REACT_APP_PROJECT_NAME
+            Value: !Ref ProjectName
+          - Name: REACT_APP_AWS_REGION
+            Value: !Ref AWS::Region
+          - Name: ORIGIN_BUCKETNAME
+            Value: !Sub ${ProjectName}-production-content-origin-bucket
+      Cache:
+        Type: S3
+        Location: !Sub ${PipelineDeployBucket}/codebuild-production-cache
+      ServiceRole: !GetAtt CodeBuildServiceRole.Arn
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: deployFrontend.yml
       Tags:
         - Key: "Stack"
           Value: !Ref AWS::StackName
@@ -345,6 +377,22 @@ Resources:
                 - Name: packagedCloudformationTemplates
               Namespace: ProductionDeployment
               RunOrder: 1
+            - Name: DeployFrontend
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: "1"
+              Configuration:
+                ProjectName: !Ref DeployFrontend
+                EnvironmentVariables: '[{"name":"REACT_APP_API_ENDPOINT","value":"#{APIDeploymentOutput.GraphQLApiEndpoint}","type":"PLAINTEXT"},
+                {"name":"REACT_APP_USER_POOL_ID","value":"#{APIDeploymentOutput.CognitoUserPoolId}","type":"PLAINTEXT"},
+                {"name":"REACT_APP_API_KEY","value":"#{APIDeploymentOutput.GraphQLApiKey}","type":"PLAINTEXT"},
+                {"name":"REACT_APP_CLIENT_ID","value":"#{APIDeploymentOutput.CognitoUserPoolClientId}","type":"PLAINTEXT"}
+                ]'
+              InputArtifacts:
+                - Name: SourceCode
+              RunOrder: 2
       ArtifactStore:
         Type: S3
         Location:

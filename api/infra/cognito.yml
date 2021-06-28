@@ -96,7 +96,7 @@ Resources:
       EmailConfiguration:
         EmailSendingAccount: DEVELOPER
         ReplyToEmailAddress: "someaddress@example.com"
-        SourceArn: "arn:aws:ses:eu-west-1:562925407179:identity/joe.darling@bt.com"
+        SourceArn: "arn:aws:ses:eu-west-2:760903257473:identity/darling.joe@gmail.com"
       LambdaConfig:
         CustomMessage: !GetAtt CustomMessageLambda.Arn
       Schema:
