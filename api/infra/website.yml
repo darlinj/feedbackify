@@ -31,7 +31,7 @@ Resources:
   ContentOriginBucket:
     Type: "AWS::S3::Bucket"
     Properties:
-      BucketName: !Sub ${NamePrefix}-content-origin-bucket
+      BucketName: !Sub ${NamePrefix}-content-origin
   CloudFrontOriginAccessIdentity:
     Type: "AWS::CloudFront::CloudFrontOriginAccessIdentity"
     Properties:
