@@ -88,6 +88,13 @@ Resources:
             - Outputs.ApiKey
 
 Outputs:
+  ContentOriginBucketName:
+    Description: The content origin bucket name
+    Condition: IsProduction
+    Value:
+      Fn::GetAtt:
+        - Website
+        - Outputs.ContentOriginBucketName
   WebsiteDomain:
     Description: The website domain name
     Condition: IsProduction

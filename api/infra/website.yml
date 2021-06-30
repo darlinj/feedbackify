@@ -94,3 +94,6 @@ Outputs:
   Domain:
     Description: "Cloudfront Domain"
     Value: !GetAtt CloudFrontDistribution.DomainName
+  ContentOriginBucketName:
+    Description: "Content origin bucket name"
+    Value: !GetAtt "ContentOriginBucket.BucketName"
