@@ -96,4 +96,4 @@ Outputs:
     Value: !GetAtt CloudFrontDistribution.DomainName
   ContentOriginBucketName:
     Description: "Content origin bucket name"
-    Value: !GetAtt "ContentOriginBucket.BucketName"
+    Value: !Ref ContentOriginBucket
