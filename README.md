@@ -21,3 +21,9 @@ run
 > npm start
 
 If everything passes then you are good
+
+## Production deployment
+
+The TLS certificate is manually deployed in the Atlanta region of AWS.  
+The ARN is hardcoded in the Website template
+The domain name is also hardcoded at the moment in the Aliases sections of the cloudfront distribution.

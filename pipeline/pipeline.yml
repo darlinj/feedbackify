@@ -135,7 +135,7 @@ Resources:
                 Resource:
                   - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/${ProjectName}*"
                   - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/${ProjectName}*:*"
-        - PolicyName: CodeBuildArtifactsBucket
+        - PolicyName: CodeBuildBuckets
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
@@ -144,13 +144,11 @@ Resources:
                   - "s3:GetObject"
                   - "s3:GetObjectVersion"
                   - "s3:PutObject"
-                Resource:
-                  - !Sub "arn:aws:s3:::feedbackify*/*"
-              - Effect: Allow
-                Action:
                   - "s3:ListBucket"
+                  - "s3:*"
                 Resource:
-                  - !Sub "arn:aws:s3:::feedbackify*"
+                  - !Sub arn:aws:s3:::${ProjectName}*
+                  - !Sub arn:aws:s3:::${ProjectName}*/*
         - PolicyName: CodeBuildParameterStore
           PolicyDocument:
             Version: "2012-10-17"
@@ -226,8 +224,6 @@ Resources:
             Value: !Ref ProjectName
           - Name: REACT_APP_AWS_REGION
             Value: !Ref AWS::Region
-          - Name: ORIGIN_BUCKETNAME
-            Value: !Sub ${ProjectName}-${IntegrationEnv}-content-origin-bucket
       Cache:
         Type: S3
         Location: !Sub ${PipelineDeployBucket}/codebuild-integration-test-cache
@@ -385,10 +381,12 @@ Resources:
                 Version: "1"
               Configuration:
                 ProjectName: !Ref DeployFrontend
-                EnvironmentVariables: '[{"name":"REACT_APP_API_ENDPOINT","value":"#{APIDeploymentOutput.GraphQLApiEndpoint}","type":"PLAINTEXT"},
-                {"name":"REACT_APP_USER_POOL_ID","value":"#{APIDeploymentOutput.CognitoUserPoolId}","type":"PLAINTEXT"},
-                {"name":"REACT_APP_API_KEY","value":"#{APIDeploymentOutput.GraphQLApiKey}","type":"PLAINTEXT"},
-                {"name":"REACT_APP_CLIENT_ID","value":"#{APIDeploymentOutput.CognitoUserPoolClientId}","type":"PLAINTEXT"}
+                EnvironmentVariables: '[
+                {"name":"REACT_APP_API_ENDPOINT","value":"#{ProductionDeployment.GraphQLApiEndpoint}","type":"PLAINTEXT"},
+                {"name":"REACT_APP_USER_POOL_ID","value":"#{ProductionDeployment.CognitoUserPoolId}","type":"PLAINTEXT"},
+                {"name":"REACT_APP_API_KEY","value":"#{ProductionDeployment.GraphQLApiKey}","type":"PLAINTEXT"},
+                {"name":"ORIGIN_BUCKETNAME","value":"#{ProductionDeployment.ContentOriginBucketName}","type":"PLAINTEXT"},
+                {"name":"REACT_APP_CLIENT_ID","value":"#{ProductionDeployment.CognitoUserPoolClientId}","type":"PLAINTEXT"}
                 ]'
               InputArtifacts:
                 - Name: SourceCode
