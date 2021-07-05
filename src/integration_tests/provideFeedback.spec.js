@@ -43,7 +43,7 @@ describe("Providing feedback", () => {
     ).toBeInTheDocument();
   });
 
-  it("Filling in the feedback form", async () => {
+  it.skip("Filling in the feedback form", async () => {
     const feedbackText = faker.lorem.words(10);
     const app = render(
       <MemoryRouter initialEntries={[`/feedback/${targetQuestionnaire.id}`]}>
