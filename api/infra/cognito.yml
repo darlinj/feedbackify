@@ -95,8 +95,8 @@ Resources:
         CaseSensitive: false
       EmailConfiguration:
         EmailSendingAccount: DEVELOPER
-        ReplyToEmailAddress: "someaddress@example.com"
-        SourceArn: "arn:aws:ses:eu-west-1:760903257473:identity/darling.joe@gmail.com"
+        ReplyToEmailAddress: "signup@reflectify.net"
+        SourceArn: "arn:aws:ses:eu-west-1:760903257473:identity/reflectify.net"
       LambdaConfig:
         CustomMessage: !GetAtt CustomMessageLambda.Arn
       Schema:
