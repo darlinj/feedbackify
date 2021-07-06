@@ -46,7 +46,7 @@ Resources:
                 const { userName, region } = event
                 const { clientId } = event.callerContext
                 const { email } = event.request.userAttributes
-                const url = `${process.env.SiteURL}confirm`
+                const url = `${process.env.SiteURL}/confirm`
                 const link = `<a href="${url}?code=${codeParameter}&username=${userName}&clientId=${clientId}&region=${region}&email=${email}" target="_blank">here</a>`
                 event.response.emailSubject = "Welcome to Feedbackify. Please verify your email"; 
                 event.response.emailMessage = `Thank you for signing up. Please click ${link} to verify your email.`;

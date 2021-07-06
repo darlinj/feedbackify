@@ -331,7 +331,7 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 RoleArn: !GetAtt CloudformationRole.Arn
                 TemplatePath: packagedCloudformationTemplates::packagedTemplate.yml
-                ParameterOverrides: !Sub '{ "ProjectName": "${ProjectName}", "Environment": "${IntegrationEnv}" , "SiteURL": "http://example.com"}'
+                ParameterOverrides: !Sub '{ "ProjectName": "${ProjectName}", "Environment": "${IntegrationEnv}" , "SiteURL": "http://integration.reflectify.net"}'
               InputArtifacts:
                 - Name: packagedCloudformationTemplates
               Namespace: APIDeploymentOutput
@@ -368,7 +368,7 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 RoleArn: !GetAtt CloudformationRole.Arn
                 TemplatePath: packagedCloudformationTemplates::packagedTemplate.yml
-                ParameterOverrides: !Sub '{ "ProjectName": "${ProjectName}", "Environment": "production" , "SiteURL": "http://example.com"}'
+                ParameterOverrides: !Sub '{ "ProjectName": "${ProjectName}", "Environment": "production" , "SiteURL": "http://reflectify.net"}'
               InputArtifacts:
                 - Name: packagedCloudformationTemplates
               Namespace: ProductionDeployment
