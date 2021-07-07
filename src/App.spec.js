@@ -21,7 +21,7 @@ describe("Rendering the app component", () => {
   it("with the Navbar", () => {
     const wrapper = shallow(<App />);
     expect(wrapper.find(Navigator)).toHaveLength(1);
-    expect(wrapper.find(Navigator).props().title).toEqual("Feedbackify");
+    expect(wrapper.find(Navigator).props().title).toEqual("Reflectify");
     expect(wrapper.find(Navigator).props().currentUser).toBeUndefined();
   });
 

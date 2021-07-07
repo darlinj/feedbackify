@@ -1,15 +1,20 @@
-import React, {useState} from 'react';
-import {FormGroup, Button, FormControl, FormLabel} from 'react-bootstrap';
-import {signup} from './authentication';
+import React, { useState } from "react";
+import { FormGroup, Button, FormControl, FormLabel } from "react-bootstrap";
+import { signup } from "./authentication";
 
-const Signup = props => {
-  const [signUpData, updateSignUpData] = useState({email:'',name:'',password:'',confirmPassword:''});
+const Signup = (props) => {
+  const [signUpData, updateSignUpData] = useState({
+    email: "",
+    name: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [registrationInProgres, updateRegistrationInProgress] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSignup = (event) => {
     event.preventDefault();
-    if(signUpData.password !== signUpData.confirmPassword) {
+    if (signUpData.password !== signUpData.confirmPassword) {
       setErrorMessage("Those passwords don't match,  Please try again");
       return;
     }
@@ -22,23 +27,26 @@ const Signup = props => {
           setErrorMessage(message);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         updateRegistrationInProgress(false);
         setErrorMessage(error);
       });
   };
 
-  const onChange = event => {
-    updateSignUpData({...signUpData, [event.target.name]: event.target.value });
+  const onChange = (event) => {
+    updateSignUpData({
+      ...signUpData,
+      [event.target.name]: event.target.value,
+    });
   };
 
   const signUpPage = () => {
     return (
       <div className="signup">
-        <h1>Register with feedbackify</h1>
+        <h1>Register with reflectify</h1>
         <div className="signup-message">
-          {errorMessage === '' ? (
-            ''
+          {errorMessage === "" ? (
+            ""
           ) : (
             <h1>Registration failed: {errorMessage}</h1>
           )}
@@ -89,7 +97,8 @@ const Signup = props => {
             name="signup-button"
             type="submit"
             cy-data="signup-button"
-            variant="primary">
+            variant="primary"
+          >
             Signup
           </Button>
         </form>

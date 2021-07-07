@@ -31,7 +31,7 @@ function App() {
     <Container fluid={true} className="App">
       <ToastContainer />
       <Navigator
-        title="Feedbackify"
+        title="Reflectify"
         currentUser={currentUser}
         isLoading={isLoading}
       />

@@ -2,7 +2,7 @@ import React from "react";
 import QuestionnairesPage from "./QuestionnairesPage";
 import LoginForm from "./LoginForm";
 
-const HomePage = props => {
+const HomePage = (props) => {
   const loggedInPage = () => {
     return <QuestionnairesPage {...props} />;
   };
@@ -10,7 +10,7 @@ const HomePage = props => {
   const loggedOutPage = () => {
     return (
       <>
-        <h1>Welcome to Feedbackify</h1>
+        <h1>Welcome to Reflectify</h1>
         Please log in
         <LoginForm {...props} />
       </>

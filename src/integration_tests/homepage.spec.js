@@ -14,7 +14,7 @@ describe("App", () => {
         </Route>
       </MemoryRouter>
     );
-    expect(await app.findByText("Feedbackify")).toBeInTheDocument();
+    expect(await app.findByText("Reflectify")).toBeInTheDocument();
     expect(await app.findByText(/Please log in/)).toBeInTheDocument();
   });
 
