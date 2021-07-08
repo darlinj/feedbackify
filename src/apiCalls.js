@@ -151,6 +151,8 @@ const getQuestionnaires = async () => {
         questionnaires {
           id
           name
+          updatedAt
+          createdAt
         }
       }
     }`;
