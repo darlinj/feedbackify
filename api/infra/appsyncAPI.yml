@@ -50,7 +50,7 @@ Resources:
           id: ID!
           name: String
           createdAt: String
-	        updatedAt: String
+          updatedAt: String
           questions: QuestionConnection
         }
         type QuestionConnection @aws_api_key @aws_cognito_user_pools {
