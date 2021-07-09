@@ -35,13 +35,11 @@ function App() {
         currentUser={currentUser}
         isLoading={isLoading}
       />
-      <div>
-        <Routes
-          currentUser={currentUser}
-          setCurrentUser={setCurrentUser}
-          isLoading={isLoading}
-        />
-      </div>
+      <Routes
+        currentUser={currentUser}
+        setCurrentUser={setCurrentUser}
+        isLoading={isLoading}
+      />
     </Container>
   );
 }
