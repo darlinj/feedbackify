@@ -54,12 +54,6 @@ describe("Shows questionnaire list", () => {
       component.getAllByText(moment(currerntDate).format("hh:mm Do MMM YYYY"))
         .length
     ).toBeGreaterThan(1);
-    const firstQuestionnaireRow = component
-      .getByText("this is some questionnaire")
-      .closest("tr");
-    expect(
-      within(firstQuestionnaireRow).getByText("Feedback link").closest("a")
-    ).toHaveAttribute("href", "http://localhost/feedback/1234");
   });
 
   it("calls the delete function if the delete button is pressed", () => {

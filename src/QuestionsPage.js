@@ -63,6 +63,14 @@ const QuestionsPage = (props) => {
   return (
     <div className="questions-form" data-testid="feedback-page">
       <TitleBar title={questionnaire.name} />
+      <div className="sharing-url">
+        Sharing link:
+        <a
+          href={`http://${window.location.hostname}/feedback/${questionnaire.id}`}
+        >
+          {`http://${window.location.hostname}/feedback/${questionnaire.id}`}
+        </a>
+      </div>
       <QuestionsList questionList={questionList} handleDelete={handleDelete} />
       <AddQuestionForm handleAddingQuestion={handleAddingQuestion} />
     </div>

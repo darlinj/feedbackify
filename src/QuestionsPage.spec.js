@@ -2,9 +2,7 @@ import React from "react";
 import { mount, shallow } from "enzyme";
 import { act } from "react-dom/test-utils";
 import QuestionsPage from "./QuestionsPage";
-import { API, graphqlOperation } from "aws-amplify";
 import { addQuestion, getQuestionnaire, removeQuestion } from "./apiCalls";
-import QuestionsList from "./QuestionsList";
 import { toast } from "react-toastify";
 
 jest.mock("./apiCalls");
@@ -13,6 +11,7 @@ jest.mock("react-toastify");
 describe("Adding questions to the list", () => {
   beforeEach(() => {
     getQuestionnaire.mockResolvedValue({
+      id: "999",
       name: "Some Questionnaire",
       questions: {
         items: [
@@ -48,6 +47,17 @@ describe("Adding questions to the list", () => {
     component.update();
     expect(component.find("TitleBar").prop("title")).toEqual(
       "Some Questionnaire"
+    );
+  });
+
+  it("sets sharing URL", async () => {
+    let component = null;
+    await act(async () => {
+      component = mount(<QuestionsPage match={{ params: { id: "999" } }} />);
+    });
+    component.update();
+    expect(component.find(".sharing-url").children("a").text()).toEqual(
+      "http://localhost/feedback/999"
     );
   });
 

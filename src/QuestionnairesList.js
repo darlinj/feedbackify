@@ -24,13 +24,14 @@ const QuestionnairesList = (props) => {
           {questionnaireList.map((questionnaireObject, index) => {
             return (
               <tr className="questionnaire-item" key={index}>
-                <td>{questionnaireObject.name}</td>
                 <td>
-                  <a
-                    href={`${window.location.href}feedback/${questionnaireObject.id}`}
+                  <Link
+                    data-testid="edit-questionnaire"
+                    to={`/questionnaire/${questionnaireObject.id}`}
+                    alt="Edit"
                   >
-                    Feedback link
-                  </a>
+                    {questionnaireObject.name}
+                  </Link>
                 </td>
                 <td>
                   {moment(questionnaireObject.createdAt).format(
@@ -43,13 +44,6 @@ const QuestionnairesList = (props) => {
                   )}
                 </td>
                 <td style={{ display: "flex" }}>
-                  <Link
-                    data-testid="edit-questionnaire"
-                    to={`/questionnaire/${questionnaireObject.id}`}
-                    alt="Edit"
-                  >
-                    <FaEdit style={{ color: "red" }} />
-                  </Link>
                   <button
                     id={questionnaireObject.id}
                     className="btn"
