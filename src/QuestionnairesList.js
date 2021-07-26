@@ -87,7 +87,6 @@ const QuestionnairesList = (props) => {
         <thead>
           <tr>
             <th>Title</th>
-            <th></th>
             <th>Created at</th>
             <th>Updated at</th>
             <th></th>
