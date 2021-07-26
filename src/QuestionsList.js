@@ -21,7 +21,7 @@ const QuestionsList = (params) => {
         <>
           {questionList.map((questionObject, index) => {
             return (
-              <tr className="question-item" key={index}>
+              <tr className="question-item" data-testid="question" key={index}>
                 <td align="left">{questionObject.question}</td>
                 <td>
                   <button

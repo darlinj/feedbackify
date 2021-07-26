@@ -4,6 +4,8 @@ import { act } from "react-dom/test-utils";
 import QuestionsPage from "./QuestionsPage";
 import { addQuestion, getQuestionnaire, removeQuestion } from "./apiCalls";
 import { toast } from "react-toastify";
+import { render, fireEvent, waitFor, screen } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
 
 jest.mock("./apiCalls");
 jest.mock("react-toastify");
@@ -30,48 +32,44 @@ describe("Adding questions to the list", () => {
     toast.error.mockClear();
   });
 
-  it("Presents the form", () => {
-    const component = shallow(
-      <QuestionsPage match={{ params: { id: "999" } }} />
-    );
-    expect(component.find("AddQuestionForm").length).toBe(1);
-    expect(component.find("QuestionsList").length).toBe(1);
-    expect(component.find("TitleBar").length).toBe(1);
-  });
+  //  it("Presents the form", () => {
+  //    const component = shallow(
+  //      <QuestionsPage match={{ params: { id: "999" } }} />
+  //    );
+  //    expect(component.find("AddQuestionForm").length).toBe(1);
+  //    expect(component.find("QuestionsList").length).toBe(1);
+  //    expect(component.find("TitleBar").length).toBe(1);
+  //  });
 
   it("sets the title to the questionnaire name", async () => {
-    let component = null;
-    await act(async () => {
-      component = mount(<QuestionsPage match={{ params: { id: "999" } }} />);
-    });
-    component.update();
-    expect(component.find("TitleBar").prop("title")).toEqual(
-      "Some Questionnaire"
+    const component = render(
+      <QuestionsPage match={{ params: { id: "999" } }} />
     );
+    expect(component.getByTestId("title")).toHaveTextContent("Loading...");
+    await component.findByText("Some Questionnaire");
   });
 
   it("sets sharing URL", async () => {
-    let component = null;
-    await act(async () => {
-      component = mount(<QuestionsPage match={{ params: { id: "999" } }} />);
-    });
-    component.update();
-    expect(component.find(".sharing-url").children("a").text()).toEqual(
+    const component = render(
+      <QuestionsPage match={{ params: { id: "999" } }} />
+    );
+    await component.findByText("Some Questionnaire");
+    expect(component.getByTestId("sharing-url")).toHaveTextContent(
       "http://localhost/feedback/999"
     );
   });
 
   it("Gets the Questions from the database", async () => {
-    let component = null;
-    await act(async () => {
-      component = mount(<QuestionsPage match={{ params: { id: "999" } }} />);
-    });
-    component.update();
-    expect(getQuestionnaire.mock.calls.length).toEqual(1);
-    expect(component.find("QuestionsList").prop("questionList")).toEqual([
-      { id: 1234, question: "This is a question" },
-      { id: 4321, question: "This is another question" },
-    ]);
+    const component = render(
+      <QuestionsPage match={{ params: { id: "999" } }} />
+    );
+    await component.findByText("Some Questionnaire");
+    expect(component.getAllByTestId("question")[0]).toHaveTextContent(
+      "This is a question"
+    );
+    expect(component.getAllByTestId("question")[1]).toHaveTextContent(
+      "This is another question"
+    );
   });
 
   it("if it fails to find the questionaire it put up a relevant error", async () => {
