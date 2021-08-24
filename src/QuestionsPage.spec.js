@@ -111,11 +111,10 @@ describe("Adding questions to the list", () => {
 
     await component.findByText("Some Questionnaire");
 
-    // FILL IN FORM
     userEvent.type(component.getByTestId("new-question-text-box"), question);
 
     const submitButton = component.getByTestId("submit-button");
-    userEvent.dblClick(submitButton);
+    userEvent.click(submitButton);
 
     const questionList = await component.findByTestId("question-list");
     await within(questionList).findByText(question);
@@ -123,38 +122,35 @@ describe("Adding questions to the list", () => {
     expect(questions[2].textContent).toContain(question);
   });
 
-  xit("Raises an error if the add fails", async () => {
+  it("Raises an error if the add fails", async () => {
     addQuestion.mockRejectedValue("some error");
-    const component = shallow(
+    const component = render(
       <QuestionsPage match={{ params: { id: "999" } }} />
     );
-    component.find("AddQuestionForm").prop("handleAddingQuestion")(
-      "some question"
+    await component.findByText("Some Questionnaire");
+    const submitButton = component.getByTestId("submit-button");
+    userEvent.click(submitButton);
+    await component.findByTestId("question-list");
+    expect(toast.error.mock.calls[0][0]).toEqual(
+      "Failed to save question. Check your internet connection"
     );
-    return new Promise((resolve) => setImmediate(resolve)).then(() => {
-      expect(toast.error.mock.calls.length).toEqual(1);
-      expect(toast.error.mock.calls[0][0]).toEqual(
-        "Failed to save question. Check your internet connection"
-      );
-    });
   });
 
-  xit("deletes questions from the list", async () => {
+  it("deletes questions from the list", async () => {
     removeQuestion.mockResolvedValue({ id: 1234 });
-    let component = null;
-    await act(async () => {
-      component = mount(<QuestionsPage match={{ params: { id: "999" } }} />);
-    });
-    component.update();
-    await act(async () => {
-      component.find("QuestionsList").prop("handleDelete")(1234);
-    });
-    component.update();
+    const component = render(
+      <QuestionsPage match={{ params: { id: "999" } }} />
+    );
+    await component.findByText("Some Questionnaire");
+    const questions = component.getAllByTestId("question");
+    const deleteButton = within(questions[0]).getByTestId("delete-question");
+    userEvent.click(deleteButton);
+    await component.findByText("Some Questionnaire");
+    const newQuestions = component.getAllByTestId("question");
+    expect(newQuestions.length).toBe(1);
+    expect(newQuestions[0].textContent).toEqual("This is another question ");
     expect(removeQuestion.mock.calls.length).toEqual(1);
     expect(removeQuestion.mock.calls[0][0]).toEqual(1234);
-    expect(component.find("QuestionsList").prop("questionList")).toEqual([
-      { id: 4321, question: "This is another question" },
-    ]);
   });
 
   xit("Raises an error if the delete fails", async () => {
