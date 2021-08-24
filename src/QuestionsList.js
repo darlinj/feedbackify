@@ -55,7 +55,7 @@ const QuestionsList = (params) => {
         borderless
         hover
         name="questions"
-        cy-data="question-list"
+        data-testid="question-list"
         className="questions"
       >
         <thead>

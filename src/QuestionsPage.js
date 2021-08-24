@@ -6,6 +6,7 @@ import { addQuestion, getQuestionnaire, removeQuestion } from "./apiCalls";
 import { toast } from "react-toastify";
 
 const QuestionsPage = (props) => {
+  const [loading, setLoading] = useState(true);
   const [questionList, setQuestionList] = useState([]);
   const [questionnaire, setQuestionnaire] = useState({
     name: "Loading...",
@@ -25,6 +26,7 @@ const QuestionsPage = (props) => {
           } else {
             setQuestionList(response.questions.items);
             setQuestionnaire(response);
+            setLoading(false);
           }
         }
       })
@@ -60,19 +62,34 @@ const QuestionsPage = (props) => {
       });
   };
 
+  const loadingPlaceholder = () => {
+    return <h1 data-testid="loading">Loading...</h1>;
+  };
+
+  const loadedPage = () => {
+    return (
+      <>
+        <TitleBar title={questionnaire.name} />
+        <div data-testid="sharing-url">
+          Sharing link:
+          <a
+            href={`http://${window.location.hostname}/feedback/${questionnaire.id}`}
+          >
+            {`http://${window.location.hostname}/feedback/${questionnaire.id}`}
+          </a>
+        </div>
+        <QuestionsList
+          questionList={questionList}
+          handleDelete={handleDelete}
+        />
+        <AddQuestionForm handleAddingQuestion={handleAddingQuestion} />
+      </>
+    );
+  };
+
   return (
     <div className="questions-form" data-testid="feedback-page">
-      <TitleBar title={questionnaire.name} />
-      <div data-testid="sharing-url">
-        Sharing link:
-        <a
-          href={`http://${window.location.hostname}/feedback/${questionnaire.id}`}
-        >
-          {`http://${window.location.hostname}/feedback/${questionnaire.id}`}
-        </a>
-      </div>
-      <QuestionsList questionList={questionList} handleDelete={handleDelete} />
-      <AddQuestionForm handleAddingQuestion={handleAddingQuestion} />
+      {loading ? loadingPlaceholder() : loadedPage()}
     </div>
   );
 };
