@@ -20,9 +20,8 @@ const QuestionsPage = (props) => {
       .then((response) => {
         if (mounted) {
           if (response === null) {
-            toast.error(
-              "We couldn't find that questionnaire.  Was it deleted?"
-            );
+            setQuestionnaire(null);
+            setLoading(false);
           } else {
             setQuestionList(response.questions.items);
             setQuestionnaire(response);
@@ -31,7 +30,8 @@ const QuestionsPage = (props) => {
         }
       })
       .catch((e) => {
-        toast.error(`Failed to get questions. Check your internet connection`);
+        setQuestionnaire(null);
+        setLoading(false);
       });
     return () => (mounted = false);
   }, [questionnaireId]);
@@ -67,6 +67,13 @@ const QuestionsPage = (props) => {
   };
 
   const loadedPage = () => {
+    if (questionnaire === null) {
+      return (
+        <h2 data-testid="error-message">
+          "Sorry but we couldn't find that questionnaire."
+        </h2>
+      );
+    }
     return (
       <>
         <TitleBar title={questionnaire.name} />

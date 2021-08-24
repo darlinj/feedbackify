@@ -1,6 +1,4 @@
 import React from "react";
-import { mount, shallow } from "enzyme";
-import { act } from "react-dom/test-utils";
 import QuestionsPage from "./QuestionsPage";
 import { addQuestion, getQuestionnaire, removeQuestion } from "./apiCalls";
 import { toast } from "react-toastify";
@@ -77,29 +75,26 @@ describe("Adding questions to the list", () => {
 
   it("if it fails to find the questionaire it put up a relevant error", async () => {
     getQuestionnaire.mockResolvedValue(null);
-    let component = null;
-    await act(async () => {
-      component = mount(<QuestionsPage match={{ params: { id: "999" } }} />);
-    });
-    component.update();
-    expect(toast.error.mock.calls.length).toEqual(1);
-    expect(toast.error.mock.calls[0][0]).toEqual(
-      "We couldn't find that questionnaire.  Was it deleted?"
+    const component = render(
+      <QuestionsPage match={{ params: { id: "999" } }} />
+    );
+    const errorMessage = await component.findByTestId("error-message");
+
+    expect(errorMessage.textContent).toContain(
+      "Sorry but we couldn't find that questionnaire"
     );
   });
 
   it("raises an error if the connection to the API fails", async () => {
     getQuestionnaire.mockRejectedValue("some listing error");
-    let component = null;
-    await act(async () => {
-      component = mount(<QuestionsPage match={{ params: { id: "999" } }} />);
-    });
-    return new Promise((resolve) => setImmediate(resolve)).then(() => {
-      expect(toast.error.mock.calls.length).toEqual(1);
-      expect(toast.error.mock.calls[0][0]).toEqual(
-        "Failed to get questions. Check your internet connection"
-      );
-    });
+    const component = render(
+      <QuestionsPage match={{ params: { id: "999" } }} />
+    );
+    const errorMessage = await component.findByTestId("error-message");
+
+    expect(errorMessage.textContent).toContain(
+      "Sorry but we couldn't find that questionnaire"
+    );
   });
 
   it("Adds questions to the question list", async () => {
@@ -153,17 +148,19 @@ describe("Adding questions to the list", () => {
     expect(removeQuestion.mock.calls[0][0]).toEqual(1234);
   });
 
-  xit("Raises an error if the delete fails", async () => {
+  it("Raises an error if the delete fails", async () => {
     removeQuestion.mockRejectedValue("some error");
-    const component = shallow(
+    const component = render(
       <QuestionsPage match={{ params: { id: "999" } }} />
     );
-    component.find("QuestionsList").prop("handleDelete")(1234);
-    return new Promise((resolve) => setImmediate(resolve)).then(() => {
-      expect(toast.error.mock.calls.length).toEqual(1);
-      expect(toast.error.mock.calls[0][0]).toEqual(
-        "Failed to delete question. Check your internet connection"
-      );
-    });
+    await component.findByText("Some Questionnaire");
+    const questions = component.getAllByTestId("question");
+    const deleteButton = within(questions[0]).getByTestId("delete-question");
+    userEvent.click(deleteButton);
+    await component.findByText("Some Questionnaire");
+    expect(toast.error.mock.calls.length).toEqual(1);
+    expect(toast.error.mock.calls[0][0]).toEqual(
+      "Failed to delete question. Check your internet connection"
+    );
   });
 });
