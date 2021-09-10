@@ -18,7 +18,9 @@ const login = async () => {
   await Auth.signIn(
     process.env.REACT_APP_TEST_USERNAME,
     process.env.REACT_APP_TEST_USER_PASSWORD
-  );
+  ).catch((e) => {
+    console.log(e);
+  });
 };
 
 describe("The Feedback API", () => {
