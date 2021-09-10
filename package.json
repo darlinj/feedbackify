@@ -23,14 +23,16 @@
     "react-toastify": "^6.2.0"
   },
   "scripts": {
-    "prestart": "envsubst < ./src/aws-exports.template > ./src/aws-exports.js",
+    "configure-aws": "envsubst < ./src/aws-exports.template > ./src/aws-exports.js",
+    "prestart": "npm run configure-aws",
     "start": "react-scripts start",
-    "prebuild": "envsubst < ./src/aws-exports.template > ./src/aws-exports.js",
+    "prebuild": "npm run configure-aws",
     "build": "react-scripts build",
-    "pretest": "envsubst < ./src/aws-exports.template > ./src/aws-exports.js",
+    "pretest": "npm run configure-aws",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen  --testPathIgnorePatterns=src/integration_tests/*",
     "test:integration": "react-scripts test --env=jest-environment-jsdom-sixteen  --testPathPattern=src/integration_tests/* --watchAll=false --runInBand",
     "test:ci": "react-scripts test --env=jest-environment-jsdom-sixteen --testPathIgnorePatterns=src/integration_tests/* --reporters=default --reporters=jest-junit --watchAll=false --runInBand",
+    "pretest:api": "npm run configure-aws",
     "test:api": "jest api/tests/ --runInBand",
     "eject": "react-scripts eject"
   },
