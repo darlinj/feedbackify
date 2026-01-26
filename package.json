@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@aws-amplify/ui-react": "^0.2.34",
+    "@aws-amplify/ui-react": "^6.13.2",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
     "amazon-cognito-identity-js": "^4.5.7",
-    "aws-amplify": "^3.3.14",
+    "aws-amplify": "^6.15.10",
     "aws-sdk": "^2.828.0",
     "bootstrap": "^4.5.3",
     "cypress-graphql-mock": "^0.5.0-alpha.4",
